@@ -60,16 +60,16 @@ else
   $(error "invalid configuration $(config)")
 endif
 
-PROJECTS := Legends-Farm raylib
+PROJECTS := Legends_Farm raylib
 
 .PHONY: all clean help $(PROJECTS) 
 
 all: $(PROJECTS)
 
-Legends-Farm: raylib
+Legends_Farm: raylib
 ifneq (,$(Legends_Farm_config))
-	@echo "==== Building Legends-Farm ($(Legends_Farm_config)) ===="
-	@${MAKE} --no-print-directory -C build/build_files -f Legends-Farm.make config=$(Legends_Farm_config)
+	@echo "==== Building Legends_Farm ($(Legends_Farm_config)) ===="
+	@${MAKE} --no-print-directory -C build/build_files -f Legends_Farm.make config=$(Legends_Farm_config)
 endif
 
 raylib:
@@ -79,7 +79,7 @@ ifneq (,$(raylib_config))
 endif
 
 clean:
-	@${MAKE} --no-print-directory -C build/build_files -f Legends-Farm.make clean
+	@${MAKE} --no-print-directory -C build/build_files -f Legends_Farm.make clean
 	@${MAKE} --no-print-directory -C build/build_files -f raylib.make clean
 
 help:
@@ -102,7 +102,7 @@ help:
 	@echo "TARGETS:"
 	@echo "   all (default)"
 	@echo "   clean"
-	@echo "   Legends-Farm"
+	@echo "   Legends_Farm"
 	@echo "   raylib"
 	@echo ""
 	@echo "For more information, see https://github.com/premake/premake-core/wiki"
