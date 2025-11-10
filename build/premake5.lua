@@ -139,6 +139,7 @@ if (downloadRaylib) then
 
     project (workspaceName)
         kind "ConsoleApp"
+        language "C++"
         location "build_files/"
         targetdir "../bin/%{cfg.buildcfg}"
 
@@ -211,7 +212,7 @@ if (downloadRaylib) then
 
         location "build_files/"
 
-        language "C"
+        language "C++"
         targetdir "../bin/%{cfg.buildcfg}"
 
         filter "action:vs*"

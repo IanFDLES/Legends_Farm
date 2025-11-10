@@ -184,10 +184,8 @@ endif
 GENERATED :=
 OBJECTS :=
 
-GENERATED += $(OBJDIR)/fila.o
 GENERATED += $(OBJDIR)/listaCadastral.o
 GENERATED += $(OBJDIR)/main.o
-OBJECTS += $(OBJDIR)/fila.o
 OBJECTS += $(OBJDIR)/listaCadastral.o
 OBJECTS += $(OBJDIR)/main.o
 
@@ -253,15 +251,12 @@ endif
 # File Rules
 # #############################################
 
-$(OBJDIR)/fila.o: ../../src/fila.cpp
-	@echo "$(notdir $<)"
-	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/listaCadastral.o: ../../src/listaCadastral.cpp
 	@echo "$(notdir $<)"
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
-$(OBJDIR)/main.o: ../../src/main.c
+$(OBJDIR)/main.o: ../../src/main.cpp
 	@echo "$(notdir $<)"
-	$(SILENT) $(CC) $(ALL_CFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
+	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 
 -include $(OBJECTS:%.o=%.d)
 ifneq (,$(PCH))
