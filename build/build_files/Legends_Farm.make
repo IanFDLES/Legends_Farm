@@ -42,135 +42,135 @@ endef
 
 ifeq ($(config),debug_x64)
 TARGETDIR = ../../bin/Debug
-TARGET = $(TARGETDIR)/Legends_Farm
+TARGET = $(TARGETDIR)/Legends_Farm.exe
 OBJDIR = obj/x64/Debug/Legends_Farm
-DEFINES += -DDEBUG -DPLATFORM_DESKTOP -DGRAPHICS_API_OPENGL_33 -D_GLFW_X11 -D_GNU_SOURCE
+DEFINES += -DDEBUG -DPLATFORM_DESKTOP -DGRAPHICS_API_OPENGL_33 -D_WIN32
 ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m64 -Wshadow -g -std=c17
 ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -m64 -Wshadow -g -std=c++17
-LIBS += ../../bin/Debug/libraylib.a -lpthread -lm -ldl -lrt -lX11
-LDDEPS += ../../bin/Debug/libraylib.a
-ALL_LDFLAGS += $(LDFLAGS) -L/usr/lib64 -m64
+LIBS += ../../bin/Debug/raylib.lib -lwinmm -lgdi32 -lopengl32
+LDDEPS += ../../bin/Debug/raylib.lib
+ALL_LDFLAGS += $(LDFLAGS) -L../../bin/Debug -L/usr/lib64 -m64
 
 else ifeq ($(config),debug_x86)
 TARGETDIR = ../../bin/Debug
-TARGET = $(TARGETDIR)/Legends_Farm
+TARGET = $(TARGETDIR)/Legends_Farm.exe
 OBJDIR = obj/x86/Debug/Legends_Farm
-DEFINES += -DDEBUG -DPLATFORM_DESKTOP -DGRAPHICS_API_OPENGL_33 -D_GLFW_X11 -D_GNU_SOURCE
+DEFINES += -DDEBUG -DPLATFORM_DESKTOP -DGRAPHICS_API_OPENGL_33 -D_WIN32
 ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m32 -Wshadow -g -std=c17
 ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -m32 -Wshadow -g -std=c++17
-LIBS += ../../bin/Debug/libraylib.a -lpthread -lm -ldl -lrt -lX11
-LDDEPS += ../../bin/Debug/libraylib.a
-ALL_LDFLAGS += $(LDFLAGS) -L/usr/lib32 -m32
+LIBS += ../../bin/Debug/raylib.lib -lwinmm -lgdi32 -lopengl32
+LDDEPS += ../../bin/Debug/raylib.lib
+ALL_LDFLAGS += $(LDFLAGS) -L../../bin/Debug -L/usr/lib32 -m32
 
 else ifeq ($(config),debug_arm64)
 TARGETDIR = ../../bin/Debug
-TARGET = $(TARGETDIR)/Legends_Farm
+TARGET = $(TARGETDIR)/Legends_Farm.exe
 OBJDIR = obj/ARM64/Debug/Legends_Farm
-DEFINES += -DDEBUG -DPLATFORM_DESKTOP -DGRAPHICS_API_OPENGL_33 -D_GLFW_X11 -D_GNU_SOURCE
+DEFINES += -DDEBUG -DPLATFORM_DESKTOP -DGRAPHICS_API_OPENGL_33 -D_WIN32
 ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -Wshadow -g -std=c17
 ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -Wshadow -g -std=c++17
-LIBS += ../../bin/Debug/libraylib.a -lpthread -lm -ldl -lrt -lX11
-LDDEPS += ../../bin/Debug/libraylib.a
-ALL_LDFLAGS += $(LDFLAGS)
+LIBS += ../../bin/Debug/raylib.lib -lwinmm -lgdi32 -lopengl32
+LDDEPS += ../../bin/Debug/raylib.lib
+ALL_LDFLAGS += $(LDFLAGS) -L../../bin/Debug
 
 else ifeq ($(config),release_x64)
 TARGETDIR = ../../bin/Release
-TARGET = $(TARGETDIR)/Legends_Farm
+TARGET = $(TARGETDIR)/Legends_Farm.exe
 OBJDIR = obj/x64/Release/Legends_Farm
-DEFINES += -DNDEBUG -DPLATFORM_DESKTOP -DGRAPHICS_API_OPENGL_33 -D_GLFW_X11 -D_GNU_SOURCE
-ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m64 -Wshadow -O2 -std=c17
-ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -m64 -Wshadow -O2 -std=c++17
-LIBS += ../../bin/Release/libraylib.a -lpthread -lm -ldl -lrt -lX11
-LDDEPS += ../../bin/Release/libraylib.a
-ALL_LDFLAGS += $(LDFLAGS) -L/usr/lib64 -m64 -s
+DEFINES += -DNDEBUG -DPLATFORM_DESKTOP -DGRAPHICS_API_OPENGL_33 -D_WIN32
+ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m64 -Wshadow -O2 -std=c17 -Wl,--subsystem,windows
+ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -m64 -Wshadow -O2 -std=c++17 -Wl,--subsystem,windows
+LIBS += ../../bin/Release/raylib.lib -lwinmm -lgdi32 -lopengl32
+LDDEPS += ../../bin/Release/raylib.lib
+ALL_LDFLAGS += $(LDFLAGS) -L../../bin/Release -L/usr/lib64 -m64 -mwindows -s
 
 else ifeq ($(config),release_x86)
 TARGETDIR = ../../bin/Release
-TARGET = $(TARGETDIR)/Legends_Farm
+TARGET = $(TARGETDIR)/Legends_Farm.exe
 OBJDIR = obj/x86/Release/Legends_Farm
-DEFINES += -DNDEBUG -DPLATFORM_DESKTOP -DGRAPHICS_API_OPENGL_33 -D_GLFW_X11 -D_GNU_SOURCE
-ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m32 -Wshadow -O2 -std=c17
-ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -m32 -Wshadow -O2 -std=c++17
-LIBS += ../../bin/Release/libraylib.a -lpthread -lm -ldl -lrt -lX11
-LDDEPS += ../../bin/Release/libraylib.a
-ALL_LDFLAGS += $(LDFLAGS) -L/usr/lib32 -m32 -s
+DEFINES += -DNDEBUG -DPLATFORM_DESKTOP -DGRAPHICS_API_OPENGL_33 -D_WIN32
+ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m32 -Wshadow -O2 -std=c17 -Wl,--subsystem,windows
+ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -m32 -Wshadow -O2 -std=c++17 -Wl,--subsystem,windows
+LIBS += ../../bin/Release/raylib.lib -lwinmm -lgdi32 -lopengl32
+LDDEPS += ../../bin/Release/raylib.lib
+ALL_LDFLAGS += $(LDFLAGS) -L../../bin/Release -L/usr/lib32 -m32 -mwindows -s
 
 else ifeq ($(config),release_arm64)
 TARGETDIR = ../../bin/Release
-TARGET = $(TARGETDIR)/Legends_Farm
+TARGET = $(TARGETDIR)/Legends_Farm.exe
 OBJDIR = obj/ARM64/Release/Legends_Farm
-DEFINES += -DNDEBUG -DPLATFORM_DESKTOP -DGRAPHICS_API_OPENGL_33 -D_GLFW_X11 -D_GNU_SOURCE
-ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -Wshadow -O2 -std=c17
-ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -Wshadow -O2 -std=c++17
-LIBS += ../../bin/Release/libraylib.a -lpthread -lm -ldl -lrt -lX11
-LDDEPS += ../../bin/Release/libraylib.a
-ALL_LDFLAGS += $(LDFLAGS) -s
+DEFINES += -DNDEBUG -DPLATFORM_DESKTOP -DGRAPHICS_API_OPENGL_33 -D_WIN32
+ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -Wshadow -O2 -std=c17 -Wl,--subsystem,windows
+ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -Wshadow -O2 -std=c++17 -Wl,--subsystem,windows
+LIBS += ../../bin/Release/raylib.lib -lwinmm -lgdi32 -lopengl32
+LDDEPS += ../../bin/Release/raylib.lib
+ALL_LDFLAGS += $(LDFLAGS) -L../../bin/Release -mwindows -s
 
 else ifeq ($(config),debug_rgfw_x64)
 TARGETDIR = ../../bin/Debug_RGFW
-TARGET = $(TARGETDIR)/Legends_Farm
+TARGET = $(TARGETDIR)/Legends_Farm.exe
 OBJDIR = obj/x64/Debug_RGFW/Legends_Farm
-DEFINES += -DDEBUG -DPLATFORM_DESKTOP_RGFW -DGRAPHICS_API_OPENGL_33 -D_GLFW_X11 -D_GNU_SOURCE
+DEFINES += -DDEBUG -DPLATFORM_DESKTOP_RGFW -DGRAPHICS_API_OPENGL_33 -D_WIN32
 ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m64 -Wshadow -g -std=c17
 ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -m64 -Wshadow -g -std=c++17
-LIBS += ../../bin/Debug_RGFW/libraylib.a -lpthread -lm -ldl -lrt -lX11
-LDDEPS += ../../bin/Debug_RGFW/libraylib.a
-ALL_LDFLAGS += $(LDFLAGS) -L/usr/lib64 -m64
+LIBS += ../../bin/Debug_RGFW/raylib.lib -lwinmm -lgdi32 -lopengl32
+LDDEPS += ../../bin/Debug_RGFW/raylib.lib
+ALL_LDFLAGS += $(LDFLAGS) -L../../bin/Debug_RGFW -L/usr/lib64 -m64
 
 else ifeq ($(config),debug_rgfw_x86)
 TARGETDIR = ../../bin/Debug_RGFW
-TARGET = $(TARGETDIR)/Legends_Farm
+TARGET = $(TARGETDIR)/Legends_Farm.exe
 OBJDIR = obj/x86/Debug_RGFW/Legends_Farm
-DEFINES += -DDEBUG -DPLATFORM_DESKTOP_RGFW -DGRAPHICS_API_OPENGL_33 -D_GLFW_X11 -D_GNU_SOURCE
+DEFINES += -DDEBUG -DPLATFORM_DESKTOP_RGFW -DGRAPHICS_API_OPENGL_33 -D_WIN32
 ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m32 -Wshadow -g -std=c17
 ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -m32 -Wshadow -g -std=c++17
-LIBS += ../../bin/Debug_RGFW/libraylib.a -lpthread -lm -ldl -lrt -lX11
-LDDEPS += ../../bin/Debug_RGFW/libraylib.a
-ALL_LDFLAGS += $(LDFLAGS) -L/usr/lib32 -m32
+LIBS += ../../bin/Debug_RGFW/raylib.lib -lwinmm -lgdi32 -lopengl32
+LDDEPS += ../../bin/Debug_RGFW/raylib.lib
+ALL_LDFLAGS += $(LDFLAGS) -L../../bin/Debug_RGFW -L/usr/lib32 -m32
 
 else ifeq ($(config),debug_rgfw_arm64)
 TARGETDIR = ../../bin/Debug_RGFW
-TARGET = $(TARGETDIR)/Legends_Farm
+TARGET = $(TARGETDIR)/Legends_Farm.exe
 OBJDIR = obj/ARM64/Debug_RGFW/Legends_Farm
-DEFINES += -DDEBUG -DPLATFORM_DESKTOP_RGFW -DGRAPHICS_API_OPENGL_33 -D_GLFW_X11 -D_GNU_SOURCE
+DEFINES += -DDEBUG -DPLATFORM_DESKTOP_RGFW -DGRAPHICS_API_OPENGL_33 -D_WIN32
 ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -Wshadow -g -std=c17
 ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -Wshadow -g -std=c++17
-LIBS += ../../bin/Debug_RGFW/libraylib.a -lpthread -lm -ldl -lrt -lX11
-LDDEPS += ../../bin/Debug_RGFW/libraylib.a
-ALL_LDFLAGS += $(LDFLAGS)
+LIBS += ../../bin/Debug_RGFW/raylib.lib -lwinmm -lgdi32 -lopengl32
+LDDEPS += ../../bin/Debug_RGFW/raylib.lib
+ALL_LDFLAGS += $(LDFLAGS) -L../../bin/Debug_RGFW
 
 else ifeq ($(config),release_rgfw_x64)
 TARGETDIR = ../../bin/Release_RGFW
-TARGET = $(TARGETDIR)/Legends_Farm
+TARGET = $(TARGETDIR)/Legends_Farm.exe
 OBJDIR = obj/x64/Release_RGFW/Legends_Farm
-DEFINES += -DNDEBUG -DPLATFORM_DESKTOP_RGFW -DGRAPHICS_API_OPENGL_33 -D_GLFW_X11 -D_GNU_SOURCE
-ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m64 -Wshadow -O2 -std=c17
-ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -m64 -Wshadow -O2 -std=c++17
-LIBS += ../../bin/Release_RGFW/libraylib.a -lpthread -lm -ldl -lrt -lX11
-LDDEPS += ../../bin/Release_RGFW/libraylib.a
-ALL_LDFLAGS += $(LDFLAGS) -L/usr/lib64 -m64 -s
+DEFINES += -DNDEBUG -DPLATFORM_DESKTOP_RGFW -DGRAPHICS_API_OPENGL_33 -D_WIN32
+ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m64 -Wshadow -O2 -std=c17 -Wl,--subsystem,windows
+ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -m64 -Wshadow -O2 -std=c++17 -Wl,--subsystem,windows
+LIBS += ../../bin/Release_RGFW/raylib.lib -lwinmm -lgdi32 -lopengl32
+LDDEPS += ../../bin/Release_RGFW/raylib.lib
+ALL_LDFLAGS += $(LDFLAGS) -L../../bin/Release_RGFW -L/usr/lib64 -m64 -mwindows -s
 
 else ifeq ($(config),release_rgfw_x86)
 TARGETDIR = ../../bin/Release_RGFW
-TARGET = $(TARGETDIR)/Legends_Farm
+TARGET = $(TARGETDIR)/Legends_Farm.exe
 OBJDIR = obj/x86/Release_RGFW/Legends_Farm
-DEFINES += -DNDEBUG -DPLATFORM_DESKTOP_RGFW -DGRAPHICS_API_OPENGL_33 -D_GLFW_X11 -D_GNU_SOURCE
-ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m32 -Wshadow -O2 -std=c17
-ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -m32 -Wshadow -O2 -std=c++17
-LIBS += ../../bin/Release_RGFW/libraylib.a -lpthread -lm -ldl -lrt -lX11
-LDDEPS += ../../bin/Release_RGFW/libraylib.a
-ALL_LDFLAGS += $(LDFLAGS) -L/usr/lib32 -m32 -s
+DEFINES += -DNDEBUG -DPLATFORM_DESKTOP_RGFW -DGRAPHICS_API_OPENGL_33 -D_WIN32
+ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m32 -Wshadow -O2 -std=c17 -Wl,--subsystem,windows
+ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -m32 -Wshadow -O2 -std=c++17 -Wl,--subsystem,windows
+LIBS += ../../bin/Release_RGFW/raylib.lib -lwinmm -lgdi32 -lopengl32
+LDDEPS += ../../bin/Release_RGFW/raylib.lib
+ALL_LDFLAGS += $(LDFLAGS) -L../../bin/Release_RGFW -L/usr/lib32 -m32 -mwindows -s
 
 else ifeq ($(config),release_rgfw_arm64)
 TARGETDIR = ../../bin/Release_RGFW
-TARGET = $(TARGETDIR)/Legends_Farm
+TARGET = $(TARGETDIR)/Legends_Farm.exe
 OBJDIR = obj/ARM64/Release_RGFW/Legends_Farm
-DEFINES += -DNDEBUG -DPLATFORM_DESKTOP_RGFW -DGRAPHICS_API_OPENGL_33 -D_GLFW_X11 -D_GNU_SOURCE
-ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -Wshadow -O2 -std=c17
-ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -Wshadow -O2 -std=c++17
-LIBS += ../../bin/Release_RGFW/libraylib.a -lpthread -lm -ldl -lrt -lX11
-LDDEPS += ../../bin/Release_RGFW/libraylib.a
-ALL_LDFLAGS += $(LDFLAGS) -s
+DEFINES += -DNDEBUG -DPLATFORM_DESKTOP_RGFW -DGRAPHICS_API_OPENGL_33 -D_WIN32
+ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -Wshadow -O2 -std=c17 -Wl,--subsystem,windows
+ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -Wshadow -O2 -std=c++17 -Wl,--subsystem,windows
+LIBS += ../../bin/Release_RGFW/raylib.lib -lwinmm -lgdi32 -lopengl32
+LDDEPS += ../../bin/Release_RGFW/raylib.lib
+ALL_LDFLAGS += $(LDFLAGS) -L../../bin/Release_RGFW -mwindows -s
 
 endif
 
@@ -184,9 +184,7 @@ endif
 GENERATED :=
 OBJECTS :=
 
-GENERATED += $(OBJDIR)/listaCadastral.o
 GENERATED += $(OBJDIR)/main.o
-OBJECTS += $(OBJDIR)/listaCadastral.o
 OBJECTS += $(OBJDIR)/main.o
 
 # Rules
@@ -251,9 +249,6 @@ endif
 # File Rules
 # #############################################
 
-$(OBJDIR)/listaCadastral.o: ../../src/listaCadastral.cpp
-	@echo "$(notdir $<)"
-	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/main.o: ../../src/main.cpp
 	@echo "$(notdir $<)"
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
