@@ -12,16 +12,6 @@
 typedef enum GameScreen { LOGO = 0, TITLE, CREDITS, SETTINGS, GAMEPLAY, PAUSE} GameScreen;
 
 typedef struct {
-    int life;
-    float money;
-    int ovos;
-    float Leite;
-    float Bacons;
-    float La;
-} Jogador;
-Jogador jogador;
-
-typedef struct {
     Vector2 pos;
     float speed;
     bool active;
@@ -34,6 +24,13 @@ typedef struct {
     float speed;
     bool active;
 } Bullet;
+
+typedef struct {
+    int ovos;
+    int leite;
+    int bacons;
+    int la;
+} RequisitosPedido;
 
  enum TipoAnimal{
     VACA = 1,
@@ -206,6 +203,13 @@ void destruirL(lista &inicio) {
     inicio.headerp = nullptr;
 }
 
+typedef struct {
+    int life;
+    float money;
+    lista recursos;
+} Jogador;
+Jogador jogador;
+
 // Codigo da fila
 
 struct nodeF {
@@ -363,6 +367,31 @@ void DrawPedidos(fila &filaPedidos, Rectangle painel, Rectangle botaoPedidos) {
     }
 }
 
+RequisitosPedido ContarRequisitos(lista &pedido) {
+    RequisitosPedido req = {0, 0, 0, 0};
+
+    if (vazioL(pedido)) return req;
+
+    nodeL *noListaAtual = pedido.headerp->dir;
+    while (noListaAtual != pedido.headerp) {
+        if (noListaAtual->tipo == "ovo") req.ovos++;
+        else if (noListaAtual->tipo == "leite") req.leite++;
+        else if (noListaAtual->tipo == "bacon") req.bacons++;
+        else if (noListaAtual->tipo == "la") req.la++;
+        noListaAtual = noListaAtual->dir;
+    }
+    return req;
+}
+
+bool PodeEntregar(RequisitosPedido &inventario, RequisitosPedido &pedido) {
+    if (inventario.ovos < pedido.ovos) return false;
+    if (inventario.leite < pedido.leite) return false;
+    if (inventario.bacons < pedido.bacons) return false;
+    if (inventario.la < pedido.la) return false;
+    
+    return true;
+}
+
 int main() {
     InitWindow(0, 0, "Legends Farm");
     Texture2D logo = LoadTexture("resources/logo.png");
@@ -371,7 +400,8 @@ int main() {
     GameScreen currentScreen = LOGO;
     int framesCounter = 0;
     SetTargetFPS(60);
-   jogador  = {1000,100,0};
+   jogador  = {1000,100};
+   criarL(jogador.recursos);
    fila filaDePedidos;
    criarF(filaDePedidos);
    float timerGerarPedidos = 0.0f;
@@ -536,6 +566,23 @@ int main() {
                     timerGerarPedidos = 0.0f;
                     GerarNovoPedido(filaDePedidos);
                 }
+                if (IsKeyPressed(KEY_E)) {
+                    if (!vaziaF(filaDePedidos)) {
+                        lista& primeiroPedido = filaDePedidos.header->dir->info;
+                        RequisitosPedido requisitosPedido = ContarRequisitos(primeiroPedido);
+                        RequisitosPedido inventarioJogador = ContarRequisitos(jogador.recursos);
+                        if (PodeEntregar(inventarioJogador, requisitosPedido)) {
+                            for (int i = 0; i < requisitosPedido.ovos; i++) retirarL(jogador.recursos, "ovo");
+                            for (int i = 0; i < requisitosPedido.leite; i++) retirarL(jogador.recursos, "leite");
+                            for (int i = 0; i < requisitosPedido.bacons; i++) retirarL(jogador.recursos, "bacon");
+                            for (int i = 0; i < requisitosPedido.la; i++) retirarL(jogador.recursos, "la");
+                            jogador.money += 100.0f; 
+                            lista pedidoEntregue; 
+                            retirarF(filaDePedidos, pedidoEntregue);
+                            destruirL(pedidoEntregue);
+                        }
+                    }
+                }
                 //Comportamento Galinha
                         for (int j = 0; j < GalinhasCompradas; j++) {
                             if (!galinha[j].active) {
@@ -575,9 +622,8 @@ int main() {
                                     if (Vector2Distance(galinha[i].pos,pos) < 200 && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
                                 if (galinha[i].processo >= 40)
                                 {
-                                    jogador.ovos++;
+                                    inserirL(jogador.recursos, "ovo");
                                     galinha[i].processo = 0;
-                                    printf("Ovos: %d\n", jogador.ovos);
                                     }
                                 
                                 }
@@ -622,7 +668,7 @@ int main() {
                                 if ( Vector2Distance(vacas[i].pos,pos) < 200 && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
                                 if (vacas[i].processo >= 120)
                                 { 
-                                    jogador.Leite+= 1.2;
+                                    inserirL(jogador.recursos, "leite");
                                     vacas[i].processo = 0;
                                     }
                                 }
@@ -661,7 +707,7 @@ int main() {
                                 if ( Vector2Distance(porcos[i].pos,pos) <200 && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
                                 if (porcos[i].processo >= 140)
                                 {
-                                    jogador.Bacons+=2.8;
+                                    for (int i = 0; i < 3; i++) inserirL(jogador.recursos, "bacon");
                                     porcos[i].processo = 0;
                                     porcos[i].active =false;
                                     PorcosCompradas--;
@@ -708,7 +754,7 @@ int main() {
                                 if ( Vector2Distance(ovelhas[i].pos,pos) < 200 && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
                                 if (ovelhas[i].processo >= 40)
                                 {   
-                                    jogador.La +=1.2;
+                                    inserirL(jogador.recursos, "la");
                                     ovelhas[i].processo = 0;
                                 }
                             }
@@ -888,17 +934,19 @@ int main() {
                                 if (CheckCollisionPointRec(mousePoint,QuadradoPainelLateral5) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) Pedidos=false, Aprimoramento =false, skins =false, recursos= false, Menu=true;
                                 if (Pedidos) DrawPedidos(filaDePedidos, painelLateral, QuadradoPainelLateral1);
                                 if(recursos){
+                                    RequisitosPedido inventarioCounts = ContarRequisitos(jogador.recursos);
+                                    
                                     DrawRectangleRec(LeitePainelLateral, CheckCollisionPointRec(mousePoint, LeitePainelLateral) ? QuadradohoverColor : QuadradonormalColor);
-                                                    DrawText(TextFormat("%2.f Litros", jogador.Leite),  LeitePainelLateral.x + 10,LeitePainelLateral.y +10, 20, WHITE);      
-                                                    DrawText(TextFormat("%2.f", vacas[1].processo), LeitePainelLateral.x + 20,LeitePainelLateral.y +40, 20, WHITE);           
+                                                    DrawText(TextFormat("%d Litros", inventarioCounts.leite),  LeitePainelLateral.x + 10,LeitePainelLateral.y +10, 20, WHITE);
+                                                    DrawText(TextFormat("%2.f", vacas[1].processo), LeitePainelLateral.x + 20,LeitePainelLateral.y +40, 20, WHITE);         
                                     DrawRectangleRec(OvoPainelLateral, CheckCollisionPointRec(mousePoint, OvoPainelLateral) ? QuadradohoverColor : QuadradonormalColor);
-                                                    DrawText(TextFormat("%d Ovos", jogador.ovos), OvoPainelLateral.x + 10, OvoPainelLateral.y +10, 20, WHITE);
+                                                    DrawText(TextFormat("%d Ovos", inventarioCounts.ovos), OvoPainelLateral.x + 10, OvoPainelLateral.y +10, 20, WHITE);
                                                     DrawText(TextFormat("%2.f", galinha[1].processo), OvoPainelLateral.x + 20,OvoPainelLateral.y +40, 20, WHITE); 
                                     DrawRectangleRec(BaconPainelLateral, CheckCollisionPointRec(mousePoint, BaconPainelLateral) ? QuadradohoverColor : QuadradonormalColor);
-                                                    DrawText(TextFormat("%2.f Bacon" , jogador.Bacons), BaconPainelLateral.x + 10, BaconPainelLateral.y +10, 20, WHITE);
+                                                    DrawText(TextFormat("%d Bacon" , inventarioCounts.bacons), BaconPainelLateral.x + 10, BaconPainelLateral.y +10, 20, WHITE);
                                                     DrawText(TextFormat("%2.f", porcos[1].processo), BaconPainelLateral.x + 20, BaconPainelLateral.y +40, 20, WHITE);
                                     DrawRectangleRec(LaPainelLateral, CheckCollisionPointRec(mousePoint, LaPainelLateral) ? QuadradohoverColor : QuadradonormalColor);
-                                                    DrawText(TextFormat("%2.f Lãç", jogador.La), LaPainelLateral.x + 10, LaPainelLateral.y +10, 20, WHITE);
+                                                    DrawText(TextFormat("%d La", inventarioCounts.la), LaPainelLateral.x + 10, LaPainelLateral.y +10, 20, WHITE);
                                                     DrawText(TextFormat("%2.f", ovelhas[1].processo), LaPainelLateral.x + 20, LaPainelLateral.y +40, 20, WHITE);
                                 }
                                 if(Menu){
@@ -944,6 +992,7 @@ int main() {
         EndDrawing();
     }
 
+    destruirL(jogador.recursos);
     destruirF(filaDePedidos);
     UnloadTexture(logo);
     CloseWindow();
