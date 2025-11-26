@@ -12,6 +12,21 @@
 #define MAX_ANIMALS 10
 #define INTERVALO_PEDIDO 10.0f
 #define VEL_PROD (1.0f / 60.0f)
+
+int framesCounter = 0;
+float timerGerarPedidos = 0.0f;
+// Varáveis de inimigos,tiros,galinhas
+
+float spawnTimer = 0;
+int enemiesPerWave = 3;
+float timeBetweenWaves = 5.0f;
+float fireTimer = 0;
+float fireRate = 0.8f;
+float GalinhasCompradas = 4;
+float VacasCompradas = 4;
+float PorcosCompradas = 4;
+float OvelhasCompradas = 4;
+//
 typedef enum GameScreen { LOGO = 0, TITLE, CREDITS, SETTINGS, GAMEPLAY, PAUSE} GameScreen;
 
 typedef struct {
@@ -36,25 +51,30 @@ typedef struct {
 Jogador jogador;
 
 void InicializarAnimal(Animal *a, TipoAnimal tipo, Vector2 posInicial);
-    float GalinhasCompradas = 4;
-    float VacasCompradas = 4;
-    float PorcosCompradas = 4;
-    float OvelhasCompradas = 4;
 
 
 int main() {
     InitWindow(0, 0, "Legends Farm");
     Texture2D logo = LoadTexture("resources/logo.png");
-    float LarguraTela = GetScreenWidth();
-    float AlturaTela = GetScreenHeight();
+    Texture2D baconsprite = LoadTexture("sprites/bacon.png");
+    Texture2D lasprite = LoadTexture("sprites/lã.png");
+    Texture2D leitesprite = LoadTexture("sprites/leite.png");
+    Texture2D ovosprite = LoadTexture("sprites/ovo.png");
+    Texture2D galinhasprite = LoadTexture("sprites/galinha.png");
     GameScreen currentScreen = LOGO;
-    int framesCounter = 0;
+    Enemy enemies[MAX_ENEMIES];
+Bullet bullets[MAX_BULLETS];
+Animal galinha[MAX_ANIMALS];
+Animal vacas[MAX_ANIMALS];
+Animal porcos[MAX_ANIMALS];
+Animal ovelhas[MAX_ANIMALS];
     SetTargetFPS(60);
    jogador  = {1000,100};
    criarL(jogador.recursos);
    fila filaDePedidos;
    criarF(filaDePedidos);
-   float timerGerarPedidos = 0.0f;
+   float LarguraTela = GetScreenWidth();
+   float AlturaTela = GetScreenHeight();
 // Front-End (Menus Principais da Gameplay)
     float painelLateralLargura = 600;
     Rectangle painelLateral = {LarguraTela - painelLateralLargura, 0, painelLateralLargura, AlturaTela};
@@ -109,18 +129,7 @@ int main() {
     Rectangle btnConfig = { centerX, startY + 160, btnWidth, btnHeight };
     Rectangle btnVoltar = { LarguraTela/2 - 100, AlturaTela/2 + 120, 200, 50 };
     // ---------------------------------------------------
-// Varáveis de inimigos,tiros,galinhas
-    Enemy enemies[MAX_ENEMIES];
-    Bullet bullets[MAX_BULLETS];
-    Animal galinha[MAX_ANIMALS];
-    Animal vacas[MAX_ANIMALS];
-    Animal porcos[MAX_ANIMALS];
-    Animal ovelhas[MAX_ANIMALS];
-    float spawnTimer = 0;
-    int enemiesPerWave = 3;
-    float timeBetweenWaves = 5.0f;
-    float fireTimer = 0;
-    float fireRate = 0.8f;
+
     //Alocação anti-dinâmica 🫠
     for (int i = 0; i < MAX_ENEMIES; i++) enemies[i].active = false;
     for (int i = 0; i < MAX_BULLETS; i++) bullets[i].active = false;
@@ -260,13 +269,22 @@ int main() {
                                 if (galinha[i].pos.y < Galinheiro.y) galinha[i].pos.y = Galinheiro.y;
                                 if (galinha[i].pos.y > Galinheiro.y + Galinheiro.height) galinha[i].pos.y = Galinheiro.y + Galinheiro.height;
                                 // 4. Verifica colisão com inimigos
-                                for (int e = 0; e < MAX_ENEMIES; e++) {
-                                    if (!enemies[e].active) continue;
-                                    if (Vector2Distance(galinha[i].pos, enemies[e].pos) < 20) {
-                                        galinha[i].life -= enemies[e].damage * GetFrameTime();
-                                        if (galinha[i].life <= 0) galinha[i].active = false,GalinhasCompradas--;
+                                for (int i = 0; i < MAX_ANIMALS; i++) {
+                                    if (!galinha[i].active) continue;
+                                
+                                    for (int e = 0; e < MAX_ENEMIES; e++) {
+                                        if (!enemies[e].active) continue;
+                                    
+                                        if (Vector2Distance(galinha[i].pos, enemies[e].pos) < 20) {
+                                            galinha[i].life -= enemies[e].damage * GetFrameTime();
+                                            if (galinha[i].life <= 0) {
+                                                galinha[i].active = false;
+                                                GalinhasCompradas--;
+                                            }
+                                        }
                                     }
                                 }
+                                
                                 // Produz ovo
                                 galinha[i].processo += VEL_PROD*galinha[i].VelocidadeProducao;
                                     if (Vector2Distance(galinha[i].pos,pos) < 200 && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
@@ -306,11 +324,19 @@ int main() {
                                 if (vacas[i].pos.y < Curral.y) vacas[i].pos.y = Curral.y;
                                 if (vacas[i].pos.y > Curral.y + Curral.height) vacas[i].pos.y = Curral.y + Curral.height;
                                 // 4. Verifica colisão com inimigos
-                                for (int e = 0; e < MAX_ENEMIES; e++) {
-                                    if (!enemies[e].active) continue;
-                                    if (Vector2Distance(vacas[i].pos, enemies[e].pos) < 20) {
-                                        vacas[i].life -= enemies[e].damage * GetFrameTime();
-                                        if (vacas[i].life <= 0) vacas[i].active = false,VacasCompradas--;
+                                for (int i = 0; i < MAX_ANIMALS; i++) {
+                                    if (!vacas[i].active) continue;
+                                
+                                    for (int e = 0; e < MAX_ENEMIES; e++) {
+                                        if (!enemies[e].active) continue;
+                                    
+                                        if (Vector2Distance(vacas[i].pos, enemies[e].pos) < 20) {
+                                            vacas[i].life -= enemies[e].damage * GetFrameTime();
+                                            if (vacas[i].life <= 0) {
+                                                vacas[i].active = false;
+                                                VacasCompradas--;
+                                            }
+                                        }
                                     }
                                 }
                                 // Produz leite
@@ -345,11 +371,19 @@ int main() {
                                 if (porcos[i].pos.y < Chiqueiro.y) porcos[i].pos.y = Chiqueiro.y;
                                 if (porcos[i].pos.y > Chiqueiro.y + Chiqueiro.height) porcos[i].pos.y = Chiqueiro.y + Chiqueiro.height;
                                 // 4. Verifica colisão com inimigos
-                                for (int e = 0; e < MAX_ENEMIES; e++) {
-                                    if (!enemies[e].active) continue;
-                                    if (Vector2Distance(porcos[i].pos, enemies[e].pos) < 20) {
-                                        porcos[i].life -= enemies[e].damage * GetFrameTime();
-                                        if (porcos[i].life <= 0) porcos[i].active = false,PorcosCompradas--;
+                                for (int i = 0; i < MAX_ANIMALS; i++) {
+                                    if (!porcos[i].active) continue;
+                                
+                                    for (int e = 0; e < MAX_ENEMIES; e++) {
+                                        if (!enemies[e].active) continue;
+                                    
+                                        if (Vector2Distance(porcos[i].pos, enemies[e].pos) < 20) {
+                                            porcos[i].life -= enemies[e].damage * GetFrameTime();
+                                            if (porcos[i].life <= 0) {
+                                                porcos[i].active = false;
+                                                PorcosCompradas--;
+                                            }
+                                        }
                                     }
                                 }
                                 // Produz Bacon(abate)
@@ -392,11 +426,19 @@ int main() {
                                 if (ovelhas[i].pos.y < CampodasOvelhas.y) ovelhas[i].pos.y = CampodasOvelhas.y;
                                 if (ovelhas[i].pos.y > CampodasOvelhas.y + CampodasOvelhas.height) ovelhas[i].pos.y = CampodasOvelhas.y + CampodasOvelhas.height;
                                 // 4. Verifica colisão com inimigos
-                                for (int e = 0; e < MAX_ENEMIES; e++) {
-                                    if (!enemies[e].active) continue;
-                                    if (Vector2Distance(ovelhas[i].pos, enemies[e].pos) < 20) {
-                                        ovelhas[i].life -= enemies[e].damage * GetFrameTime();
-                                        if (ovelhas[i].life <= 0)ovelhas[i].active = false,OvelhasCompradas--;
+                                for (int i = 0; i < MAX_ANIMALS; i++) {
+                                    if (!ovelhas[i].active) continue;
+                                
+                                    for (int e = 0; e < MAX_ENEMIES; e++) {
+                                        if (!enemies[e].active) continue;
+                                    
+                                        if (Vector2Distance(ovelhas[i].pos, enemies[e].pos) < 20) {
+                                            ovelhas[i].life -= enemies[e].damage * GetFrameTime();
+                                            if (ovelhas[i].life <= 0) {
+                                                ovelhas[i].active = false;
+                                                OvelhasCompradas--;
+                                            }
+                                        }
                                     }
                                 }
                                 // Produz ovo
@@ -540,7 +582,21 @@ int main() {
 
                     for (int i = 0; i < MAX_ANIMALS; i++) {
                         if (galinha[i].active){
-                        
+                            Rectangle src = {0, 0, galinhasprite.width, galinhasprite.height};
+                            float scale = 0.08f;
+                            float w = galinhasprite.width * scale;
+                            float h = galinhasprite.height * scale;
+                            // canto superior esquerdo
+                            Rectangle dest = {
+                                galinha[i].pos.x - w/2.0f,
+                                galinha[i].pos.y - h/2.0f,
+                                w,
+                                h
+                            };
+                            // pivot no centro do sprite renderizado
+                            Vector2 origin = {w/32.0f, h/32.0f};
+                            DrawTexturePro(galinhasprite, src, dest, origin, 0.0f, WHITE);
+                            // debug
                             DrawCircleV(galinha[i].pos, galinha[i].tamanho, galinha[i].cor);
                         } 
                     }
@@ -603,8 +659,6 @@ int main() {
                                 if(Menu){
                                    currentScreen = SETTINGS; 
                                 }
-
-
                 // Painel fixo itens (fora do modo 2D)
                 Rectangle painelMeio = { painelLateralLargura/2, AlturaTela - painelMeioAltura , painelMeioLargura, painelMeioAltura};
                 DrawRectangleRec(painelMeio, (Color){50, 50, 50, 200});

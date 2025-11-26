@@ -21,7 +21,7 @@ void InicializarAnimal(Animal *a, TipoAnimal tipo, Vector2 posInicial) {
             a->life = 10;
             a->VelocidadeProducao = 8.0f;
             a->cor = YELLOW; 
-            a->tamanho =  6.0f;
+            a->tamanho =  12.0f;
             break;
 
         case PORCO:
