@@ -57,24 +57,24 @@ int main() {
     InitWindow(0, 0, "Legends Farm");
     Texture2D logo = LoadTexture("resources/logo.png");
     Texture2D baconsprite = LoadTexture("sprites/bacon.png");
-    Texture2D lasprite = LoadTexture("sprites/lã.png");
+    Texture2D lasprite = LoadTexture("sprites/la.png");
     Texture2D leitesprite = LoadTexture("sprites/leite.png");
     Texture2D ovosprite = LoadTexture("sprites/ovo.png");
     Texture2D galinhasprite = LoadTexture("sprites/galinha.png");
     GameScreen currentScreen = LOGO;
     Enemy enemies[MAX_ENEMIES];
-Bullet bullets[MAX_BULLETS];
-Animal galinha[MAX_ANIMALS];
-Animal vacas[MAX_ANIMALS];
-Animal porcos[MAX_ANIMALS];
-Animal ovelhas[MAX_ANIMALS];
+    Bullet bullets[MAX_BULLETS];
+    Animal galinha[MAX_ANIMALS];
+    Animal vacas[MAX_ANIMALS];
+    Animal porcos[MAX_ANIMALS];
+    Animal ovelhas[MAX_ANIMALS];
     SetTargetFPS(60);
-   jogador  = {1000,100};
-   criarL(jogador.recursos);
-   fila filaDePedidos;
-   criarF(filaDePedidos);
-   float LarguraTela = GetScreenWidth();
-   float AlturaTela = GetScreenHeight();
+    jogador  = {1000,100};
+    criarL(jogador.recursos);
+    fila filaDePedidos;
+    criarF(filaDePedidos);
+    float LarguraTela = GetScreenWidth();
+    float AlturaTela = GetScreenHeight();
 // Front-End (Menus Principais da Gameplay)
     float painelLateralLargura = 600;
     Rectangle painelLateral = {LarguraTela - painelLateralLargura, 0, painelLateralLargura, AlturaTela};
@@ -88,12 +88,7 @@ Animal ovelhas[MAX_ANIMALS];
     Rectangle QuadradoPainelLateral4 = {LarguraTela - painelLateralLargura+(painelLateralLargura-20)/5*3, 0, (painelLateralLargura-20)/5, (painelLateralLargura-20)/5};
     Rectangle QuadradoPainelLateral5 = {LarguraTela - painelLateralLargura+(painelLateralLargura-20)/5*4, 0, (painelLateralLargura-20)/5, (painelLateralLargura-20)/5};
 
-    //Menu Recursos
-    bool recursos = false;
-    Rectangle LeitePainelLateral = {LarguraTela - painelLateralLargura+ 10, ((painelLateralLargura-20)/5)+10,(painelLateralLargura)/5*4,(painelLateralLargura-20)/4}; 
-    Rectangle OvoPainelLateral = {LarguraTela - painelLateralLargura+ 10, ((painelLateralLargura-20)/5)+20+(painelLateralLargura-20)/4,(painelLateralLargura)/5*4,(painelLateralLargura-20)/4};
-    Rectangle BaconPainelLateral = {LarguraTela - painelLateralLargura+ 10, ((painelLateralLargura-20)/5)+30+(painelLateralLargura-20)/4*2,(painelLateralLargura)/5*4,(painelLateralLargura-20)/4};  
-    Rectangle LaPainelLateral = {LarguraTela - painelLateralLargura+ 10, ((painelLateralLargura-20)/5)+40+(painelLateralLargura-20)/4*3,(painelLateralLargura)/5*4,(painelLateralLargura-20)/4}; 
+    //Menu Recursos (REMOVIDO)
     //Tela Pedidos
     bool Pedidos = false;
     //Tela Skins
@@ -148,7 +143,7 @@ Animal ovelhas[MAX_ANIMALS];
     for (int i = 0; i < MAX_ANIMALS; i++) ovelhas[i].active = false,ovelhas[i].processo=0;
     for (int i = 0; i < OvelhasCompradas; i++) {
         InicializarAnimal(&ovelhas[i],TipoAnimal (2),(Vector2){CampodasOvelhas.x + GetRandomValue(0,CampodasOvelhas.width),CampodasOvelhas.y + GetRandomValue(0,CampodasOvelhas.height)});
-    }      
+    }       
     // ---------------------------------------------------
 
 
@@ -231,11 +226,22 @@ Animal ovelhas[MAX_ANIMALS];
                         RequisitosPedido requisitosPedido = ContarRequisitos(primeiroPedido);
                         RequisitosPedido inventarioJogador = ContarRequisitos(jogador.recursos);
                         if (PodeEntregar(inventarioJogador, requisitosPedido)) {
-                            for (int i = 0; i < requisitosPedido.ovos; i++) retirarL(jogador.recursos, "ovo");
-                            for (int i = 0; i < requisitosPedido.leite; i++) retirarL(jogador.recursos, "leite");
-                            for (int i = 0; i < requisitosPedido.bacons; i++) retirarL(jogador.recursos, "bacon");
-                            for (int i = 0; i < requisitosPedido.la; i++) retirarL(jogador.recursos, "la");
-                            jogador.money += 100.0f; 
+                            for (int i = 0; i < requisitosPedido.ovos; i++) {
+                                retirarL(jogador.recursos, "ovo");
+                                jogador.money += 10.0f;
+                            }
+                            for (int i = 0; i < requisitosPedido.leite; i++) {
+                                retirarL(jogador.recursos, "leite");
+                                jogador.money += 20.0f;
+                            }
+                            for (int i = 0; i < requisitosPedido.bacons; i++) {
+                                retirarL(jogador.recursos, "bacon");
+                                jogador.money += 40.0f;
+                            }
+                            for (int i = 0; i < requisitosPedido.la; i++) {
+                                retirarL(jogador.recursos, "la");
+                                jogador.money += 30.0f;
+                            }
                             lista pedidoEntregue; 
                             retirarF(filaDePedidos, pedidoEntregue);
                             destruirL(pedidoEntregue);
@@ -453,7 +459,7 @@ Animal ovelhas[MAX_ANIMALS];
                             }
                 // ---------------------------------------------------
 
-                // 🔥 INIMIGOS E TIROS (inserido sem alterar estrutura original)
+                // 🔥 INIMIGOS E TIROS
                 //Set do inimigo
                 spawnTimer += GetFrameTime();
                 if (spawnTimer >= timeBetweenWaves) {
@@ -482,34 +488,26 @@ Animal ovelhas[MAX_ANIMALS];
                         }
                     }
                 }
-                // Achar o inimigo mais próximo
+                // ATIRAR NO CURSOR (Automático)
                 fireTimer += GetFrameTime();
                 if (fireTimer >= fireRate) {
                     fireTimer = 0;
-                    int target = -1;
-                    float minDist = 99999.0f;
-                    for (int i = 0; i < MAX_ENEMIES; i++) {
-                        if (enemies[i].active) {
-                            float d = Vector2Distance(pos, enemies[i].pos);
-                            if (d < minDist) {
-                                minDist = d;
-                                target = i;
-                            }
-                        }
-                    }
-                    // Set da bala em relação ao inimigo mais próximo
-                    if (target != -1) {
-                        for (int b = 0; b < MAX_BULLETS; b++) {
-                            if (!bullets[b].active) {
-                                bullets[b].active = true;
-                                bullets[b].pos = pos;
-                                bullets[b].dir = Vector2Normalize(Vector2Subtract(enemies[target].pos, pos));
-                                bullets[b].speed = 8.0f;
-                                break;
-                            }
+                    
+                    // Pega posição do mouse em coordenadas do MUNDO (por causa da câmera)
+                    Vector2 mouseWorldPos = GetScreenToWorld2D(GetMousePosition(), camera);
+
+                    for (int b = 0; b < MAX_BULLETS; b++) {
+                        if (!bullets[b].active) {
+                            bullets[b].active = true;
+                            bullets[b].pos = pos;
+                            // Calcula direção: Destino (Mouse) - Origem (Player)
+                            bullets[b].dir = Vector2Normalize(Vector2Subtract(mouseWorldPos, pos));
+                            bullets[b].speed = 8.0f;
+                            break;
                         }
                     }
                 }
+                
                 // Movimentar bala e verificar colisão
                 for (int b = 0; b < MAX_BULLETS; b++) {
                     if (bullets[b].active) {
@@ -582,7 +580,7 @@ Animal ovelhas[MAX_ANIMALS];
 
                     for (int i = 0; i < MAX_ANIMALS; i++) {
                         if (galinha[i].active){
-                            Rectangle src = {0, 0, galinhasprite.width, galinhasprite.height};
+                            Rectangle src = {0, 0, (float)galinhasprite.width, (float)galinhasprite.height};
                             float scale = 0.08f;
                             float w = galinhasprite.width * scale;
                             float h = galinhasprite.height * scale;
@@ -597,7 +595,7 @@ Animal ovelhas[MAX_ANIMALS];
                             Vector2 origin = {w/32.0f, h/32.0f};
                             DrawTexturePro(galinhasprite, src, dest, origin, 0.0f, WHITE);
                             // debug
-                            DrawCircleV(galinha[i].pos, galinha[i].tamanho, galinha[i].cor);
+                            //DrawCircleV(galinha[i].pos, galinha[i].tamanho, galinha[i].cor);
                         } 
                     }
                     for (int i = 0; i < MAX_ANIMALS; i++) {
@@ -631,31 +629,16 @@ Animal ovelhas[MAX_ANIMALS];
                 DrawRectangleRec(QuadradoPainelLateral2, CheckCollisionPointRec(mousePoint, QuadradoPainelLateral2) ? QuadradohoverColor : QuadradonormalColor);
                 DrawRectangleRec(QuadradoPainelLateral3, CheckCollisionPointRec(mousePoint, QuadradoPainelLateral3) ? QuadradohoverColor : QuadradonormalColor);
                 DrawRectangleRec(QuadradoPainelLateral4, CheckCollisionPointRec(mousePoint, QuadradoPainelLateral4) ? QuadradohoverColor : QuadradonormalColor);
-                                DrawText("Recursos", QuadradoPainelLateral4.x + 10, 20, 20, WHITE); 
                 DrawRectangleRec(QuadradoPainelLateral5, CheckCollisionPointRec(mousePoint, QuadradoPainelLateral5) ? QuadradohoverColor : QuadradonormalColor);
                                 DrawText("Menu", QuadradoPainelLateral5.x + 33, 20, 20, WHITE); 
-                                if (CheckCollisionPointRec(mousePoint,QuadradoPainelLateral1) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) Pedidos=true, Aprimoramento =false, skins =false, recursos= false, Menu=false;
-                                if (CheckCollisionPointRec(mousePoint,QuadradoPainelLateral2) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) Pedidos=false, Aprimoramento =true, skins =false, recursos= false, Menu=false;
-                                if (CheckCollisionPointRec(mousePoint,QuadradoPainelLateral3) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) Pedidos=false, Aprimoramento =false, skins =true, recursos= false, Menu=false;
-                                if (CheckCollisionPointRec(mousePoint,QuadradoPainelLateral4) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) Pedidos=false, Aprimoramento =false, skins =false, recursos= true, Menu=false;
-                                if (CheckCollisionPointRec(mousePoint,QuadradoPainelLateral5) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) Pedidos=false, Aprimoramento =false, skins =false, recursos= false, Menu=true;
+                                if (CheckCollisionPointRec(mousePoint,QuadradoPainelLateral1) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) Pedidos=true, Aprimoramento =false, skins =false, Menu=false;
+                                if (CheckCollisionPointRec(mousePoint,QuadradoPainelLateral2) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) Pedidos=false, Aprimoramento =true, skins =false, Menu=false;
+                                if (CheckCollisionPointRec(mousePoint,QuadradoPainelLateral3) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) Pedidos=false, Aprimoramento =false, skins =true, Menu=false;
+                                if (CheckCollisionPointRec(mousePoint,QuadradoPainelLateral4) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) Pedidos=false, Aprimoramento =false, skins =false, Menu=false;
+                                if (CheckCollisionPointRec(mousePoint,QuadradoPainelLateral5) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) Pedidos=false, Aprimoramento =false, skins =false, Menu=true;
+                                
                                 if (Pedidos) DrawPedidos(filaDePedidos, painelLateral, QuadradoPainelLateral1);
-                                if(recursos){
-                                    RequisitosPedido inventarioCounts = ContarRequisitos(jogador.recursos);
-                                    
-                                    DrawRectangleRec(LeitePainelLateral, CheckCollisionPointRec(mousePoint, LeitePainelLateral) ? QuadradohoverColor : QuadradonormalColor);
-                                                    DrawText(TextFormat("%d Litros", inventarioCounts.leite),  LeitePainelLateral.x + 10,LeitePainelLateral.y +10, 20, WHITE);
-                                                    DrawText(TextFormat("%2.f", vacas[1].processo), LeitePainelLateral.x + 20,LeitePainelLateral.y +40, 20, WHITE);         
-                                    DrawRectangleRec(OvoPainelLateral, CheckCollisionPointRec(mousePoint, OvoPainelLateral) ? QuadradohoverColor : QuadradonormalColor);
-                                                    DrawText(TextFormat("%d Ovos", inventarioCounts.ovos), OvoPainelLateral.x + 10, OvoPainelLateral.y +10, 20, WHITE);
-                                                    DrawText(TextFormat("%2.f", galinha[1].processo), OvoPainelLateral.x + 20,OvoPainelLateral.y +40, 20, WHITE); 
-                                    DrawRectangleRec(BaconPainelLateral, CheckCollisionPointRec(mousePoint, BaconPainelLateral) ? QuadradohoverColor : QuadradonormalColor);
-                                                    DrawText(TextFormat("%d Bacon" , inventarioCounts.bacons), BaconPainelLateral.x + 10, BaconPainelLateral.y +10, 20, WHITE);
-                                                    DrawText(TextFormat("%2.f", porcos[1].processo), BaconPainelLateral.x + 20, BaconPainelLateral.y +40, 20, WHITE);
-                                    DrawRectangleRec(LaPainelLateral, CheckCollisionPointRec(mousePoint, LaPainelLateral) ? QuadradohoverColor : QuadradonormalColor);
-                                                    DrawText(TextFormat("%d La", inventarioCounts.la), LaPainelLateral.x + 10, LaPainelLateral.y +10, 20, WHITE);
-                                                    DrawText(TextFormat("%2.f", ovelhas[1].processo), LaPainelLateral.x + 20, LaPainelLateral.y +40, 20, WHITE);
-                                }
+                                
                                 if(Menu){
                                    currentScreen = SETTINGS; 
                                 }
@@ -664,7 +647,41 @@ Animal ovelhas[MAX_ANIMALS];
                 DrawRectangleRec(painelMeio, (Color){50, 50, 50, 200});
                 DrawText("Painel de Itens", painelMeio.x + 20, AlturaTela - painelMeioAltura, 20, WHITE); 
 
-                //cursor    
+                // ------------------- HUD RECURSOS (NOVA TABELA) -------------------
+                // Fundo semi-transparente
+                DrawRectangle(10, AlturaTela - 230, 200, 220, (Color){0, 0, 0, 150});
+                
+                RequisitosPedido contagem = ContarRequisitos(jogador.recursos);
+                float hudX = 20;
+                float hudY = AlturaTela - 210;
+                float espacamento = 40;
+                float iconW = 30;
+
+                // Dinheiro
+                DrawText(TextFormat("R$: %.0f", jogador.money), hudX, hudY, 25, GREEN);
+                hudY += espacamento;
+
+                // Ovos
+                DrawTexturePro(ovosprite, (Rectangle){0,0,(float)ovosprite.width,(float)ovosprite.height}, (Rectangle){hudX, hudY, iconW, iconW}, (Vector2){0,0}, 0, WHITE);
+                DrawText(TextFormat("x %d", contagem.ovos), hudX + 40, hudY + 5, 25, WHITE);
+                hudY += espacamento;
+
+                // Leite
+                DrawTexturePro(leitesprite, (Rectangle){0,0,(float)leitesprite.width,(float)leitesprite.height}, (Rectangle){hudX, hudY, iconW, iconW}, (Vector2){0,0}, 0, WHITE);
+                DrawText(TextFormat("x %d", contagem.leite), hudX + 40, hudY + 5, 25, WHITE);
+                hudY += espacamento;
+
+                // Lã
+                DrawTexturePro(lasprite, (Rectangle){0,0,(float)lasprite.width,(float)lasprite.height}, (Rectangle){hudX, hudY, iconW, iconW}, (Vector2){0,0}, 0, WHITE);
+                DrawText(TextFormat("x %d", contagem.la), hudX + 40, hudY + 5, 25, WHITE);
+                hudY += espacamento;
+
+                // Bacon
+                DrawTexturePro(baconsprite, (Rectangle){0,0,(float)baconsprite.width,(float)baconsprite.height}, (Rectangle){hudX, hudY, iconW, iconW}, (Vector2){0,0}, 0, WHITE);
+                DrawText(TextFormat("x %d", contagem.bacons), hudX + 40, hudY + 5, 25, WHITE);
+                // ------------------------------------------------------------------
+
+                //cursor    
                 Vector2 mouse = GetMousePosition();
                 int crossSize = 20;
                 DrawLine(mouse.x - crossSize, mouse.y, mouse.x + crossSize, mouse.y, DARKGREEN);
@@ -691,7 +708,7 @@ Animal ovelhas[MAX_ANIMALS];
                 ClearBackground(YELLOW);
                 DrawText("JOGO PAUSADO", 280, 250, 30, RED);
                 DrawText("Pressione P para continuar", 230, 300, 20, GRAY);
-            } break;    
+            } break;
             default: break;
         }
         EndDrawing();
