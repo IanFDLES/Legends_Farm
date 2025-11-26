@@ -1,14 +1,17 @@
-// Linhas 140 e 301 são o fundamental para adicionar a lógica e a imagem ao jogo, rezpectivamente
 #include "raylib.h"
 #include "raymath.h"
 #include "stdio.h"
+#include "Animais.hpp"
+#include "Fila.hpp"
+#include "Lista.hpp"
+#include "Pedidos.hpp"
 #include <string>
 #define vel 5.0f
 #define MAX_ENEMIES 100
 #define MAX_BULLETS 50
 #define MAX_ANIMALS 10
-#define VEL_PROD (1.0f / 60.0f)
 #define INTERVALO_PEDIDO 10.0f
+#define VEL_PROD (1.0f / 60.0f)
 typedef enum GameScreen { LOGO = 0, TITLE, CREDITS, SETTINGS, GAMEPLAY, PAUSE} GameScreen;
 
 typedef struct {
@@ -26,371 +29,18 @@ typedef struct {
 } Bullet;
 
 typedef struct {
-    int ovos;
-    int leite;
-    int bacons;
-    int la;
-} RequisitosPedido;
-
- enum TipoAnimal{
-    VACA = 1,
-    GALINHA,
-    PORCO,
-    OVELHA
-} ;
-
-typedef struct {
-    Vector2 pos;
-    Vector2 dir;
-    float speed;
-    bool active;
-    bool podeProduzir;
-    float life;
-    float VelocidadeProducao;
-    float processo;
-    TipoAnimal tipo;
-    Color cor;
-    float tamanho;
-} Animal;
-
-void InicializarAnimal(Animal *a, TipoAnimal tipo, Vector2 posInicial) {
-    a->tipo = tipo;
-    a->pos = posInicial;
-    a->active = true;
-    a->podeProduzir = true;
-    a->dir = (Vector2){0, 0};
-
-    switch (tipo) {
-        case VACA:
-            a->speed = 8.0f;
-            a->life = 30;
-            a->VelocidadeProducao = 2.0f;
-            a->cor = BROWN; 
-            a->tamanho =  15.0f;
-            break;
-
-        case GALINHA:
-            a->speed = 7;
-            a->life = 10;
-            a->VelocidadeProducao = 8.0f;
-            a->cor = YELLOW; 
-            a->tamanho =  6.0f;
-            break;
-
-        case PORCO:
-            a->speed = 9.0f;
-            a->life = 20;
-            a->VelocidadeProducao = 1.5f;
-            a->cor = PINK;
-            a->tamanho =  10.0f;
-            break;
-
-        case OVELHA:
-            a->speed = 12.0f;
-            a->life = 18;
-            a->VelocidadeProducao = 1.2f;
-            a->cor = LIGHTGRAY;
-            a->tamanho =  8.0f; 
-            break;
-
-        default:
-            a->speed = 10.0f;
-            a->life = 10;
-            a->VelocidadeProducao = 1.0f;
-            a->cor = WHITE;
-            break;
-    }
-}
-    float GalinhasCompradas = 4;
-    float VacasCompradas = 4;
-    float PorcosCompradas = 4;
-    float OvelhasCompradas = 4;
-
-// Codigo da lista
-
-struct nodeL
-{
-    std::string tipo;
-    nodeL *dir = nullptr, *esq = nullptr;
-};
-
-struct lista
-{
-    nodeL *headerp = nullptr;
-};
-
-void criarL(lista &inicio){
-    inicio.headerp = new nodeL;
-    inicio.headerp->dir=inicio.headerp;
-    inicio.headerp->esq=inicio.headerp;
-}
-
-bool vazioL(lista &inicio){
-    return (inicio.headerp == nullptr || inicio.headerp->dir == inicio.headerp);
-}
-
-void inserirL(lista &inicio, std::string item){
-    if(inicio.headerp == nullptr) criarL(inicio);
-    nodeL *iaux = new nodeL;
-    iaux->tipo=item;
-    nodeL *aux = inicio.headerp->dir;
-    while(aux != inicio.headerp){
-            if(iaux->tipo > aux->tipo){
-                aux =aux->dir;
-            }else{
-                iaux->esq=aux->esq;
-                iaux->dir=aux;
-                aux->esq->dir=iaux;
-                aux->esq=iaux;
-                break;
-            }
-    }
-    if(aux == inicio.headerp){
-        iaux->dir = inicio.headerp;
-        iaux->esq = inicio.headerp->esq;
-        inicio.headerp->esq->dir = iaux;
-        inicio.headerp->esq = iaux;
-    }
-}
-
-bool retirarL(lista &inicio,std::string itemComparado)
-{   
-    if(vazioL(inicio)) return false;
-    nodeL *aux= inicio.headerp->dir;
-    while(aux != inicio.headerp){
-    if(aux->tipo == itemComparado){
-        aux->dir->esq=aux->esq;
-        aux->esq->dir=aux->dir;
-        delete aux;
-        return true;
-    }
-        aux= aux->dir;
-    }
-    return false;
-}
-
-bool listasIguais(lista &inicio1, lista &inicio2){
-    if(vazioL(inicio1) || vazioL(inicio2)) return vazioL(inicio1) && vazioL(inicio2);
-    
-    nodeL *aux1 = inicio1.headerp->dir;
-    nodeL *aux2 = inicio2.headerp->dir;
-
-    while(aux1 != inicio1.headerp && aux2 != inicio2.headerp){
-        if(aux1->tipo != aux2->tipo) return false;
-        aux1 = aux1->dir;
-        aux2 = aux2->dir;
-    }
-
-    return (aux1 == inicio1.headerp && aux2 == inicio2.headerp);
-}
-
-void limparL(lista &inicio) {
-    if (vazioL(inicio)) return;
-    nodeL *aux = inicio.headerp->dir;
-    while (aux != inicio.headerp) {
-        nodeL *paraDeletar = aux;
-        aux = aux->dir;
-        delete paraDeletar;
-    }
-    inicio.headerp->dir = inicio.headerp;
-    inicio.headerp->esq = inicio.headerp;
-}
-
-void destruirL(lista &inicio) {
-    if (inicio.headerp == nullptr) return;
-    limparL(inicio);
-    delete inicio.headerp;
-    inicio.headerp = nullptr;
-}
-
-typedef struct {
     int life;
     float money;
     lista recursos;
 } Jogador;
 Jogador jogador;
 
-// Codigo da fila
+void InicializarAnimal(Animal *a, TipoAnimal tipo, Vector2 posInicial);
+    float GalinhasCompradas = 4;
+    float VacasCompradas = 4;
+    float PorcosCompradas = 4;
+    float OvelhasCompradas = 4;
 
-struct nodeF {
-    lista info;
-    nodeF *dir = nullptr, *esq  = nullptr;
-};
-
-struct fila {
-    nodeF *header = nullptr;
-};
-
-void criarF (fila &fila) {
-    fila.header = new nodeF;
-    fila.header->dir = fila.header;
-    fila.header->esq = fila.header;
-}
-
-bool vaziaF (fila &fila) {
-    return ((fila.header == nullptr) || (fila.header == fila.header->dir));
-}
-
-void inserirF (fila &fila, lista x) {
-    if (fila.header == nullptr) criarF(fila);
-
-    nodeF *aux = new nodeF;
-    aux->info = x;
-    aux->dir = fila.header;
-    aux->esq = fila.header->esq;
-    fila.header->esq = aux;
-    aux->esq->dir = aux;
-}
-
-bool retirarF (fila &fila, lista &x) {
-    if (vaziaF(fila)) return false;
-
-    nodeF *aux = fila.header->dir;
-    x = aux->info;
-    fila.header->dir = aux->dir;
-    aux->dir->esq = fila.header;
-    delete aux;
-    return true;
-}
-
-void limparF (fila &fila) {
-    if (vaziaF(fila)) return;
-    lista x;
-    while (retirarF(fila, x)) {
-        destruirL(x);
-    }
-}
-
-void destruirF (fila &fila) {
-    if (fila.header == nullptr) return;
-    limparF(fila);
-    delete fila.header;
-    fila.header = nullptr;
-}
-
-// Gerador de pedidos
-
-void GerarNovoPedido(fila &filaPedidos) {
-    lista novoPedido;
-    criarL(novoPedido);
-
-    int numOvos = GetRandomValue(0, 3);
-    int numLeite = GetRandomValue(0, 3);
-    int numBacons = GetRandomValue(0, 3);
-    int numLa = GetRandomValue(0, 3);
-
-    int totalItens = 0;
-
-    for (int i = 0; i < numOvos; i++) {
-        inserirL(novoPedido, "ovo");
-        totalItens++;
-    }
-    for (int i = 0; i < numLeite; i++) {
-        inserirL(novoPedido, "leite");
-        totalItens++;
-    }
-    for (int i = 0; i < numBacons; i++) {
-        inserirL(novoPedido, "bacon");
-        totalItens++;
-    }
-    for (int i = 0; i < numLa; i++) {
-        inserirL(novoPedido, "la");
-        totalItens++;
-    }
-
-    if (totalItens == 0) {
-        inserirL(novoPedido, "ovo");
-    }
-
-    inserirF(filaPedidos, novoPedido);
-}
-
-// Desenha os pedidos
-
-void DrawPedidos(fila &filaPedidos, Rectangle painel, Rectangle botaoPedidos) {
-    
-    float yPos = botaoPedidos.y + botaoPedidos.height + 10;
-
-    if (vaziaF(filaPedidos)) {
-        DrawText("Nenhum pedido", painel.x + 10, yPos, 20, LIGHTGRAY);
-        return;
-    }
-
-    nodeF *noFilaAtual = filaPedidos.header->dir;
-    
-    while (noFilaAtual != filaPedidos.header) {
-        
-        lista &pedidoAtual = noFilaAtual->info;
-        
-        int ovos = 0, leite = 0, bacons = 0, la = 0;
-        
-        nodeL *noListaAtual = pedidoAtual.headerp->dir;
-        while (noListaAtual != pedidoAtual.headerp) {
-            if (noListaAtual->tipo == "ovo") ovos++;
-            else if (noListaAtual->tipo == "leite") leite++;
-            else if (noListaAtual->tipo == "bacon") bacons++;
-            else if (noListaAtual->tipo == "la") la++;
-            noListaAtual = noListaAtual->dir;
-        }
-
-        float alturaPedido = 10;
-        if (ovos > 0) alturaPedido += 25;
-        if (leite > 0) alturaPedido += 25;
-        if (bacons > 0) alturaPedido += 25;
-        if (la > 0) alturaPedido += 25;
-        
-        Rectangle bgPedido = {painel.x + 10, yPos, painel.width - 20, alturaPedido};
-        DrawRectangleRec(bgPedido, (Color){70, 70, 70, 255});
-
-        float xPosTexto = painel.x + 20;
-        float yItemPos = yPos + 10;
-
-        if (ovos > 0) {
-            DrawText(TextFormat("%d x Ovos", ovos), xPosTexto, yItemPos, 20, YELLOW);
-            yItemPos += 25;
-        }
-        if (leite > 0) {
-            DrawText(TextFormat("%d x Leite", leite), xPosTexto, yItemPos, 20, WHITE);
-            yItemPos += 25;
-        }
-        if (bacons > 0) {
-            DrawText(TextFormat("%d x Bacon", bacons), xPosTexto, yItemPos, 20, RED);
-            yItemPos += 25;
-        }
-        if (la > 0) {
-            DrawText(TextFormat("%d x La", la), xPosTexto, yItemPos, 20, LIGHTGRAY);
-            yItemPos += 25;
-        }
-
-        yPos = yPos + alturaPedido + 10;
-        noFilaAtual = noFilaAtual->dir;
-    }
-}
-
-RequisitosPedido ContarRequisitos(lista &pedido) {
-    RequisitosPedido req = {0, 0, 0, 0};
-
-    if (vazioL(pedido)) return req;
-
-    nodeL *noListaAtual = pedido.headerp->dir;
-    while (noListaAtual != pedido.headerp) {
-        if (noListaAtual->tipo == "ovo") req.ovos++;
-        else if (noListaAtual->tipo == "leite") req.leite++;
-        else if (noListaAtual->tipo == "bacon") req.bacons++;
-        else if (noListaAtual->tipo == "la") req.la++;
-        noListaAtual = noListaAtual->dir;
-    }
-    return req;
-}
-
-bool PodeEntregar(RequisitosPedido &inventario, RequisitosPedido &pedido) {
-    if (inventario.ovos < pedido.ovos) return false;
-    if (inventario.leite < pedido.leite) return false;
-    if (inventario.bacons < pedido.bacons) return false;
-    if (inventario.la < pedido.la) return false;
-    
-    return true;
-}
 
 int main() {
     InitWindow(0, 0, "Legends Farm");
@@ -916,6 +566,7 @@ int main() {
                 EndMode2D();
             //Elementos de Menu Estático
                // Painel fixo à direita (fora do modo 2D)
+                
                 Color QuadradohoverColor = (Color){75, 175, 175,240};
                 Color QuadradonormalColor = (Color){50, 150, 150,255};
                 DrawRectangleRec(painelLateral, (Color){50, 50, 50,255});
