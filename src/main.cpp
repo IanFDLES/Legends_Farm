@@ -11,9 +11,14 @@
 #define MAX_BULLETS 50
 #define MAX_ANIMALS 10
 #define INTERVALO_PEDIDO 10.0f
+#define velTiro 10.0f
+#define freqTiro 1.2f
 #define VEL_PROD (1.0f / 60.0f)
 
 int framesCounter = 0;
+// --- ALTERAÇÃO 1: Variável para contar pedidos ---
+int pedidosConcluidos = 0; 
+// -------------------------------------------------
 float timerGerarPedidos = 0.0f;
 // Varáveis de inimigos,tiros,galinhas
 
@@ -61,6 +66,9 @@ int main() {
     Texture2D leitesprite = LoadTexture("sprites/leite.png");
     Texture2D ovosprite = LoadTexture("sprites/ovo.png");
     Texture2D galinhasprite = LoadTexture("sprites/galinha.png");
+    Texture2D ovelhasprite = LoadTexture("sprites/ovelha.png");
+    Texture2D porcosprite = LoadTexture("sprites/porco.png");
+    Texture2D vacasprite = LoadTexture("sprites/vaca.png");
     GameScreen currentScreen = LOGO;
     Enemy enemies[MAX_ENEMIES];
     Bullet bullets[MAX_BULLETS];
@@ -76,7 +84,7 @@ int main() {
     float LarguraTela = GetScreenWidth();
     float AlturaTela = GetScreenHeight();
 // Front-End (Menus Principais da Gameplay)
-    float painelLateralLargura = 600;
+    float painelLateralLargura = LarguraTela*0.4;
     Rectangle painelLateral = {LarguraTela - painelLateralLargura, 0, painelLateralLargura, AlturaTela};
     float painelMeioLargura = 800;
     float painelMeioAltura = 200;
@@ -245,6 +253,10 @@ int main() {
                             lista pedidoEntregue; 
                             retirarF(filaDePedidos, pedidoEntregue);
                             destruirL(pedidoEntregue);
+                            
+                            // --- ALTERAÇÃO 2: Incrementa o contador ---
+                            pedidosConcluidos++;
+                            // ------------------------------------------
                         }
                     }
                 }
@@ -489,7 +501,7 @@ int main() {
                     }
                 }
                 // ATIRAR NO CURSOR (Automático)
-                fireTimer += GetFrameTime();
+                fireTimer += GetFrameTime()*freqTiro;
                 if (fireTimer >= fireRate) {
                     fireTimer = 0;
                     
@@ -502,7 +514,7 @@ int main() {
                             bullets[b].pos = pos;
                             // Calcula direção: Destino (Mouse) - Origem (Player)
                             bullets[b].dir = Vector2Normalize(Vector2Subtract(mouseWorldPos, pos));
-                            bullets[b].speed = 8.0f;
+                            bullets[b].speed = velTiro;
                             break;
                         }
                     }
@@ -600,25 +612,76 @@ int main() {
                     }
                     for (int i = 0; i < MAX_ANIMALS; i++) {
                         if (vacas[i].active){
+
+                            Rectangle src = {0, 0, (float)vacasprite.width, (float)vacasprite.height};
+                            float scale = 0.08f;
+                            float w = vacasprite.width * scale;
+                            float h = vacasprite.height * scale;
+                            // canto superior esquerdo
+                            Rectangle dest = {
+                                vacas[i].pos.x - w/2.0f,
+                                vacas[i].pos.y - h/2.0f,
+                                w,
+                                h
+                            };
+                            // pivot no centro do sprite renderizado
+                            Vector2 origin = {w/32.0f, h/32.0f};
+                            DrawTexturePro(vacasprite, src, dest, origin, 0.0f, WHITE);
                         
-                            DrawCircleV(vacas[i].pos, vacas[i].tamanho, vacas[i].cor);
+                            //DrawCircleV(vacas[i].pos, vacas[i].tamanho, vacas[i].cor);
                         } 
                     }
                     for (int i = 0; i < MAX_ANIMALS; i++) {
                         if (porcos[i].active){
+
+                            Rectangle src = {0, 0, (float)porcosprite.width, (float)porcosprite.height};
+                            float scale = 0.08f;
+                            float w = porcosprite.width * scale;
+                            float h = porcosprite.height * scale;
+                            // canto superior esquerdo
+                            Rectangle dest = {
+                                porcos[i].pos.x - w/2.0f,
+                                porcos[i].pos.y - h/2.0f,
+                                w,
+                                h
+                            };
+                            // pivot no centro do sprite renderizado
+                            Vector2 origin = {w/32.0f, h/32.0f};
+                            DrawTexturePro(porcosprite, src, dest, origin, 0.0f, WHITE);
                         
-                            DrawCircleV(porcos[i].pos,porcos[i].tamanho, porcos[i].cor);
+                            //DrawCircleV(porcos[i].pos,porcos[i].tamanho, porcos[i].cor);
                         } 
                     }
                     for (int i = 0; i < MAX_ANIMALS; i++) {
                         if (ovelhas[i].active){
+
+                            Rectangle src = {0, 0, (float)ovelhasprite.width, (float)ovelhasprite.height};
+                            float scale = 0.08f;
+                            float w = ovelhasprite.width * scale;
+                            float h = ovelhasprite.height * scale;
+                            // canto superior esquerdo
+                            Rectangle dest = {
+                                ovelhas[i].pos.x - w/2.0f,
+                                ovelhas[i].pos.y - h/2.0f,
+                                w,
+                                h
+                            };
+                            // pivot no centro do sprite renderizado
+                            Vector2 origin = {w/32.0f, h/32.0f};
+                            DrawTexturePro(ovelhasprite, src, dest, origin, 0.0f, WHITE);
                         
-                            DrawCircleV(ovelhas[i].pos,ovelhas[i].tamanho, ovelhas[i].cor);
+                            //DrawCircleV(ovelhas[i].pos,ovelhas[i].tamanho, ovelhas[i].cor);
                         } 
                     }
 
                 EndMode2D();
             //Elementos de Menu Estático
+            
+                // --- ALTERAÇÃO 3: Desenhar painel de pedidos no topo esquerdo ---
+                DrawRectangle(10, 10, 220, 50, (Color){0, 0, 0, 150}); // Fundo semi-transparente
+                DrawText(TextFormat("Pedidos: %d / 20", pedidosConcluidos), 20, 25, 20, WHITE);
+                // ---------------------------------------------------------------
+
                // Painel fixo à direita (fora do modo 2D)
                 
                 Color QuadradohoverColor = (Color){75, 175, 175,240};
@@ -681,7 +744,7 @@ int main() {
                 DrawText(TextFormat("x %d", contagem.bacons), hudX + 40, hudY + 5, 25, WHITE);
                 // ------------------------------------------------------------------
 
-                //cursor    
+                //cursor    
                 Vector2 mouse = GetMousePosition();
                 int crossSize = 20;
                 DrawLine(mouse.x - crossSize, mouse.y, mouse.x + crossSize, mouse.y, DARKGREEN);
