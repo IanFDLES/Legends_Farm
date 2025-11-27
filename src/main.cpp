@@ -17,7 +17,7 @@
 
 int framesCounter = 0;
 // --- ALTERAÇÃO 1: Variável para contar pedidos ---
-int pedidosConcluidos = 0; 
+int pedidosConcluidos = 18;
 // -------------------------------------------------
 float timerGerarPedidos = 0.0f;
 // Varáveis de inimigos,tiros,galinhas
@@ -40,6 +40,17 @@ typedef struct {
     bool active;
     int damage;
 } Enemy;
+
+// --- NOVA STRUCT BOSS ---
+typedef struct {
+    Vector2 pos;
+    float speed;
+    bool active;
+    int life;
+    int maxLife;
+    float radius;
+} Boss;
+// ------------------------
 
 typedef struct {
     Vector2 pos;
@@ -76,6 +87,17 @@ int main() {
     Animal vacas[MAX_ANIMALS];
     Animal porcos[MAX_ANIMALS];
     Animal ovelhas[MAX_ANIMALS];
+    
+    // --- SETUP BOSS ---
+    Boss boss = {0};
+    boss.active = false;
+    boss.life = 50;
+    boss.maxLife = 50;
+    boss.radius = 40.0f;
+    boss.speed = 3.5f;
+    bool bossSpawned = false;
+    // ------------------
+
     SetTargetFPS(60);
     jogador  = {1000,100};
     criarL(jogador.recursos);
@@ -84,17 +106,16 @@ int main() {
     float LarguraTela = GetScreenWidth();
     float AlturaTela = GetScreenHeight();
 // Front-End (Menus Principais da Gameplay)
-    float painelLateralLargura = LarguraTela*0.4;
+    float painelLateralLargura = LarguraTela*0.3;
     Rectangle painelLateral = {LarguraTela - painelLateralLargura, 0, painelLateralLargura, AlturaTela};
     float painelMeioLargura = 800;
     float painelMeioAltura = 200;
 
     float quadradosLargura = 120;
-    Rectangle QuadradoPainelLateral1 = {LarguraTela - painelLateralLargura+ 10, 0,(painelLateralLargura-20)/5,(painelLateralLargura-20)/5};  
-    Rectangle QuadradoPainelLateral2 = {LarguraTela - painelLateralLargura+(painelLateralLargura-20)/5, 0, (painelLateralLargura-20)/5, (painelLateralLargura-20)/5};
-    Rectangle QuadradoPainelLateral3 = {LarguraTela - painelLateralLargura +(painelLateralLargura-20)/5*2, 0, (painelLateralLargura-20)/5, (painelLateralLargura-20)/5};
-    Rectangle QuadradoPainelLateral4 = {LarguraTela - painelLateralLargura+(painelLateralLargura-20)/5*3, 0, (painelLateralLargura-20)/5, (painelLateralLargura-20)/5};
-    Rectangle QuadradoPainelLateral5 = {LarguraTela - painelLateralLargura+(painelLateralLargura-20)/5*4, 0, (painelLateralLargura-20)/5, (painelLateralLargura-20)/5};
+    Rectangle QuadradoPainelLateral1 = {LarguraTela - painelLateralLargura+ 10, 0,(painelLateralLargura-20)/4,(painelLateralLargura-20)/5};  
+    Rectangle QuadradoPainelLateral2 = {LarguraTela - painelLateralLargura+ 10 + QuadradoPainelLateral1.width, 0, (painelLateralLargura-20)/4, (painelLateralLargura-20)/5};
+    Rectangle QuadradoPainelLateral3 = {LarguraTela - painelLateralLargura+ 10 + QuadradoPainelLateral1.width*2, 0, (painelLateralLargura-20)/4, (painelLateralLargura-20)/5};
+    Rectangle QuadradoPainelLateral4 = {LarguraTela - painelLateralLargura+ 10 + QuadradoPainelLateral1.width*3, 0, (painelLateralLargura-20)/4, (painelLateralLargura-20)/5};
 
     //Menu Recursos (REMOVIDO)
     //Tela Pedidos
@@ -119,7 +140,7 @@ int main() {
     Vector2 pos = {bounds.width / 2.0f, bounds.height / 2.0f};
 // Camera config de inicialização
     Camera2D camera = {0};
-    camera.offset   = (Vector2){(painelLateralLargura + painelMeioLargura)/2, (AlturaTela-painelMeioAltura) / 2.0f};
+    camera.offset   = (Vector2){LarguraTela*0.35, (AlturaTela) / 2.0f};
     camera.rotation = 0.0f;
     camera.zoom     = 1.0f;
 //Inicialização dos tamanhos/posições dos botões na tela Logo 
@@ -500,6 +521,22 @@ int main() {
                         }
                     }
                 }
+                
+                // --- LÓGICA DO BOSS ---
+                // Spawnar quando atingir 20 pedidos
+                if (pedidosConcluidos >= 20 && !bossSpawned) {
+                    boss.active = true;
+                    boss.pos = (Vector2){ (float)mapaLargura/2, (float)mapaAltura/2 }; // Centro do mapa
+                    bossSpawned = true;
+                }
+                
+                // Movimentação do Boss (persegue o jogador)
+                if (boss.active) {
+                    Vector2 dirBoss = Vector2Normalize(Vector2Subtract(pos, boss.pos));
+                    boss.pos = Vector2Add(boss.pos, Vector2Scale(dirBoss, boss.speed));
+                }
+                // ----------------------
+
                 // ATIRAR NO CURSOR (Automático)
                 fireTimer += GetFrameTime()*freqTiro;
                 if (fireTimer >= fireRate) {
@@ -525,6 +562,7 @@ int main() {
                     if (bullets[b].active) {
                         bullets[b].pos = Vector2Add(bullets[b].pos, Vector2Scale(bullets[b].dir, bullets[b].speed));
 
+                        // Colisão com inimigos normais
                         for (int i = 0; i < MAX_ENEMIES; i++) {
                             if (enemies[i].active && Vector2Distance(bullets[b].pos, enemies[i].pos) < 15) {
                                 bullets[b].active = false;
@@ -532,6 +570,17 @@ int main() {
                                 break;
                             }
                         }
+                        
+                        // --- COLISÃO COM O BOSS ---
+                        if (boss.active && Vector2Distance(bullets[b].pos, boss.pos) < boss.radius) {
+                            bullets[b].active = false;
+                            boss.life -= 1; 
+                            if (boss.life <= 0) {
+                                boss.active = false;
+                                // Boss derrotado
+                            }
+                        }
+                        // ---------------------------
 
                         if (Vector2Distance(pos, bullets[b].pos) > 800) bullets[b].active = false;
                     }
@@ -586,6 +635,14 @@ int main() {
                     for (int i = 0; i < MAX_ENEMIES; i++) {
                         if (enemies[i].active) DrawCircleV(enemies[i].pos, 10, DARKPURPLE);
                     }
+                    
+                    // --- DESENHO DO BOSS ---
+                    if (boss.active) {
+                        DrawCircleV(boss.pos, boss.radius, MAROON);
+                        DrawText(TextFormat("%d", boss.life), boss.pos.x - 10, boss.pos.y - 10, 20, WHITE);
+                    }
+                    // -----------------------
+                    
                     for (int b = 0; b < MAX_BULLETS; b++) {
                         if (bullets[b].active) DrawCircleV(bullets[b].pos, 5, RED);
                     }
@@ -688,27 +745,23 @@ int main() {
                 Color QuadradonormalColor = (Color){50, 150, 150,255};
                 DrawRectangleRec(painelLateral, (Color){50, 50, 50,255});
                 DrawRectangleRec(QuadradoPainelLateral1, CheckCollisionPointRec(mousePoint, QuadradoPainelLateral1) ? QuadradohoverColor : QuadradonormalColor);
-                                DrawText("Pedidos", QuadradoPainelLateral1.x + 16, 20, 20, WHITE);
+                                DrawText("Pedidos", QuadradoPainelLateral1.x + QuadradoPainelLateral1.width*0.13, 20, 20, WHITE);
                 DrawRectangleRec(QuadradoPainelLateral2, CheckCollisionPointRec(mousePoint, QuadradoPainelLateral2) ? QuadradohoverColor : QuadradonormalColor);
+                                DrawText("Animais", QuadradoPainelLateral2.x + QuadradoPainelLateral2.width*0.17, 20, 20, WHITE);
                 DrawRectangleRec(QuadradoPainelLateral3, CheckCollisionPointRec(mousePoint, QuadradoPainelLateral3) ? QuadradohoverColor : QuadradonormalColor);
+                                DrawText("Melhorias", QuadradoPainelLateral3.x + QuadradoPainelLateral3.width*0.01, 20, 20, WHITE);
                 DrawRectangleRec(QuadradoPainelLateral4, CheckCollisionPointRec(mousePoint, QuadradoPainelLateral4) ? QuadradohoverColor : QuadradonormalColor);
-                DrawRectangleRec(QuadradoPainelLateral5, CheckCollisionPointRec(mousePoint, QuadradoPainelLateral5) ? QuadradohoverColor : QuadradonormalColor);
-                                DrawText("Menu", QuadradoPainelLateral5.x + 33, 20, 20, WHITE); 
+                                DrawText("Menu", QuadradoPainelLateral4.x + QuadradoPainelLateral4.width*0.25, 20, 20, WHITE);
                                 if (CheckCollisionPointRec(mousePoint,QuadradoPainelLateral1) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) Pedidos=true, Aprimoramento =false, skins =false, Menu=false;
                                 if (CheckCollisionPointRec(mousePoint,QuadradoPainelLateral2) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) Pedidos=false, Aprimoramento =true, skins =false, Menu=false;
                                 if (CheckCollisionPointRec(mousePoint,QuadradoPainelLateral3) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) Pedidos=false, Aprimoramento =false, skins =true, Menu=false;
-                                if (CheckCollisionPointRec(mousePoint,QuadradoPainelLateral4) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) Pedidos=false, Aprimoramento =false, skins =false, Menu=false;
-                                if (CheckCollisionPointRec(mousePoint,QuadradoPainelLateral5) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) Pedidos=false, Aprimoramento =false, skins =false, Menu=true;
+                                if (CheckCollisionPointRec(mousePoint,QuadradoPainelLateral4) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) Pedidos=false, Aprimoramento =false, skins =false, Menu=true;
                                 
                                 if (Pedidos) DrawPedidos(filaDePedidos, painelLateral, QuadradoPainelLateral1);
                                 
                                 if(Menu){
                                    currentScreen = SETTINGS; 
                                 }
-                // Painel fixo itens (fora do modo 2D)
-                Rectangle painelMeio = { painelLateralLargura/2, AlturaTela - painelMeioAltura , painelMeioLargura, painelMeioAltura};
-                DrawRectangleRec(painelMeio, (Color){50, 50, 50, 200});
-                DrawText("Painel de Itens", painelMeio.x + 20, AlturaTela - painelMeioAltura, 20, WHITE); 
 
                 // ------------------- HUD RECURSOS (NOVA TABELA) -------------------
                 // Fundo semi-transparente

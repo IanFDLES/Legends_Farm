@@ -26,7 +26,7 @@ void GerarNovoPedido(fila &filaPedidos) {
         totalItens++;
     }
     for (int i = 0; i < numLa; i++) {
-        inserirL(novoPedido, "lã");
+        inserirL(novoPedido, "la");
         totalItens++;
     }
 
