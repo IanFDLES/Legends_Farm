@@ -1,248 +1,292 @@
 obj/x64/Debug/Legends_Farm/main.o: ../../src/main.cpp \
- ../external/raylib-master/src/raylib.h \
- C:/msys64/ucrt64/lib/gcc/x86_64-w64-mingw32/15.1.0/include/stdarg.h \
- C:/msys64/ucrt64/include/stdarg.h \
- C:/msys64/ucrt64/include/_mingw_stdarg.h \
- C:/msys64/ucrt64/include/vadefs.h C:/msys64/ucrt64/include/_mingw.h \
- C:/msys64/ucrt64/include/_mingw_mac.h \
- C:/msys64/ucrt64/include/_mingw_secapi.h \
- C:/msys64/ucrt64/include/sdks/_mingw_ddk.h \
- ../external/raylib-master/src/raymath.h \
- C:/msys64/ucrt64/include/c++/15.1.0/math.h \
- C:/msys64/ucrt64/include/c++/15.1.0/cmath \
- C:/msys64/ucrt64/include/c++/15.1.0/bits/requires_hosted.h \
- C:/msys64/ucrt64/include/c++/15.1.0/x86_64-w64-mingw32/bits/c++config.h \
- C:/msys64/ucrt64/include/c++/15.1.0/x86_64-w64-mingw32/bits/os_defines.h \
- C:/msys64/ucrt64/include/c++/15.1.0/x86_64-w64-mingw32/bits/cpu_defines.h \
- C:/msys64/ucrt64/include/c++/15.1.0/pstl/pstl_config.h \
- C:/msys64/ucrt64/include/c++/15.1.0/bits/cpp_type_traits.h \
- C:/msys64/ucrt64/include/c++/15.1.0/bits/version.h \
- C:/msys64/ucrt64/include/c++/15.1.0/type_traits \
- C:/msys64/ucrt64/include/c++/15.1.0/ext/type_traits.h \
- C:/msys64/ucrt64/include/math.h C:/msys64/ucrt64/include/crtdefs.h \
- C:/msys64/ucrt64/include/corecrt.h \
- C:/msys64/ucrt64/include/c++/15.1.0/bits/std_abs.h \
- C:/msys64/ucrt64/include/stdlib.h \
- C:/msys64/ucrt64/include/corecrt_wstdlib.h \
- C:/msys64/ucrt64/lib/gcc/x86_64-w64-mingw32/15.1.0/include/limits.h \
- C:/msys64/ucrt64/lib/gcc/x86_64-w64-mingw32/15.1.0/include/syslimits.h \
- C:/msys64/ucrt64/include/limits.h \
- C:/msys64/ucrt64/include/sec_api/stdlib_s.h \
- C:/msys64/ucrt64/include/c++/15.1.0/stdlib.h \
- C:/msys64/ucrt64/include/malloc.h \
- C:/msys64/ucrt64/lib/gcc/x86_64-w64-mingw32/15.1.0/include/mm_malloc.h \
- C:/msys64/ucrt64/include/errno.h \
- C:/msys64/ucrt64/include/c++/15.1.0/bits/specfun.h \
- C:/msys64/ucrt64/include/c++/15.1.0/bits/stl_algobase.h \
- C:/msys64/ucrt64/include/c++/15.1.0/bits/functexcept.h \
- C:/msys64/ucrt64/include/c++/15.1.0/bits/exception_defines.h \
- C:/msys64/ucrt64/include/c++/15.1.0/ext/numeric_traits.h \
- C:/msys64/ucrt64/include/c++/15.1.0/bits/stl_pair.h \
- C:/msys64/ucrt64/include/c++/15.1.0/bits/move.h \
- C:/msys64/ucrt64/include/c++/15.1.0/bits/utility.h \
- C:/msys64/ucrt64/include/c++/15.1.0/bits/stl_iterator_base_types.h \
- C:/msys64/ucrt64/include/c++/15.1.0/bits/stl_iterator_base_funcs.h \
- C:/msys64/ucrt64/include/c++/15.1.0/bits/concept_check.h \
- C:/msys64/ucrt64/include/c++/15.1.0/debug/assertions.h \
- C:/msys64/ucrt64/include/c++/15.1.0/bits/stl_iterator.h \
- C:/msys64/ucrt64/include/c++/15.1.0/bits/ptr_traits.h \
- C:/msys64/ucrt64/include/c++/15.1.0/debug/debug.h \
- C:/msys64/ucrt64/include/c++/15.1.0/bits/predefined_ops.h \
- C:/msys64/ucrt64/include/c++/15.1.0/bit \
- C:/msys64/ucrt64/include/c++/15.1.0/concepts \
- C:/msys64/ucrt64/include/c++/15.1.0/limits \
- C:/msys64/ucrt64/include/c++/15.1.0/tr1/gamma.tcc \
- C:/msys64/ucrt64/include/c++/15.1.0/tr1/special_function_util.h \
- C:/msys64/ucrt64/include/c++/15.1.0/tr1/bessel_function.tcc \
- C:/msys64/ucrt64/include/c++/15.1.0/tr1/beta_function.tcc \
- C:/msys64/ucrt64/include/c++/15.1.0/tr1/ell_integral.tcc \
- C:/msys64/ucrt64/include/c++/15.1.0/tr1/exp_integral.tcc \
- C:/msys64/ucrt64/include/c++/15.1.0/tr1/hypergeometric.tcc \
- C:/msys64/ucrt64/include/c++/15.1.0/tr1/legendre_function.tcc \
- C:/msys64/ucrt64/include/c++/15.1.0/tr1/modified_bessel_func.tcc \
- C:/msys64/ucrt64/include/c++/15.1.0/tr1/poly_hermite.tcc \
- C:/msys64/ucrt64/include/c++/15.1.0/tr1/poly_laguerre.tcc \
- C:/msys64/ucrt64/include/c++/15.1.0/tr1/riemann_zeta.tcc \
- C:/msys64/ucrt64/include/stdio.h \
- C:/msys64/ucrt64/include/corecrt_stdio_config.h \
- C:/msys64/ucrt64/include/_mingw_off_t.h \
- C:/msys64/ucrt64/include/swprintf.inl \
- C:/msys64/ucrt64/include/sec_api/stdio_s.h ../../src/Animais.hpp \
- ../../src/Fila.hpp ../../src/Lista.hpp \
- C:/msys64/ucrt64/include/c++/15.1.0/string \
- C:/msys64/ucrt64/include/c++/15.1.0/bits/stringfwd.h \
- C:/msys64/ucrt64/include/c++/15.1.0/bits/memoryfwd.h \
- C:/msys64/ucrt64/include/c++/15.1.0/bits/char_traits.h \
- C:/msys64/ucrt64/include/c++/15.1.0/bits/postypes.h \
- C:/msys64/ucrt64/include/c++/15.1.0/cwchar \
- C:/msys64/ucrt64/include/wchar.h \
- C:/msys64/ucrt64/include/corecrt_wctype.h \
- C:/msys64/ucrt64/include/_mingw_stat64.h \
- C:/msys64/ucrt64/include/sec_api/wchar_s.h \
- C:/msys64/ucrt64/include/c++/15.1.0/bits/allocator.h \
- C:/msys64/ucrt64/include/c++/15.1.0/x86_64-w64-mingw32/bits/c++allocator.h \
- C:/msys64/ucrt64/include/c++/15.1.0/bits/new_allocator.h \
- C:/msys64/ucrt64/include/c++/15.1.0/new \
- C:/msys64/ucrt64/include/c++/15.1.0/bits/exception.h \
- C:/msys64/ucrt64/include/c++/15.1.0/bits/localefwd.h \
- C:/msys64/ucrt64/include/c++/15.1.0/x86_64-w64-mingw32/bits/c++locale.h \
- C:/msys64/ucrt64/include/c++/15.1.0/clocale \
- C:/msys64/ucrt64/include/locale.h \
- C:/msys64/ucrt64/include/c++/15.1.0/iosfwd \
- C:/msys64/ucrt64/include/c++/15.1.0/cctype \
- C:/msys64/ucrt64/include/ctype.h \
- C:/msys64/ucrt64/include/c++/15.1.0/bits/ostream_insert.h \
- C:/msys64/ucrt64/include/c++/15.1.0/bits/cxxabi_forced.h \
- C:/msys64/ucrt64/include/c++/15.1.0/bits/stl_function.h \
- C:/msys64/ucrt64/include/c++/15.1.0/backward/binders.h \
- C:/msys64/ucrt64/include/c++/15.1.0/bits/refwrap.h \
- C:/msys64/ucrt64/include/c++/15.1.0/bits/invoke.h \
- C:/msys64/ucrt64/include/c++/15.1.0/bits/range_access.h \
- C:/msys64/ucrt64/include/c++/15.1.0/initializer_list \
- C:/msys64/ucrt64/include/c++/15.1.0/bits/basic_string.h \
- C:/msys64/ucrt64/include/c++/15.1.0/ext/alloc_traits.h \
- C:/msys64/ucrt64/include/c++/15.1.0/bits/alloc_traits.h \
- C:/msys64/ucrt64/include/c++/15.1.0/bits/stl_construct.h \
- C:/msys64/ucrt64/include/c++/15.1.0/string_view \
- C:/msys64/ucrt64/include/c++/15.1.0/bits/functional_hash.h \
- C:/msys64/ucrt64/include/c++/15.1.0/bits/hash_bytes.h \
- C:/msys64/ucrt64/include/c++/15.1.0/bits/string_view.tcc \
- C:/msys64/ucrt64/include/c++/15.1.0/ext/string_conversions.h \
- C:/msys64/ucrt64/include/c++/15.1.0/cstdlib \
- C:/msys64/ucrt64/include/c++/15.1.0/cstdio \
- C:/msys64/ucrt64/include/c++/15.1.0/cerrno \
- C:/msys64/ucrt64/include/c++/15.1.0/bits/charconv.h \
- C:/msys64/ucrt64/include/c++/15.1.0/bits/basic_string.tcc \
- C:/msys64/ucrt64/include/c++/15.1.0/bits/memory_resource.h \
- C:/msys64/ucrt64/include/c++/15.1.0/cstddef \
- C:/msys64/ucrt64/lib/gcc/x86_64-w64-mingw32/15.1.0/include/stddef.h \
- C:/msys64/ucrt64/include/stddef.h \
- C:/msys64/ucrt64/include/c++/15.1.0/bits/uses_allocator.h \
- C:/msys64/ucrt64/include/c++/15.1.0/bits/uses_allocator_args.h \
- C:/msys64/ucrt64/include/c++/15.1.0/tuple ../../src/Pedidos.hpp
+ /usr/include/stdc-predef.h ../external/raylib-master/src/raylib.h \
+ /usr/lib/gcc/x86_64-redhat-linux/15/include/stdarg.h \
+ ../external/raylib-master/src/raymath.h /usr/include/c++/15/math.h \
+ /usr/include/c++/15/cmath /usr/include/c++/15/bits/requires_hosted.h \
+ /usr/include/c++/15/x86_64-redhat-linux/bits/c++config.h \
+ /usr/include/bits/wordsize.h \
+ /usr/include/c++/15/x86_64-redhat-linux/bits/os_defines.h \
+ /usr/include/features.h /usr/include/features-time64.h \
+ /usr/include/bits/timesize.h /usr/include/sys/cdefs.h \
+ /usr/include/bits/long-double.h /usr/include/gnu/stubs.h \
+ /usr/include/gnu/stubs-64.h \
+ /usr/include/c++/15/x86_64-redhat-linux/bits/cpu_defines.h \
+ /usr/include/c++/15/pstl/pstl_config.h \
+ /usr/include/c++/15/bits/cpp_type_traits.h \
+ /usr/include/c++/15/bits/version.h /usr/include/c++/15/type_traits \
+ /usr/include/c++/15/ext/type_traits.h /usr/include/math.h \
+ /usr/include/bits/libc-header-start.h /usr/include/bits/types.h \
+ /usr/include/bits/typesizes.h /usr/include/bits/time64.h \
+ /usr/include/bits/math-vector.h /usr/include/bits/libm-simd-decl-stubs.h \
+ /usr/include/bits/floatn.h /usr/include/bits/floatn-common.h \
+ /usr/include/bits/flt-eval-method.h /usr/include/bits/fp-logb.h \
+ /usr/include/bits/fp-fast.h /usr/include/bits/mathcalls-macros.h \
+ /usr/include/bits/mathcalls-helper-functions.h \
+ /usr/include/bits/mathcalls.h /usr/include/bits/mathcalls-narrow.h \
+ /usr/include/bits/iscanonical.h /usr/include/c++/15/bits/std_abs.h \
+ /usr/include/stdlib.h \
+ /usr/lib/gcc/x86_64-redhat-linux/15/include/stddef.h \
+ /usr/include/bits/waitflags.h /usr/include/bits/waitstatus.h \
+ /usr/include/bits/types/locale_t.h /usr/include/bits/types/__locale_t.h \
+ /usr/include/sys/types.h /usr/include/bits/types/clock_t.h \
+ /usr/include/bits/types/clockid_t.h /usr/include/bits/types/time_t.h \
+ /usr/include/bits/types/timer_t.h /usr/include/bits/stdint-intn.h \
+ /usr/include/endian.h /usr/include/bits/endian.h \
+ /usr/include/bits/endianness.h /usr/include/bits/byteswap.h \
+ /usr/include/bits/uintn-identity.h /usr/include/sys/select.h \
+ /usr/include/bits/select.h /usr/include/bits/types/sigset_t.h \
+ /usr/include/bits/types/__sigset_t.h \
+ /usr/include/bits/types/struct_timeval.h \
+ /usr/include/bits/types/struct_timespec.h \
+ /usr/include/bits/pthreadtypes.h /usr/include/bits/thread-shared-types.h \
+ /usr/include/bits/pthreadtypes-arch.h \
+ /usr/include/bits/atomic_wide_counter.h /usr/include/bits/struct_mutex.h \
+ /usr/include/bits/struct_rwlock.h /usr/include/alloca.h \
+ /usr/include/bits/stdlib-float.h /usr/include/c++/15/bits/specfun.h \
+ /usr/include/c++/15/bits/stl_algobase.h \
+ /usr/include/c++/15/bits/functexcept.h \
+ /usr/include/c++/15/bits/exception_defines.h \
+ /usr/include/c++/15/ext/numeric_traits.h \
+ /usr/include/c++/15/bits/stl_pair.h /usr/include/c++/15/bits/move.h \
+ /usr/include/c++/15/bits/utility.h \
+ /usr/include/c++/15/bits/stl_iterator_base_types.h \
+ /usr/include/c++/15/bits/stl_iterator_base_funcs.h \
+ /usr/include/c++/15/bits/concept_check.h \
+ /usr/include/c++/15/debug/assertions.h \
+ /usr/include/c++/15/bits/stl_iterator.h \
+ /usr/include/c++/15/bits/ptr_traits.h /usr/include/c++/15/debug/debug.h \
+ /usr/include/c++/15/bits/predefined_ops.h /usr/include/c++/15/bit \
+ /usr/include/c++/15/concepts /usr/include/c++/15/limits \
+ /usr/include/c++/15/tr1/gamma.tcc \
+ /usr/include/c++/15/tr1/special_function_util.h \
+ /usr/include/c++/15/tr1/bessel_function.tcc \
+ /usr/include/c++/15/tr1/beta_function.tcc \
+ /usr/include/c++/15/tr1/ell_integral.tcc \
+ /usr/include/c++/15/tr1/exp_integral.tcc \
+ /usr/include/c++/15/tr1/hypergeometric.tcc \
+ /usr/include/c++/15/tr1/legendre_function.tcc \
+ /usr/include/c++/15/tr1/modified_bessel_func.tcc \
+ /usr/include/c++/15/tr1/poly_hermite.tcc \
+ /usr/include/c++/15/tr1/poly_laguerre.tcc \
+ /usr/include/c++/15/tr1/riemann_zeta.tcc /usr/include/stdio.h \
+ /usr/include/bits/types/__fpos_t.h /usr/include/bits/types/__mbstate_t.h \
+ /usr/include/bits/types/__fpos64_t.h /usr/include/bits/types/__FILE.h \
+ /usr/include/bits/types/FILE.h /usr/include/bits/types/struct_FILE.h \
+ /usr/include/bits/types/cookie_io_functions_t.h \
+ /usr/include/bits/stdio_lim.h ../../src/Animais.hpp ../../src/Lista.hpp \
+ /usr/include/c++/15/string /usr/include/c++/15/bits/stringfwd.h \
+ /usr/include/c++/15/bits/memoryfwd.h \
+ /usr/include/c++/15/bits/char_traits.h \
+ /usr/include/c++/15/bits/postypes.h /usr/include/c++/15/cwchar \
+ /usr/include/wchar.h /usr/include/bits/wchar.h \
+ /usr/include/bits/types/wint_t.h /usr/include/bits/types/mbstate_t.h \
+ /usr/include/c++/15/bits/allocator.h \
+ /usr/include/c++/15/x86_64-redhat-linux/bits/c++allocator.h \
+ /usr/include/c++/15/bits/new_allocator.h /usr/include/c++/15/new \
+ /usr/include/c++/15/bits/exception.h \
+ /usr/include/c++/15/bits/localefwd.h \
+ /usr/include/c++/15/x86_64-redhat-linux/bits/c++locale.h \
+ /usr/include/c++/15/clocale /usr/include/locale.h \
+ /usr/include/bits/locale.h /usr/include/c++/15/iosfwd \
+ /usr/include/c++/15/cctype /usr/include/ctype.h \
+ /usr/include/c++/15/bits/ostream_insert.h \
+ /usr/include/c++/15/bits/cxxabi_forced.h \
+ /usr/include/c++/15/bits/stl_function.h \
+ /usr/include/c++/15/backward/binders.h \
+ /usr/include/c++/15/bits/refwrap.h /usr/include/c++/15/bits/invoke.h \
+ /usr/include/c++/15/bits/range_access.h \
+ /usr/include/c++/15/initializer_list \
+ /usr/include/c++/15/bits/basic_string.h \
+ /usr/include/c++/15/ext/alloc_traits.h \
+ /usr/include/c++/15/bits/alloc_traits.h \
+ /usr/include/c++/15/bits/stl_construct.h /usr/include/c++/15/string_view \
+ /usr/include/c++/15/bits/functional_hash.h \
+ /usr/include/c++/15/bits/hash_bytes.h \
+ /usr/include/c++/15/bits/string_view.tcc \
+ /usr/include/c++/15/ext/string_conversions.h /usr/include/c++/15/cstdlib \
+ /usr/include/c++/15/cstdio /usr/include/c++/15/cerrno \
+ /usr/include/errno.h /usr/include/bits/errno.h \
+ /usr/include/linux/errno.h /usr/include/asm/errno.h \
+ /usr/include/asm-generic/errno.h /usr/include/asm-generic/errno-base.h \
+ /usr/include/bits/types/error_t.h /usr/include/c++/15/bits/charconv.h \
+ /usr/include/c++/15/bits/basic_string.tcc \
+ /usr/include/c++/15/bits/memory_resource.h /usr/include/c++/15/cstddef \
+ /usr/include/c++/15/bits/uses_allocator.h \
+ /usr/include/c++/15/bits/uses_allocator_args.h /usr/include/c++/15/tuple \
+ ../../src/Inimigos.hpp ../../src/Fila.hpp ../../src/Pedidos.hpp \
+ ../../src/Loja_Animais.hpp
+/usr/include/stdc-predef.h:
 ../external/raylib-master/src/raylib.h:
-C:/msys64/ucrt64/lib/gcc/x86_64-w64-mingw32/15.1.0/include/stdarg.h:
-C:/msys64/ucrt64/include/stdarg.h:
-C:/msys64/ucrt64/include/_mingw_stdarg.h:
-C:/msys64/ucrt64/include/vadefs.h:
-C:/msys64/ucrt64/include/_mingw.h:
-C:/msys64/ucrt64/include/_mingw_mac.h:
-C:/msys64/ucrt64/include/_mingw_secapi.h:
-C:/msys64/ucrt64/include/sdks/_mingw_ddk.h:
+/usr/lib/gcc/x86_64-redhat-linux/15/include/stdarg.h:
 ../external/raylib-master/src/raymath.h:
-C:/msys64/ucrt64/include/c++/15.1.0/math.h:
-C:/msys64/ucrt64/include/c++/15.1.0/cmath:
-C:/msys64/ucrt64/include/c++/15.1.0/bits/requires_hosted.h:
-C:/msys64/ucrt64/include/c++/15.1.0/x86_64-w64-mingw32/bits/c++config.h:
-C:/msys64/ucrt64/include/c++/15.1.0/x86_64-w64-mingw32/bits/os_defines.h:
-C:/msys64/ucrt64/include/c++/15.1.0/x86_64-w64-mingw32/bits/cpu_defines.h:
-C:/msys64/ucrt64/include/c++/15.1.0/pstl/pstl_config.h:
-C:/msys64/ucrt64/include/c++/15.1.0/bits/cpp_type_traits.h:
-C:/msys64/ucrt64/include/c++/15.1.0/bits/version.h:
-C:/msys64/ucrt64/include/c++/15.1.0/type_traits:
-C:/msys64/ucrt64/include/c++/15.1.0/ext/type_traits.h:
-C:/msys64/ucrt64/include/math.h:
-C:/msys64/ucrt64/include/crtdefs.h:
-C:/msys64/ucrt64/include/corecrt.h:
-C:/msys64/ucrt64/include/c++/15.1.0/bits/std_abs.h:
-C:/msys64/ucrt64/include/stdlib.h:
-C:/msys64/ucrt64/include/corecrt_wstdlib.h:
-C:/msys64/ucrt64/lib/gcc/x86_64-w64-mingw32/15.1.0/include/limits.h:
-C:/msys64/ucrt64/lib/gcc/x86_64-w64-mingw32/15.1.0/include/syslimits.h:
-C:/msys64/ucrt64/include/limits.h:
-C:/msys64/ucrt64/include/sec_api/stdlib_s.h:
-C:/msys64/ucrt64/include/c++/15.1.0/stdlib.h:
-C:/msys64/ucrt64/include/malloc.h:
-C:/msys64/ucrt64/lib/gcc/x86_64-w64-mingw32/15.1.0/include/mm_malloc.h:
-C:/msys64/ucrt64/include/errno.h:
-C:/msys64/ucrt64/include/c++/15.1.0/bits/specfun.h:
-C:/msys64/ucrt64/include/c++/15.1.0/bits/stl_algobase.h:
-C:/msys64/ucrt64/include/c++/15.1.0/bits/functexcept.h:
-C:/msys64/ucrt64/include/c++/15.1.0/bits/exception_defines.h:
-C:/msys64/ucrt64/include/c++/15.1.0/ext/numeric_traits.h:
-C:/msys64/ucrt64/include/c++/15.1.0/bits/stl_pair.h:
-C:/msys64/ucrt64/include/c++/15.1.0/bits/move.h:
-C:/msys64/ucrt64/include/c++/15.1.0/bits/utility.h:
-C:/msys64/ucrt64/include/c++/15.1.0/bits/stl_iterator_base_types.h:
-C:/msys64/ucrt64/include/c++/15.1.0/bits/stl_iterator_base_funcs.h:
-C:/msys64/ucrt64/include/c++/15.1.0/bits/concept_check.h:
-C:/msys64/ucrt64/include/c++/15.1.0/debug/assertions.h:
-C:/msys64/ucrt64/include/c++/15.1.0/bits/stl_iterator.h:
-C:/msys64/ucrt64/include/c++/15.1.0/bits/ptr_traits.h:
-C:/msys64/ucrt64/include/c++/15.1.0/debug/debug.h:
-C:/msys64/ucrt64/include/c++/15.1.0/bits/predefined_ops.h:
-C:/msys64/ucrt64/include/c++/15.1.0/bit:
-C:/msys64/ucrt64/include/c++/15.1.0/concepts:
-C:/msys64/ucrt64/include/c++/15.1.0/limits:
-C:/msys64/ucrt64/include/c++/15.1.0/tr1/gamma.tcc:
-C:/msys64/ucrt64/include/c++/15.1.0/tr1/special_function_util.h:
-C:/msys64/ucrt64/include/c++/15.1.0/tr1/bessel_function.tcc:
-C:/msys64/ucrt64/include/c++/15.1.0/tr1/beta_function.tcc:
-C:/msys64/ucrt64/include/c++/15.1.0/tr1/ell_integral.tcc:
-C:/msys64/ucrt64/include/c++/15.1.0/tr1/exp_integral.tcc:
-C:/msys64/ucrt64/include/c++/15.1.0/tr1/hypergeometric.tcc:
-C:/msys64/ucrt64/include/c++/15.1.0/tr1/legendre_function.tcc:
-C:/msys64/ucrt64/include/c++/15.1.0/tr1/modified_bessel_func.tcc:
-C:/msys64/ucrt64/include/c++/15.1.0/tr1/poly_hermite.tcc:
-C:/msys64/ucrt64/include/c++/15.1.0/tr1/poly_laguerre.tcc:
-C:/msys64/ucrt64/include/c++/15.1.0/tr1/riemann_zeta.tcc:
-C:/msys64/ucrt64/include/stdio.h:
-C:/msys64/ucrt64/include/corecrt_stdio_config.h:
-C:/msys64/ucrt64/include/_mingw_off_t.h:
-C:/msys64/ucrt64/include/swprintf.inl:
-C:/msys64/ucrt64/include/sec_api/stdio_s.h:
+/usr/include/c++/15/math.h:
+/usr/include/c++/15/cmath:
+/usr/include/c++/15/bits/requires_hosted.h:
+/usr/include/c++/15/x86_64-redhat-linux/bits/c++config.h:
+/usr/include/bits/wordsize.h:
+/usr/include/c++/15/x86_64-redhat-linux/bits/os_defines.h:
+/usr/include/features.h:
+/usr/include/features-time64.h:
+/usr/include/bits/timesize.h:
+/usr/include/sys/cdefs.h:
+/usr/include/bits/long-double.h:
+/usr/include/gnu/stubs.h:
+/usr/include/gnu/stubs-64.h:
+/usr/include/c++/15/x86_64-redhat-linux/bits/cpu_defines.h:
+/usr/include/c++/15/pstl/pstl_config.h:
+/usr/include/c++/15/bits/cpp_type_traits.h:
+/usr/include/c++/15/bits/version.h:
+/usr/include/c++/15/type_traits:
+/usr/include/c++/15/ext/type_traits.h:
+/usr/include/math.h:
+/usr/include/bits/libc-header-start.h:
+/usr/include/bits/types.h:
+/usr/include/bits/typesizes.h:
+/usr/include/bits/time64.h:
+/usr/include/bits/math-vector.h:
+/usr/include/bits/libm-simd-decl-stubs.h:
+/usr/include/bits/floatn.h:
+/usr/include/bits/floatn-common.h:
+/usr/include/bits/flt-eval-method.h:
+/usr/include/bits/fp-logb.h:
+/usr/include/bits/fp-fast.h:
+/usr/include/bits/mathcalls-macros.h:
+/usr/include/bits/mathcalls-helper-functions.h:
+/usr/include/bits/mathcalls.h:
+/usr/include/bits/mathcalls-narrow.h:
+/usr/include/bits/iscanonical.h:
+/usr/include/c++/15/bits/std_abs.h:
+/usr/include/stdlib.h:
+/usr/lib/gcc/x86_64-redhat-linux/15/include/stddef.h:
+/usr/include/bits/waitflags.h:
+/usr/include/bits/waitstatus.h:
+/usr/include/bits/types/locale_t.h:
+/usr/include/bits/types/__locale_t.h:
+/usr/include/sys/types.h:
+/usr/include/bits/types/clock_t.h:
+/usr/include/bits/types/clockid_t.h:
+/usr/include/bits/types/time_t.h:
+/usr/include/bits/types/timer_t.h:
+/usr/include/bits/stdint-intn.h:
+/usr/include/endian.h:
+/usr/include/bits/endian.h:
+/usr/include/bits/endianness.h:
+/usr/include/bits/byteswap.h:
+/usr/include/bits/uintn-identity.h:
+/usr/include/sys/select.h:
+/usr/include/bits/select.h:
+/usr/include/bits/types/sigset_t.h:
+/usr/include/bits/types/__sigset_t.h:
+/usr/include/bits/types/struct_timeval.h:
+/usr/include/bits/types/struct_timespec.h:
+/usr/include/bits/pthreadtypes.h:
+/usr/include/bits/thread-shared-types.h:
+/usr/include/bits/pthreadtypes-arch.h:
+/usr/include/bits/atomic_wide_counter.h:
+/usr/include/bits/struct_mutex.h:
+/usr/include/bits/struct_rwlock.h:
+/usr/include/alloca.h:
+/usr/include/bits/stdlib-float.h:
+/usr/include/c++/15/bits/specfun.h:
+/usr/include/c++/15/bits/stl_algobase.h:
+/usr/include/c++/15/bits/functexcept.h:
+/usr/include/c++/15/bits/exception_defines.h:
+/usr/include/c++/15/ext/numeric_traits.h:
+/usr/include/c++/15/bits/stl_pair.h:
+/usr/include/c++/15/bits/move.h:
+/usr/include/c++/15/bits/utility.h:
+/usr/include/c++/15/bits/stl_iterator_base_types.h:
+/usr/include/c++/15/bits/stl_iterator_base_funcs.h:
+/usr/include/c++/15/bits/concept_check.h:
+/usr/include/c++/15/debug/assertions.h:
+/usr/include/c++/15/bits/stl_iterator.h:
+/usr/include/c++/15/bits/ptr_traits.h:
+/usr/include/c++/15/debug/debug.h:
+/usr/include/c++/15/bits/predefined_ops.h:
+/usr/include/c++/15/bit:
+/usr/include/c++/15/concepts:
+/usr/include/c++/15/limits:
+/usr/include/c++/15/tr1/gamma.tcc:
+/usr/include/c++/15/tr1/special_function_util.h:
+/usr/include/c++/15/tr1/bessel_function.tcc:
+/usr/include/c++/15/tr1/beta_function.tcc:
+/usr/include/c++/15/tr1/ell_integral.tcc:
+/usr/include/c++/15/tr1/exp_integral.tcc:
+/usr/include/c++/15/tr1/hypergeometric.tcc:
+/usr/include/c++/15/tr1/legendre_function.tcc:
+/usr/include/c++/15/tr1/modified_bessel_func.tcc:
+/usr/include/c++/15/tr1/poly_hermite.tcc:
+/usr/include/c++/15/tr1/poly_laguerre.tcc:
+/usr/include/c++/15/tr1/riemann_zeta.tcc:
+/usr/include/stdio.h:
+/usr/include/bits/types/__fpos_t.h:
+/usr/include/bits/types/__mbstate_t.h:
+/usr/include/bits/types/__fpos64_t.h:
+/usr/include/bits/types/__FILE.h:
+/usr/include/bits/types/FILE.h:
+/usr/include/bits/types/struct_FILE.h:
+/usr/include/bits/types/cookie_io_functions_t.h:
+/usr/include/bits/stdio_lim.h:
 ../../src/Animais.hpp:
-../../src/Fila.hpp:
 ../../src/Lista.hpp:
-C:/msys64/ucrt64/include/c++/15.1.0/string:
-C:/msys64/ucrt64/include/c++/15.1.0/bits/stringfwd.h:
-C:/msys64/ucrt64/include/c++/15.1.0/bits/memoryfwd.h:
-C:/msys64/ucrt64/include/c++/15.1.0/bits/char_traits.h:
-C:/msys64/ucrt64/include/c++/15.1.0/bits/postypes.h:
-C:/msys64/ucrt64/include/c++/15.1.0/cwchar:
-C:/msys64/ucrt64/include/wchar.h:
-C:/msys64/ucrt64/include/corecrt_wctype.h:
-C:/msys64/ucrt64/include/_mingw_stat64.h:
-C:/msys64/ucrt64/include/sec_api/wchar_s.h:
-C:/msys64/ucrt64/include/c++/15.1.0/bits/allocator.h:
-C:/msys64/ucrt64/include/c++/15.1.0/x86_64-w64-mingw32/bits/c++allocator.h:
-C:/msys64/ucrt64/include/c++/15.1.0/bits/new_allocator.h:
-C:/msys64/ucrt64/include/c++/15.1.0/new:
-C:/msys64/ucrt64/include/c++/15.1.0/bits/exception.h:
-C:/msys64/ucrt64/include/c++/15.1.0/bits/localefwd.h:
-C:/msys64/ucrt64/include/c++/15.1.0/x86_64-w64-mingw32/bits/c++locale.h:
-C:/msys64/ucrt64/include/c++/15.1.0/clocale:
-C:/msys64/ucrt64/include/locale.h:
-C:/msys64/ucrt64/include/c++/15.1.0/iosfwd:
-C:/msys64/ucrt64/include/c++/15.1.0/cctype:
-C:/msys64/ucrt64/include/ctype.h:
-C:/msys64/ucrt64/include/c++/15.1.0/bits/ostream_insert.h:
-C:/msys64/ucrt64/include/c++/15.1.0/bits/cxxabi_forced.h:
-C:/msys64/ucrt64/include/c++/15.1.0/bits/stl_function.h:
-C:/msys64/ucrt64/include/c++/15.1.0/backward/binders.h:
-C:/msys64/ucrt64/include/c++/15.1.0/bits/refwrap.h:
-C:/msys64/ucrt64/include/c++/15.1.0/bits/invoke.h:
-C:/msys64/ucrt64/include/c++/15.1.0/bits/range_access.h:
-C:/msys64/ucrt64/include/c++/15.1.0/initializer_list:
-C:/msys64/ucrt64/include/c++/15.1.0/bits/basic_string.h:
-C:/msys64/ucrt64/include/c++/15.1.0/ext/alloc_traits.h:
-C:/msys64/ucrt64/include/c++/15.1.0/bits/alloc_traits.h:
-C:/msys64/ucrt64/include/c++/15.1.0/bits/stl_construct.h:
-C:/msys64/ucrt64/include/c++/15.1.0/string_view:
-C:/msys64/ucrt64/include/c++/15.1.0/bits/functional_hash.h:
-C:/msys64/ucrt64/include/c++/15.1.0/bits/hash_bytes.h:
-C:/msys64/ucrt64/include/c++/15.1.0/bits/string_view.tcc:
-C:/msys64/ucrt64/include/c++/15.1.0/ext/string_conversions.h:
-C:/msys64/ucrt64/include/c++/15.1.0/cstdlib:
-C:/msys64/ucrt64/include/c++/15.1.0/cstdio:
-C:/msys64/ucrt64/include/c++/15.1.0/cerrno:
-C:/msys64/ucrt64/include/c++/15.1.0/bits/charconv.h:
-C:/msys64/ucrt64/include/c++/15.1.0/bits/basic_string.tcc:
-C:/msys64/ucrt64/include/c++/15.1.0/bits/memory_resource.h:
-C:/msys64/ucrt64/include/c++/15.1.0/cstddef:
-C:/msys64/ucrt64/lib/gcc/x86_64-w64-mingw32/15.1.0/include/stddef.h:
-C:/msys64/ucrt64/include/stddef.h:
-C:/msys64/ucrt64/include/c++/15.1.0/bits/uses_allocator.h:
-C:/msys64/ucrt64/include/c++/15.1.0/bits/uses_allocator_args.h:
-C:/msys64/ucrt64/include/c++/15.1.0/tuple:
+/usr/include/c++/15/string:
+/usr/include/c++/15/bits/stringfwd.h:
+/usr/include/c++/15/bits/memoryfwd.h:
+/usr/include/c++/15/bits/char_traits.h:
+/usr/include/c++/15/bits/postypes.h:
+/usr/include/c++/15/cwchar:
+/usr/include/wchar.h:
+/usr/include/bits/wchar.h:
+/usr/include/bits/types/wint_t.h:
+/usr/include/bits/types/mbstate_t.h:
+/usr/include/c++/15/bits/allocator.h:
+/usr/include/c++/15/x86_64-redhat-linux/bits/c++allocator.h:
+/usr/include/c++/15/bits/new_allocator.h:
+/usr/include/c++/15/new:
+/usr/include/c++/15/bits/exception.h:
+/usr/include/c++/15/bits/localefwd.h:
+/usr/include/c++/15/x86_64-redhat-linux/bits/c++locale.h:
+/usr/include/c++/15/clocale:
+/usr/include/locale.h:
+/usr/include/bits/locale.h:
+/usr/include/c++/15/iosfwd:
+/usr/include/c++/15/cctype:
+/usr/include/ctype.h:
+/usr/include/c++/15/bits/ostream_insert.h:
+/usr/include/c++/15/bits/cxxabi_forced.h:
+/usr/include/c++/15/bits/stl_function.h:
+/usr/include/c++/15/backward/binders.h:
+/usr/include/c++/15/bits/refwrap.h:
+/usr/include/c++/15/bits/invoke.h:
+/usr/include/c++/15/bits/range_access.h:
+/usr/include/c++/15/initializer_list:
+/usr/include/c++/15/bits/basic_string.h:
+/usr/include/c++/15/ext/alloc_traits.h:
+/usr/include/c++/15/bits/alloc_traits.h:
+/usr/include/c++/15/bits/stl_construct.h:
+/usr/include/c++/15/string_view:
+/usr/include/c++/15/bits/functional_hash.h:
+/usr/include/c++/15/bits/hash_bytes.h:
+/usr/include/c++/15/bits/string_view.tcc:
+/usr/include/c++/15/ext/string_conversions.h:
+/usr/include/c++/15/cstdlib:
+/usr/include/c++/15/cstdio:
+/usr/include/c++/15/cerrno:
+/usr/include/errno.h:
+/usr/include/bits/errno.h:
+/usr/include/linux/errno.h:
+/usr/include/asm/errno.h:
+/usr/include/asm-generic/errno.h:
+/usr/include/asm-generic/errno-base.h:
+/usr/include/bits/types/error_t.h:
+/usr/include/c++/15/bits/charconv.h:
+/usr/include/c++/15/bits/basic_string.tcc:
+/usr/include/c++/15/bits/memory_resource.h:
+/usr/include/c++/15/cstddef:
+/usr/include/c++/15/bits/uses_allocator.h:
+/usr/include/c++/15/bits/uses_allocator_args.h:
+/usr/include/c++/15/tuple:
+../../src/Inimigos.hpp:
+../../src/Fila.hpp:
 ../../src/Pedidos.hpp:
+../../src/Loja_Animais.hpp:
