@@ -7,8 +7,9 @@
 #include "Pedidos.hpp"
 #include "Loja_Animais.hpp"
 #include "Inimigos.hpp" 
+#include "Aprimoramento.hpp"
 #include <string>
-#define vel 5.0f
+#define vel 10.0f
 #define MAX_ENEMIES 100
 #define MAX_BULLETS 50
 #define INTERVALO_PEDIDO 10.0f
@@ -49,9 +50,11 @@ int main() {
     Texture2D leitesprite = LoadTexture("sprites/leite.png");
     Texture2D ovosprite = LoadTexture("sprites/ovo.png");
     Texture2D galinhasprite = LoadTexture("sprites/galinha.png");
+    Texture2D galinheirosprite = LoadTexture("sprites/galinheirofrente.png");
     Texture2D ovelhasprite = LoadTexture("sprites/ovelha.png");
     Texture2D porcosprite = LoadTexture("sprites/porco.png");
     Texture2D vacasprite = LoadTexture("sprites/vaca.png");
+    Texture2D mapaTexture = LoadTexture("sprites/mapa.png");
     GameScreen currentScreen = LOGO;
     Enemy enemies[MAX_ENEMIES];
     Bullet bullets[MAX_BULLETS];
@@ -102,6 +105,7 @@ int main() {
     Rectangle bounds = {0, 0,mapaLargura ,mapaAltura};
     // Locais do Mapa
         Rectangle Galinheiro ={mapaLargura/5,mapaAltura-mapaAltura/5, 500, 400 };
+        Rectangle GalinheiroCima ={mapaLargura/5,mapaAltura-mapaAltura/5 -(350*4/5), 340, 350 };
         Rectangle Curral ={mapaLargura/5*3,mapaAltura-mapaAltura/5, 500, 400 };
         Rectangle Chiqueiro ={mapaLargura/5,0, 500, 400 };
         Rectangle CampodasOvelhas ={mapaLargura/5*3,0, 500, 400 };
@@ -124,7 +128,8 @@ int main() {
     Rectangle btnVoltar = { LarguraTela/2 - 100, AlturaTela/2 + 120, 200, 50 };
     // ---------------------------------------------------
 
-    //Alocação anti-dinâmica 🫠
+    //Inicialização de elementos
+    InicializarAprimoramentos(galinheirosprite, vacasprite, porcosprite, ovelhasprite);
     InicializarInimigos(enemies);
     InicializarBalas(bullets);
     InicializarBoss(boss);
@@ -255,6 +260,8 @@ int main() {
                 AtualizarBoss(boss, pos, bullets);
                 // ----------------------
 
+                AtualizarAprimoramentos(GalinhasCompradas, VacasCompradas, PorcosCompradas, OvelhasCompradas);
+
                 // ATIRAR NO CURSOR (Automático)
                 fireTimer += GetFrameTime()*freqTiro;
                 if (fireTimer >= fireRate) {
@@ -339,15 +346,37 @@ int main() {
                 ClearBackground(RAYWHITE);
                 
                 BeginMode2D(camera);
-                    DrawRectangleRec(bounds, LIGHTGRAY);
-                    DrawRectangleRec(Galinheiro, ORANGE);
+               
+                    float escala = 1.18f;
+                    Rectangle destRect = {
+                        bounds.x - (bounds.width * escala - bounds.width) / 2.0f,  // Centraliza no eixo X
+                        bounds.y - (bounds.height * escala - bounds.height) / 2.0f, // Centraliza no eixo Y
+                        bounds.width * escala, 
+                        bounds.height * escala
+                    };
+                    DrawTexturePro(mapaTexture, 
+                                  (Rectangle){0, 0, (float)mapaTexture.width, (float)mapaTexture.height},
+                                  destRect,
+                                  (Vector2){0, 0}, 0.0f, WHITE);
+                    DrawRectangleRec(Galinheiro, ORANGE);                   
                     DrawRectangleRec(Curral, BLUE);
                     DrawRectangleRec(Chiqueiro, BROWN);
                     DrawRectangleRec(CampodasOvelhas, GREEN);
                     DrawCircleV(pos, radius, RED);
+                    float escalag = 0.8f;
+                    Rectangle destRectG = {
+                        GalinheiroCima.x - (GalinheiroCima.width * escalag - GalinheiroCima.width) / 2.0f,  // Centraliza no eixo X
+                        GalinheiroCima.y - (GalinheiroCima.height * escalag - GalinheiroCima.height) / 2.0f, // Centraliza no eixo Y
+                        GalinheiroCima.width * escalag, 
+                        GalinheiroCima.height * escalag
+                    };
+                    DrawTexturePro(galinheirosprite, 
+                                  (Rectangle){0, 0, (float)galinheirosprite.width, (float)galinheirosprite.height},
+                                  destRectG,
+                                  (Vector2){0, 0}, 0.0f, WHITE);
 
                     for (int i = 0; i < MAX_ENEMIES; i++) {
-                        if (enemies[i].active) DrawCircleV(enemies[i].pos, 10, DARKPURPLE);
+                        if (enemies[i].active) DrawCircleV(enemies[i].pos, 20, DARKPURPLE);
                     }
                     
                     // --- DESENHO DO BOSS ---
@@ -358,7 +387,7 @@ int main() {
                     // -----------------------
                     
                     for (int b = 0; b < MAX_BULLETS; b++) {
-                        if (bullets[b].active) DrawCircleV(bullets[b].pos, 5, RED);
+                        if (bullets[b].active) DrawCircleV(bullets[b].pos, 10, RED);
                     }
 
                     for (int i = 0; i < MAX_ANIMALS; i++) {
@@ -385,7 +414,7 @@ int main() {
                         if (vacas[i].active){
 
                             Rectangle src = {0, 0, (float)vacasprite.width, (float)vacasprite.height};
-                            float scale = 0.08f;
+                            float scale = 0.15f;
                             float w = vacasprite.width * scale;
                             float h = vacasprite.height * scale;
                             // canto superior esquerdo
@@ -406,7 +435,7 @@ int main() {
                         if (porcos[i].active){
 
                             Rectangle src = {0, 0, (float)porcosprite.width, (float)porcosprite.height};
-                            float scale = 0.08f;
+                            float scale = 0.1f;
                             float w = porcosprite.width * scale;
                             float h = porcosprite.height * scale;
                             // canto superior esquerdo
@@ -427,7 +456,7 @@ int main() {
                         if (ovelhas[i].active){
 
                             Rectangle src = {0, 0, (float)ovelhasprite.width, (float)ovelhasprite.height};
-                            float scale = 0.08f;
+                            float scale = 0.11f;
                             float w = ovelhasprite.width * scale;
                             float h = ovelhasprite.height * scale;
                             // canto superior esquerdo
@@ -454,42 +483,72 @@ int main() {
                 // ---------------------------------------------------------------
 
                // Painel fixo à direita (fora do modo 2D)
-                
-                Color QuadradohoverColor = (Color){75, 175, 175,240};
-                Color QuadradonormalColor = (Color){50, 150, 150,255};
-                DrawRectangleRec(painelLateral, (Color){50, 50, 50,255});
+
+                Color QuadradohoverColor = (Color){75, 175, 175, 240};
+                Color QuadradonormalColor = (Color){50, 150, 150, 255};
+                // FUNDO DO PAINEL LATERAL (sempre visível)
+                DrawRectangleRec(painelLateral, (Color){50, 50, 50, 255});
+                // BOTÕES DO MENU SUPERIOR (sempre visíveis)
                 DrawRectangleRec(QuadradoPainelLateral1, CheckCollisionPointRec(mousePoint, QuadradoPainelLateral1) ? QuadradohoverColor : QuadradonormalColor);
-                                DrawText("Pedidos", QuadradoPainelLateral1.x + QuadradoPainelLateral1.width*0.13, 20, 20, WHITE);
+                DrawText("Pedidos", QuadradoPainelLateral1.x + QuadradoPainelLateral1.width*0.13, 20, 20, WHITE);
+
                 DrawRectangleRec(QuadradoPainelLateral2, CheckCollisionPointRec(mousePoint, QuadradoPainelLateral2) ? QuadradohoverColor : QuadradonormalColor);
-                                DrawText("Animais", QuadradoPainelLateral2.x + QuadradoPainelLateral2.width*0.17, 20, 20, WHITE);
+                DrawText("Animais", QuadradoPainelLateral2.x + QuadradoPainelLateral2.width*0.17, 20, 20, WHITE);
+
                 DrawRectangleRec(QuadradoPainelLateral3, CheckCollisionPointRec(mousePoint, QuadradoPainelLateral3) ? QuadradohoverColor : QuadradonormalColor);
-                                DrawText("Melhorias", QuadradoPainelLateral3.x + QuadradoPainelLateral3.width*0.01, 20, 20, WHITE);
+                DrawText("Melhorias", QuadradoPainelLateral3.x + QuadradoPainelLateral3.width*0.01, 20, 20, WHITE);
+
                 DrawRectangleRec(QuadradoPainelLateral4, CheckCollisionPointRec(mousePoint, QuadradoPainelLateral4) ? QuadradohoverColor : QuadradonormalColor);
-                                DrawText("Menu", QuadradoPainelLateral4.x + QuadradoPainelLateral4.width*0.25, 20, 20, WHITE);
-                                if (CheckCollisionPointRec(mousePoint,QuadradoPainelLateral1) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) Pedidos=true, Aprimoramento =false, animais=false, Menu=false;
-                                if (CheckCollisionPointRec(mousePoint,QuadradoPainelLateral2) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) Pedidos=false, Aprimoramento =false, animais=true, Menu=false;
-                                if (CheckCollisionPointRec(mousePoint,QuadradoPainelLateral3) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) Pedidos=false, Aprimoramento =true,animais =false, Menu=false;
-                                if (CheckCollisionPointRec(mousePoint,QuadradoPainelLateral4) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) Pedidos=false, Aprimoramento =false,animais =false, Menu=true;
-                                
-                                if (Pedidos) DrawPedidos(filaDePedidos, painelLateral, QuadradoPainelLateral1);
-                                
-                                if(Menu){
-                                   currentScreen = SETTINGS; 
-                                }
-                                if(animais){
-                                    // Fundo da tela de skins/Loja Animais
-                                     DrawSkinsScreen(painelLateral, painelLateralLargura, mousePoint, 
-                                                       VacasCompradas, GalinhasCompradas, PorcosCompradas, OvelhasCompradas,
-                                                       jogador.money, vacas, galinha, porcos, ovelhas,
-                                                       Curral, Galinheiro, Chiqueiro, CampodasOvelhas);
-                                    
-                                        // Lógica de compra
-                                     ProcessarCompraLoja(painelLateral, painelLateralLargura, mousePoint,
-                                                       jogador.money,
-                                                       VacasCompradas, GalinhasCompradas, PorcosCompradas, OvelhasCompradas,
-                                                       vacas, galinha, porcos, ovelhas,
-                                                       Curral, Galinheiro, Chiqueiro, CampodasOvelhas);
-                                    }
+                DrawText("Menu", QuadradoPainelLateral4.x + QuadradoPainelLateral4.width*0.25, 20, 20, WHITE);
+
+                // Lógica dos botões do menu
+                if (CheckCollisionPointRec(mousePoint,QuadradoPainelLateral1) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) 
+                    Pedidos=true, Aprimoramento=false, animais=false, Menu=false;
+                if (CheckCollisionPointRec(mousePoint,QuadradoPainelLateral2) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) 
+                    Pedidos=false, Aprimoramento=false, animais=true, Menu=false;
+                if (CheckCollisionPointRec(mousePoint,QuadradoPainelLateral3) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) 
+                    Pedidos=false, Aprimoramento=true, animais=false, Menu=false;
+                if (CheckCollisionPointRec(mousePoint,QuadradoPainelLateral4) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) 
+                    Pedidos=false, Aprimoramento=false, animais=false, Menu=true;
+
+                // CONTEÚDO DAS ABAS (começa depois dos botões)
+                float alturaConteudo = painelLateral.height - QuadradoPainelLateral1.height;
+                Rectangle areaConteudo = {
+                    painelLateral.x,
+                    painelLateral.y + QuadradoPainelLateral1.height,
+                    painelLateral.width,
+                    alturaConteudo
+                };
+
+                if (Pedidos) {
+                    DrawPedidos(filaDePedidos, areaConteudo, QuadradoPainelLateral1);
+                }
+
+                if(Menu){
+                    currentScreen = SETTINGS; 
+                }
+
+                if(animais){
+                    // Fundo da aba animais
+                    DrawRectangleRec(areaConteudo, (Color){30, 30, 40, 255});
+                    DrawSkinsScreen(areaConteudo, painelLateralLargura, mousePoint, 
+                                   VacasCompradas, GalinhasCompradas, PorcosCompradas, OvelhasCompradas,
+                                   jogador.money, vacas, galinha, porcos, ovelhas,
+                                   Curral, Galinheiro, Chiqueiro, CampodasOvelhas);
+                    
+                    ProcessarCompraLoja(areaConteudo, painelLateralLargura, mousePoint,
+                                       jogador.money,
+                                       VacasCompradas, GalinhasCompradas, PorcosCompradas, OvelhasCompradas,
+                                       vacas, galinha, porcos, ovelhas,
+                                       Curral, Galinheiro, Chiqueiro, CampodasOvelhas);
+                }
+
+if(Aprimoramento){
+    // Fundo da aba aprimoramentos
+    DrawRectangleRec(areaConteudo, (Color){30, 40, 30, 255});
+    DrawAprimoramentosScreen(areaConteudo, painelLateralLargura, mousePoint, jogador.money);
+    ProcessarCompraAprimoramentos(areaConteudo, painelLateralLargura, mousePoint, jogador.money);
+}
 
                 // ------------------- HUD RECURSOS (NOVA TABELA) -------------------
                 // Fundo semi-transparente
