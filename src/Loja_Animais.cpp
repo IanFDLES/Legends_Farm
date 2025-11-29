@@ -1,0 +1,203 @@
+#include "Loja_Animais.hpp"
+#include "raymath.h"
+#include "stdio.h"
+
+
+float precoVaca = 200.0f;
+float precoGalinha = 10.0f;
+float precoPorco = 80.0f;
+float precoOvelha = 60.0f;
+
+// Definições das variáveis de skins
+SkinAnimal skinVaca, skinGalinha, skinPorco, skinOvelha;
+
+void DrawSkinsScreen(Rectangle painelLateral, float painelLateralLargura, Vector2 mousePoint, 
+                    float& VacasCompradas, float& GalinhasCompradas, float& PorcosCompradas, float& OvelhasCompradas,
+                    float& jogadorMoney, Animal vacas[], Animal galinha[], Animal porcos[], Animal ovelhas[],
+                    Rectangle Curral, Rectangle Galinheiro, Rectangle Chiqueiro, Rectangle CampodasOvelhas) {
+    
+    // ... resto do código da função (igual ao anterior)
+    DrawRectangleRec(painelLateral, (Color){30, 30, 40, 255});
+    
+    // Título
+    DrawText("LOJA DE ANIMAIS", painelLateral.x + 20, 50, 30, YELLOW);
+    DrawText("Clique para comprar", painelLateral.x + 20, 85, 20, LIGHTGRAY);
+    
+    float startY = 120;
+    float espacamento = 120;
+    float cardWidth = painelLateralLargura - 40;
+    float cardHeight = 100;
+    
+    // Skin Vaca
+    Rectangle cardVaca = {painelLateral.x + 20, startY, cardWidth, cardHeight};
+    Color corCardVaca = CheckCollisionPointRec(mousePoint, cardVaca) ? 
+                       (jogadorMoney >= precoVaca ? (Color){100, 200, 100, 255} : (Color){200, 100, 100, 255}) : 
+                       (Color){60, 60, 70, 255};
+    
+    DrawRectangleRec(cardVaca, corCardVaca);
+    DrawRectangleLinesEx(cardVaca, 2, DARKGRAY);
+    
+    // Ícone da vaca
+    float iconScale = 0.06f;
+    float iconW = skinVaca.textura.width * iconScale;
+    float iconH = skinVaca.textura.height * iconScale;
+    DrawTexturePro(skinVaca.textura, 
+                  (Rectangle){0, 0, (float)skinVaca.textura.width, (float)skinVaca.textura.height},
+                  (Rectangle){cardVaca.x + 10, cardVaca.y + cardHeight/2 - iconH/2, iconW, iconH},
+                  (Vector2){0, 0}, 0, WHITE);
+    
+    // Texto da vaca
+    DrawText("VACA", cardVaca.x + iconW + 20, cardVaca.y + 15, 22, WHITE);
+    DrawText(TextFormat("Preço: $%.0f", precoVaca), cardVaca.x + iconW + 20, cardVaca.y + 45, 18, 
+            jogadorMoney >= precoVaca ? GREEN : RED);
+    DrawText(TextFormat("Compradas: %.0f", VacasCompradas), cardVaca.x + iconW + 20, cardVaca.y + 70, 16, LIGHTGRAY);
+    
+    // Skin Galinha
+    Rectangle cardGalinha = {painelLateral.x + 20, startY + espacamento, cardWidth, cardHeight};
+    Color corCardGalinha = CheckCollisionPointRec(mousePoint, cardGalinha) ? 
+                          (jogadorMoney >= precoGalinha ? (Color){100, 200, 100, 255} : (Color){200, 100, 100, 255}) : 
+                          (Color){60, 60, 70, 255};
+    
+    DrawRectangleRec(cardGalinha, corCardGalinha);
+    DrawRectangleLinesEx(cardGalinha, 2, DARKGRAY);
+    
+    // Ícone da galinha
+    iconScale = 0.06f;
+    iconW = skinGalinha.textura.width * iconScale;
+    iconH = skinGalinha.textura.height * iconScale;
+    DrawTexturePro(skinGalinha.textura, 
+                  (Rectangle){0, 0, (float)skinGalinha.textura.width, (float)skinGalinha.textura.height},
+                  (Rectangle){cardGalinha.x + 10, cardGalinha.y + cardHeight/2 - iconH/2, iconW, iconH},
+                  (Vector2){0, 0}, 0, WHITE);
+    
+    // Texto da galinha
+    DrawText("GALINHA", cardGalinha.x + iconW + 20, cardGalinha.y + 15, 22, WHITE);
+    DrawText(TextFormat("Preço: $%.0f", precoGalinha), cardGalinha.x + iconW + 20, cardGalinha.y + 45, 18, 
+            jogadorMoney >= precoGalinha ? GREEN : RED);
+    DrawText(TextFormat("Compradas: %.0f", GalinhasCompradas), cardGalinha.x + iconW + 20, cardGalinha.y + 70, 16, LIGHTGRAY);
+    
+    // Skin Porco
+    Rectangle cardPorco = {painelLateral.x + 20, startY + espacamento * 2, cardWidth, cardHeight};
+    Color corCardPorco = CheckCollisionPointRec(mousePoint, cardPorco) ? 
+                        (jogadorMoney >= precoPorco ? (Color){100, 200, 100, 255} : (Color){200, 100, 100, 255}) : 
+                        (Color){60, 60, 70, 255};
+    
+    DrawRectangleRec(cardPorco, corCardPorco);
+    DrawRectangleLinesEx(cardPorco, 2, DARKGRAY);
+    
+    // Ícone do porco
+    iconScale = 0.06f;
+    iconW = skinPorco.textura.width * iconScale;
+    iconH = skinPorco.textura.height * iconScale;
+    DrawTexturePro(skinPorco.textura, 
+                  (Rectangle){0, 0, (float)skinPorco.textura.width, (float)skinPorco.textura.height},
+                  (Rectangle){cardPorco.x + 10, cardPorco.y + cardHeight/2 - iconH/2, iconW, iconH},
+                  (Vector2){0, 0}, 0, WHITE);
+    
+    // Texto do porco
+    DrawText("PORCO", cardPorco.x + iconW + 20, cardPorco.y + 15, 22, WHITE);
+    DrawText(TextFormat("Preço: $%.0f", precoPorco), cardPorco.x + iconW + 20, cardPorco.y + 45, 18, 
+            jogadorMoney >= precoPorco ? GREEN : RED);
+    DrawText(TextFormat("Compradas: %.0f", PorcosCompradas), cardPorco.x + iconW + 20, cardPorco.y + 70, 16, LIGHTGRAY);
+    
+    // Skin Ovelha
+    Rectangle cardOvelha = {painelLateral.x + 20, startY + espacamento * 3, cardWidth, cardHeight};
+    Color corCardOvelha = CheckCollisionPointRec(mousePoint, cardOvelha) ? 
+                         (jogadorMoney >= precoOvelha ? (Color){100, 200, 100, 255} : (Color){200, 100, 100, 255}) : 
+                         (Color){60, 60, 70, 255};
+    
+    DrawRectangleRec(cardOvelha, corCardOvelha);
+    DrawRectangleLinesEx(cardOvelha, 2, DARKGRAY);
+    
+    // Ícone da ovelha
+    iconScale = 0.06f;
+    iconW = skinOvelha.textura.width * iconScale;
+    iconH = skinOvelha.textura.height * iconScale;
+    DrawTexturePro(skinOvelha.textura, 
+                  (Rectangle){0, 0, (float)skinOvelha.textura.width, (float)skinOvelha.textura.height},
+                  (Rectangle){cardOvelha.x + 10, cardOvelha.y + cardHeight/2 - iconH/2, iconW, iconH},
+                  (Vector2){0, 0}, 0, WHITE);
+    
+    // Texto da ovelha
+    DrawText("OVELHA", cardOvelha.x + iconW + 20, cardOvelha.y + 15, 22, WHITE);
+    DrawText(TextFormat("Preço: $%.0f", precoOvelha), cardOvelha.x + iconW + 20, cardOvelha.y + 45, 18, 
+            jogadorMoney >= precoOvelha ? GREEN : RED);
+    DrawText(TextFormat("Compradas: %.0f", OvelhasCompradas), cardOvelha.x + iconW + 20, cardOvelha.y + 70, 16, LIGHTGRAY);
+}
+
+
+
+void ProcessarCompraLoja(Rectangle painelLateral, float painelLateralLargura, Vector2 mousePoint,
+                        float& jogadorMoney, 
+                        float& VacasCompradas, float& GalinhasCompradas, float& PorcosCompradas, float& OvelhasCompradas,
+                        Animal vacas[], Animal galinhas[], Animal porcos[], Animal ovelhas[],
+                        Rectangle Curral, Rectangle Galinheiro, Rectangle Chiqueiro, Rectangle CampodasOvelhas) {
+    
+    if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+        float startY = 120;
+        float espacamento = 120;
+        float cardWidth = painelLateralLargura - 40;
+        float cardHeight = 100;
+    
+        Rectangle cardVaca = {painelLateral.x + 20, startY, cardWidth, cardHeight};
+        Rectangle cardGalinha = {painelLateral.x + 20, startY + espacamento, cardWidth, cardHeight};
+        Rectangle cardPorco = {painelLateral.x + 20, startY + espacamento * 2, cardWidth, cardHeight};
+        Rectangle cardOvelha = {painelLateral.x + 20, startY + espacamento * 3, cardWidth, cardHeight};
+    
+        // Comprar Vaca
+        if (CheckCollisionPointRec(mousePoint, cardVaca) && jogadorMoney >= precoVaca && VacasCompradas < MAX_ANIMALS) {
+            jogadorMoney -= precoVaca;
+            VacasCompradas++;
+            for (int i = 0; i < MAX_ANIMALS; i++) {
+                if (!vacas[i].active) {
+                    InicializarAnimal(&vacas[i], TipoAnimal(2), 
+                                    (Vector2){Curral.x + GetRandomValue(0, Curral.width), 
+                                             Curral.y + GetRandomValue(0, Curral.height)});
+                    break;
+                }
+            }
+        }
+    
+        // Comprar Galinha
+        if (CheckCollisionPointRec(mousePoint, cardGalinha) && jogadorMoney >= precoGalinha && GalinhasCompradas < MAX_ANIMALS) {
+            jogadorMoney -= precoGalinha;
+            GalinhasCompradas++;
+            for (int i = 0; i < MAX_ANIMALS; i++) {
+                if (!galinhas[i].active) {
+                    InicializarAnimal(&galinhas[i], TipoAnimal(2), 
+                                    (Vector2){Galinheiro.x + GetRandomValue(0, Galinheiro.width), 
+                                             Galinheiro.y + GetRandomValue(0, Galinheiro.height)});
+                    break;
+                }
+            }
+        }
+    
+        // Comprar Porco
+        if (CheckCollisionPointRec(mousePoint, cardPorco) && jogadorMoney >= precoPorco && PorcosCompradas < MAX_ANIMALS) {
+            jogadorMoney -= precoPorco;
+            PorcosCompradas++;
+            for (int i = 0; i < MAX_ANIMALS; i++) {
+                if (!porcos[i].active) {
+                    InicializarAnimal(&porcos[i], TipoAnimal(2), 
+                                    (Vector2){Chiqueiro.x + GetRandomValue(0, Chiqueiro.width), 
+                                             Chiqueiro.y + GetRandomValue(0, Chiqueiro.height)});
+                    break;
+                }
+            }
+        }
+    
+        // Comprar Ovelha
+        if (CheckCollisionPointRec(mousePoint, cardOvelha) && jogadorMoney >= precoOvelha && OvelhasCompradas < MAX_ANIMALS) {
+            jogadorMoney -= precoOvelha;
+            OvelhasCompradas++;
+            for (int i = 0; i < MAX_ANIMALS; i++) {
+                if (!ovelhas[i].active) {
+                    InicializarAnimal(&ovelhas[i], TipoAnimal(2), 
+                                    (Vector2){CampodasOvelhas.x + GetRandomValue(0, CampodasOvelhas.width), 
+                                             CampodasOvelhas.y + GetRandomValue(0, CampodasOvelhas.height)});
+                    break;
+                }
+            }
+        }
+    }
+}
