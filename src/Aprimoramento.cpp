@@ -174,7 +174,7 @@ static void TrySpawnAnimals(Animal arr[], Rectangle area, int count, TipoAnimal 
     for (int k = 0; k < count; k++) {
         for (int i = 0; i < MAX_ANIMALS; i++) {
             if (!arr[i].active) {
-                Vector2 pos = { area.x + GetRandomValue(0, area.width), area.y + GetRandomValue(0, area.height) };
+                Vector2 pos = { area.x + (float)GetRandomValue(0, (int)area.width), area.y + (float)GetRandomValue(0, (int)area.height) };
                 InicializarAnimal(&arr[i], tipo, pos);
                 break; // spawned one, go to next
             }

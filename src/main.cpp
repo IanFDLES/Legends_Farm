@@ -62,10 +62,29 @@ int main() {
     Animal porcos[MAX_ANIMALS];
     Animal ovelhas[MAX_ANIMALS];
     Boss boss;
-    skinVaca = {vacasprite, "VACA", precoVaca, 0, true};
-    skinGalinha = {galinhasprite, "GALINHA", precoGalinha, 0, true};
-    skinPorco = {porcosprite, "PORCO", precoPorco, 0, true};
-    skinOvelha = {ovelhasprite, "OVELHA", precoOvelha, 0, true};
+    skinVaca.textura = vacasprite;
+    skinVaca.nome = "VACA";
+    skinVaca.preco = precoVaca;
+    skinVaca.quantidade = 0;
+    skinVaca.compravel = true;
+
+    skinGalinha.textura = galinhasprite;
+    skinGalinha.nome = "GALINHA";
+    skinGalinha.preco = precoGalinha;
+    skinGalinha.quantidade = 0;
+    skinGalinha.compravel = true;
+
+    skinPorco.textura = porcosprite;
+    skinPorco.nome = "PORCO";
+    skinPorco.preco = precoPorco;
+    skinPorco.quantidade = 0;
+    skinPorco.compravel = true;
+
+    skinOvelha.textura = ovelhasprite;
+    skinOvelha.nome = "OVELHA";
+    skinOvelha.preco = precoOvelha;
+    skinOvelha.quantidade = 0;
+    skinOvelha.compravel = true;
     bool bossSpawned =false;
 
     SetTargetFPS(60);

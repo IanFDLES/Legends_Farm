@@ -149,8 +149,8 @@ void ProcessarCompraLoja(Rectangle areaConteudo, float painelLateralLargura, Vec
                 if (!vacas[i].active) {
                     // initialize purchased cow with correct type
                     InicializarAnimal(&vacas[i], VACA, 
-                                    (Vector2){Curral.x + GetRandomValue(0, Curral.width), 
-                                             Curral.y + GetRandomValue(0, Curral.height)});
+                                    (Vector2){Curral.x + (float)GetRandomValue(0, (int)Curral.width), 
+                                             Curral.y + (float)GetRandomValue(0, (int)Curral.height)});
                     break;
                 }
             }
@@ -163,8 +163,8 @@ void ProcessarCompraLoja(Rectangle areaConteudo, float painelLateralLargura, Vec
             for (int i = 0; i < MAX_ANIMALS; i++) {
                 if (!galinhas[i].active) {
                     InicializarAnimal(&galinhas[i], GALINHA, 
-                                    (Vector2){Galinheiro.x + GetRandomValue(0, Galinheiro.width), 
-                                             Galinheiro.y + GetRandomValue(0, Galinheiro.height)});
+                                    (Vector2){Galinheiro.x + (float)GetRandomValue(0, (int)Galinheiro.width), 
+                                             Galinheiro.y + (float)GetRandomValue(0, (int)Galinheiro.height)});
                     break;
                 }
             }
@@ -177,8 +177,8 @@ void ProcessarCompraLoja(Rectangle areaConteudo, float painelLateralLargura, Vec
             for (int i = 0; i < MAX_ANIMALS; i++) {
                 if (!porcos[i].active) {
                     InicializarAnimal(&porcos[i], PORCO, 
-                                    (Vector2){Chiqueiro.x + GetRandomValue(0, Chiqueiro.width), 
-                                             Chiqueiro.y + GetRandomValue(0, Chiqueiro.height)});
+                                    (Vector2){Chiqueiro.x + (float)GetRandomValue(0, (int)Chiqueiro.width), 
+                                             Chiqueiro.y + (float)GetRandomValue(0, (int)Chiqueiro.height)});
                     break;
                 }
             }
@@ -191,8 +191,8 @@ void ProcessarCompraLoja(Rectangle areaConteudo, float painelLateralLargura, Vec
             for (int i = 0; i < MAX_ANIMALS; i++) {
                 if (!ovelhas[i].active) {
                     InicializarAnimal(&ovelhas[i], OVELHA, 
-                                    (Vector2){CampodasOvelhas.x + GetRandomValue(0, CampodasOvelhas.width), 
-                                             CampodasOvelhas.y + GetRandomValue(0, CampodasOvelhas.height)});
+                                    (Vector2){CampodasOvelhas.x + (float)GetRandomValue(0, (int)CampodasOvelhas.width), 
+                                             CampodasOvelhas.y + (float)GetRandomValue(0, (int)CampodasOvelhas.height)});
                     break;
                 }
             }

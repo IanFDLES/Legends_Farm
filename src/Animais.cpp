@@ -61,6 +61,7 @@ void InicializarAnimal(Animal *a, TipoAnimal tipo, Vector2 posInicial) {
     a->pos = posInicial;
     a->active = true;
     a->podeProduzir = true;
+    a->processo = 0.0f;
     a->dir = (Vector2){0, 0};
 
     switch (tipo) {
@@ -113,8 +114,8 @@ void InicializarAnimal(Animal *a, TipoAnimal tipo, Vector2 posInicial) {
     for (int i = 0; i < MAX_ANIMALS; i++) galinha[i].active = false, galinha[i].processo = 0;
     for (int i = 0; i < GalinhasAtuais; i++) {
         InicializarAnimal(&galinha[i], GALINHA, 
-                         (Vector2){Galinheiro.x + GetRandomValue(0, Galinheiro.width), 
-                                  Galinheiro.y + GetRandomValue(0, Galinheiro.height)});
+                         (Vector2){Galinheiro.x + GetRandomValue(0, (int)Galinheiro.width), 
+                                  Galinheiro.y + GetRandomValue(0, (int)Galinheiro.height)});
     }
     
     // Inicializar vacas
@@ -122,8 +123,8 @@ void InicializarAnimal(Animal *a, TipoAnimal tipo, Vector2 posInicial) {
     for (int i = 0; i < VacasAtuais; i++) {
         // Use the correct enum value for cows (VACA)
         InicializarAnimal(&vacas[i], VACA, 
-                         (Vector2){Curral.x + GetRandomValue(0, Curral.width), 
-                                  Curral.y + GetRandomValue(0, Curral.height)});
+                         (Vector2){Curral.x + GetRandomValue(0, (int)Curral.width), 
+                                  Curral.y + GetRandomValue(0, (int)Curral.height)});
     }
     
     // Inicializar porcos
@@ -131,8 +132,8 @@ void InicializarAnimal(Animal *a, TipoAnimal tipo, Vector2 posInicial) {
     for (int i = 0; i < PorcosAtuais; i++) {
         // Use the correct enum value for pigs (PORCO)
         InicializarAnimal(&porcos[i], PORCO, 
-                         (Vector2){Chiqueiro.x + GetRandomValue(0, Chiqueiro.width), 
-                                  Chiqueiro.y + GetRandomValue(0, Chiqueiro.height)});
+                         (Vector2){Chiqueiro.x + GetRandomValue(0, (int)Chiqueiro.width), 
+                                  Chiqueiro.y + GetRandomValue(0, (int)Chiqueiro.height)});
     }
     
     // Inicializar ovelhas
@@ -140,8 +141,8 @@ void InicializarAnimal(Animal *a, TipoAnimal tipo, Vector2 posInicial) {
     for (int i = 0; i < OvelhasAtuais; i++) {
         // Use the correct enum value for sheep (OVELHA)
         InicializarAnimal(&ovelhas[i], OVELHA, 
-                         (Vector2){CampodasOvelhas.x + GetRandomValue(0, CampodasOvelhas.width), 
-                                  CampodasOvelhas.y + GetRandomValue(0, CampodasOvelhas.height)});
+                         (Vector2){CampodasOvelhas.x + GetRandomValue(0, (int)CampodasOvelhas.width), 
+                                  CampodasOvelhas.y + GetRandomValue(0, (int)CampodasOvelhas.height)});
     }
     }
 
@@ -154,8 +155,8 @@ void InicializarAnimal(Animal *a, TipoAnimal tipo, Vector2 posInicial) {
 
             // 1. Movimento aleatório
             if (Vector2Length(galinhas[i].dir) == 0 || GetRandomValue(0, 100) < 2) {
-                float destinoX = GetRandomValue(galinheiro.x, galinheiro.x + galinheiro.width);
-                float destinoY = GetRandomValue(galinheiro.y, galinheiro.y + galinheiro.height);
+                float destinoX = (float)GetRandomValue((int)galinheiro.x, (int)(galinheiro.x + galinheiro.width));
+                float destinoY = (float)GetRandomValue((int)galinheiro.y, (int)(galinheiro.y + galinheiro.height));
                 Vector2 destino = (Vector2){destinoX, destinoY};
                 galinhas[i].dir = Vector2Normalize(Vector2Subtract(destino, galinhas[i].pos));
             }
@@ -201,8 +202,8 @@ void InicializarAnimal(Animal *a, TipoAnimal tipo, Vector2 posInicial) {
 
             // 1. Movimento aleatório
             if (Vector2Length(vacas[i].dir) == 0 || GetRandomValue(0, 100) < 2) {
-                float destinoX = GetRandomValue(curral.x, curral.x + curral.width);
-                float destinoY = GetRandomValue(curral.y, curral.y + curral.height);
+                float destinoX = (float)GetRandomValue((int)curral.x, (int)(curral.x + curral.width));
+                float destinoY = (float)GetRandomValue((int)curral.y, (int)(curral.y + curral.height));
                 Vector2 destino = (Vector2){destinoX, destinoY};
                 vacas[i].dir = Vector2Normalize(Vector2Subtract(destino, vacas[i].pos));
             }
@@ -250,8 +251,8 @@ void InicializarAnimal(Animal *a, TipoAnimal tipo, Vector2 posInicial) {
 
             // Movimento aleatório
             if (Vector2Length(porcos[i].dir) == 0 || GetRandomValue(0, 100) < 2) {
-                float destinoX = GetRandomValue(chiqueiro.x, chiqueiro.x + chiqueiro.width);
-                float destinoY = GetRandomValue(chiqueiro.y, chiqueiro.y + chiqueiro.height);
+                float destinoX = (float)GetRandomValue((int)chiqueiro.x, (int)(chiqueiro.x + chiqueiro.width));
+                float destinoY = (float)GetRandomValue((int)chiqueiro.y, (int)(chiqueiro.y + chiqueiro.height));
                 Vector2 destino = (Vector2){destinoX, destinoY};
                 porcos[i].dir = Vector2Normalize(Vector2Subtract(destino, porcos[i].pos));
             }
@@ -292,8 +293,8 @@ void InicializarAnimal(Animal *a, TipoAnimal tipo, Vector2 posInicial) {
 
             // Movimento aleatório
             if (Vector2Length(ovelhas[i].dir) == 0 || GetRandomValue(0, 100) < 2) {
-                float destinoX = GetRandomValue(campoOvelhas.x, campoOvelhas.x + campoOvelhas.width);
-                float destinoY = GetRandomValue(campoOvelhas.y, campoOvelhas.y + campoOvelhas.height);
+                float destinoX = (float)GetRandomValue((int)campoOvelhas.x, (int)(campoOvelhas.x + campoOvelhas.width));
+                float destinoY = (float)GetRandomValue((int)campoOvelhas.y, (int)(campoOvelhas.y + campoOvelhas.height));
                 Vector2 destino = (Vector2){destinoX, destinoY};
                 ovelhas[i].dir = Vector2Normalize(Vector2Subtract(destino, ovelhas[i].pos));
             }
