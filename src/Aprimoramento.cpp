@@ -1,4 +1,5 @@
 #include "Aprimoramento.hpp"
+#include "Animais.hpp"
 
 
 // Definição das construções
@@ -168,14 +169,29 @@ void ProcessarCompraAprimoramentos(Rectangle areaConteudo, float painelLateralLa
     }
 }
 
-void AtualizarAprimoramentos(float& GalinhasCompradas, float& VacasCompradas, 
-                            float& PorcosCompradas, float& OvelhasCompradas) {
+// Helper: Try to spawn 'count' animals of the given type into the provided array
+static void TrySpawnAnimals(Animal arr[], Rectangle area, int count, TipoAnimal tipo) {
+    for (int k = 0; k < count; k++) {
+        for (int i = 0; i < MAX_ANIMALS; i++) {
+            if (!arr[i].active) {
+                Vector2 pos = { area.x + GetRandomValue(0, area.width), area.y + GetRandomValue(0, area.height) };
+                InicializarAnimal(&arr[i], tipo, pos);
+                break; // spawned one, go to next
+            }
+        }
+    }
+}
+
+void AtualizarAprimoramentos(int& GalinhasAtuais, int& VacasAtuais, 
+                            int& PorcosAtuais, int& OvelhasAtuais,
+                            Animal galinhas[], Animal vacas[], Animal porcos[], Animal ovelhas[],
+                            Rectangle Galinheiro, Rectangle Curral, Rectangle Chiqueiro, Rectangle CampodasOvelhas) {
     
     float tempoAtual = GetTime();
     
     // Atualiza cada construção
     ConstrucaoAprimoravel* construcoes[] = {&galinheiro, &curral, &chiqueiro, &abrigo};
-    float* animaisComprados[] = {&GalinhasCompradas, &VacasCompradas, &PorcosCompradas, &OvelhasCompradas};
+    int* animaisComprados[] = {&GalinhasAtuais, &VacasAtuais, &PorcosAtuais, &OvelhasAtuais};
     
     for (int c = 0; c < 4; c++) {
         ConstrucaoAprimoravel* construcao = construcoes[c];
@@ -186,8 +202,22 @@ void AtualizarAprimoramentos(float& GalinhasCompradas, float& VacasCompradas,
             if (*animaisComprados[c] + animaisParaAdicionar <= MAX_ANIMALS) {
                 *animaisComprados[c] += animaisParaAdicionar;
                 construcao->tempoUltimaProducao = tempoAtual;
-                
-                // Aqui você pode adicionar efeitos visuais ou sonoros
+
+                // Actually initialize (spawn) animals in the matching array so they appear in-game
+                switch (c) {
+                    case 0: // galinheiro -> galinhas
+                        TrySpawnAnimals(galinhas, Galinheiro, animaisParaAdicionar, GALINHA);
+                        break;
+                    case 1: // curral -> vacas
+                        TrySpawnAnimals(vacas, Curral, animaisParaAdicionar, VACA);
+                        break;
+                    case 2: // chiqueiro -> porcos
+                        TrySpawnAnimals(porcos, Chiqueiro, animaisParaAdicionar, PORCO);
+                        break;
+                    case 3: // abrigo -> ovelhas
+                        TrySpawnAnimals(ovelhas, CampodasOvelhas, animaisParaAdicionar, OVELHA);
+                        break;
+                }
             }
         }
     }

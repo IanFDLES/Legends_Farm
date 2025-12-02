@@ -35,8 +35,12 @@ void DrawAprimoramentosScreen(Rectangle painelLateral, float painelLateralLargur
                              float& jogadorMoney);
 void ProcessarCompraAprimoramentos(Rectangle painelLateral, float painelLateralLargura, Vector2 mousePoint,
                                   float& jogadorMoney);
-void AtualizarAprimoramentos(float& GalinhasCompradas, float& VacasCompradas, 
-                            float& PorcosCompradas, float& OvelhasCompradas);
+// Now updates both counters AND initializes actual Animal entries so generated animals
+// appear in-game. Arrays and their spawn rects are required so new animals can be created.
+void AtualizarAprimoramentos(int& GalinhasAtuais, int& VacasAtuais, 
+                            int& PorcosAtuais, int& OvelhasAtuais,
+                            Animal galinhas[], Animal vacas[], Animal porcos[], Animal ovelhas[],
+                            Rectangle Galinheiro, Rectangle Curral, Rectangle Chiqueiro, Rectangle CampodasOvelhas);
 
 // Funções de efeitos (para você implementar os efeitos específicos)
 void AplicarEfeitoNivel1(int tipoConstrucao); // 0=Galinheiro, 1=Curral, 2=Chiqueiro, 3=Abrigo

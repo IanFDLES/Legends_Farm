@@ -16,9 +16,7 @@
 #define velTiro 10.0f
 #define freqTiro 1.2f
 
-
 int framesCounter = 0;
-
 
 int pedidosConcluidos = 18;
 
@@ -41,7 +39,6 @@ Jogador jogador;
 
 void InicializarAnimal(Animal *a, TipoAnimal tipo, Vector2 posInicial);
 
-
 int main() {
     InitWindow(0, 0, "Legends Farm");
     Texture2D logo = LoadTexture("resources/logo.png");
@@ -55,6 +52,8 @@ int main() {
     Texture2D porcosprite = LoadTexture("sprites/porco.png");
     Texture2D vacasprite = LoadTexture("sprites/vaca.png");
     Texture2D mapaTexture = LoadTexture("sprites/mapa.png");
+    // protagonist/player sprite
+    Texture2D jogadorSprite = LoadTexture("sprites/protagonista.png");
     GameScreen currentScreen = LOGO;
     Enemy enemies[MAX_ENEMIES];
     Bullet bullets[MAX_BULLETS];
@@ -69,11 +68,10 @@ int main() {
     skinOvelha = {ovelhasprite, "OVELHA", precoOvelha, 0, true};
     bool bossSpawned =false;
 
-
-
     SetTargetFPS(60);
-    jogador  = {1000,1000};
+    jogador  = {1000,1000000};
     criarL(jogador.recursos);
+    InicializarRecursos();
     fila filaDePedidos;
     criarF(filaDePedidos);
     float LarguraTela = GetScreenWidth();
@@ -134,7 +132,7 @@ int main() {
     InicializarBalas(bullets);
     InicializarBoss(boss);
     InicializarAnimaisComprados(galinha, vacas, porcos, ovelhas,
-                           GalinhasCompradas, VacasCompradas, PorcosCompradas, OvelhasCompradas,
+                           GalinhasAtuais, VacasAtuais, PorcosAtuais, OvelhasAtuais,
                            Galinheiro, Curral, Chiqueiro, CampodasOvelhas);
 
 //  TUDO ANTES DESSE COMENTÁRIO É O SETUP
@@ -242,11 +240,14 @@ int main() {
                         }
                     }
                 }
-                //Comportamento Galinha,vaca,ovelha,porco
+                 //Comportamento Galinha,vaca,ovelha,porco
                         AtualizarTodosAnimais(galinha, vacas, porcos, ovelhas,
-                     GalinhasCompradas, VacasCompradas, PorcosCompradas, OvelhasCompradas,
+                     GalinhasAtuais, VacasAtuais, PorcosAtuais, OvelhasAtuais,
                      Galinheiro, Curral, Chiqueiro, CampodasOvelhas,
                      pos, enemies, MAX_ENEMIES, jogador.recursos);
+
+                 // Atualizar recursos no chão: coleta automática quando o jogador passa por cima
+                 AtualizarRecursos(pos, jogador.recursos);
                 // ---------------------------------------------------
 
                 // 🔥 INIMIGOS E TIROS
@@ -260,7 +261,9 @@ int main() {
                 AtualizarBoss(boss, pos, bullets);
                 // ----------------------
 
-                AtualizarAprimoramentos(GalinhasCompradas, VacasCompradas, PorcosCompradas, OvelhasCompradas);
+                AtualizarAprimoramentos(GalinhasAtuais, VacasAtuais, PorcosAtuais, OvelhasAtuais,
+                                        galinha, vacas, porcos, ovelhas,
+                                        Galinheiro, Curral, Chiqueiro, CampodasOvelhas);
 
                 // ATIRAR NO CURSOR (Automático)
                 fireTimer += GetFrameTime()*freqTiro;
@@ -296,6 +299,22 @@ int main() {
                             }
                         }
                         
+                        // --- COLISÃO COM PORCOS (dropar bacon ao serem atingidos) ---
+                        for (int p = 0; p < MAX_ANIMALS; p++) {
+                            if (porcos[p].active && Vector2Distance(bullets[b].pos, porcos[p].pos) < 20) {
+                                bullets[b].active = false;
+                                // Only spawn bacon if this pig is allowed to produce on hit
+                                if (porcos[p].podeProduzir) {
+                                    SpawnResource(R_BACON, porcos[p].pos, 3, 60.0f);
+                                    porcos[p].podeProduzir = false; // prevent repeated drops
+                                }
+                                // Pig dies after dropping bacon
+                                porcos[p].active = false;
+                                if (PorcosAtuais > 0) PorcosAtuais--;
+                                break;
+                            }
+                        }
+
                         // --- COLISÃO COM O BOSS ---
                         if (boss.active && Vector2Distance(bullets[b].pos, boss.pos) < boss.radius) {
                             bullets[b].active = false;
@@ -362,7 +381,18 @@ int main() {
                     DrawRectangleRec(Curral, BLUE);
                     DrawRectangleRec(Chiqueiro, BROWN);
                     DrawRectangleRec(CampodasOvelhas, GREEN);
-                    DrawCircleV(pos, radius, RED);
+                    // draw player as sprite (protagonista.png)
+                    if (jogadorSprite.id != 0) {
+                        Rectangle srcP = {0, 0, (float)jogadorSprite.width, (float)jogadorSprite.height};
+                        float pscale = 0.12f;
+                        float pw = jogadorSprite.width * pscale;
+                        float ph = jogadorSprite.height * pscale;
+                        Rectangle destP = { pos.x - pw/2.0f, pos.y - ph/2.0f, pw, ph };
+                        Vector2 originP = {0, 0};
+                        DrawTexturePro(jogadorSprite, srcP, destP, originP, 0.0f, WHITE);
+                    } else {
+                        DrawCircleV(pos, radius, RED);
+                    }
                     float escalag = 0.8f;
                     Rectangle destRectG = {
                         GalinheiroCima.x - (GalinheiroCima.width * escalag - GalinheiroCima.width) / 2.0f,  // Centraliza no eixo X
@@ -410,6 +440,7 @@ int main() {
                             //DrawCircleV(galinha[i].pos, galinha[i].tamanho, galinha[i].cor);
                         } 
                     }
+                    // NOTE: ground resources rendering moved after animals so they show above animals
                     for (int i = 0; i < MAX_ANIMALS; i++) {
                         if (vacas[i].active){
 
@@ -473,13 +504,40 @@ int main() {
                             //DrawCircleV(ovelhas[i].pos,ovelhas[i].tamanho, ovelhas[i].cor);
                         } 
                     }
+                    // draw ground resources (after animals so items show on top)
+                    for (int r = 0; r < MAX_RESOURCES; r++) {
+                        if (!resources[r].active) continue;
+                        Texture2D *tex = NULL;
+                        switch (resources[r].type) {
+                            case R_OVO:  tex = &ovosprite; break;
+                            case R_LEITE: tex = &leitesprite; break;
+                            case R_LA:   tex = &lasprite; break;
+                            case R_BACON: tex = &baconsprite; break;
+                        }
+                        if (tex != NULL) {
+                            float s = 0.06f; // small icon on map
+                            Rectangle src = {0,0,(float)tex->width,(float)tex->height};
+                            Rectangle dest = { resources[r].pos.x - (tex->width * s)/2.0f, resources[r].pos.y - (tex->height * s)/2.0f, tex->width * s, tex->height * s };
+                            Vector2 origin = {0,0};
+                            DrawTexturePro(*tex, src, dest, origin, 0.0f, WHITE);
+                        }
+                    }
 
                 EndMode2D();
             //Elementos de Menu Estático
             
                 // --- ALTERAÇÃO 3: Desenhar painel de pedidos no topo esquerdo ---
                 DrawRectangle(10, 10, 220, 50, (Color){0, 0, 0, 150}); // Fundo semi-transparente
-                DrawText(TextFormat("Pedidos: %d / 20", pedidosConcluidos), 20, 25, 20, WHITE);
+                // center the "Pedidos: X / 20" text inside the 10,10,220x50 rect
+                {
+                    char labelBuf[64];
+                    sprintf(labelBuf, "Pedidos: %d / 20", pedidosConcluidos);
+                    int fontSizeHud = 20;
+                    int textW = MeasureText(labelBuf, fontSizeHud);
+                    float tx = 10 + 220.0f/2.0f - textW/2.0f;
+                    float ty = 10 + 50.0f/2.0f - fontSizeHud/2.0f;
+                    DrawText(labelBuf, (int)tx, (int)ty, fontSizeHud, WHITE);
+                }
                 // ---------------------------------------------------------------
 
                // Painel fixo à direita (fora do modo 2D)
@@ -490,16 +548,44 @@ int main() {
                 DrawRectangleRec(painelLateral, (Color){50, 50, 50, 255});
                 // BOTÕES DO MENU SUPERIOR (sempre visíveis)
                 DrawRectangleRec(QuadradoPainelLateral1, CheckCollisionPointRec(mousePoint, QuadradoPainelLateral1) ? QuadradohoverColor : QuadradonormalColor);
-                DrawText("Pedidos", QuadradoPainelLateral1.x + QuadradoPainelLateral1.width*0.13, 20, 20, WHITE);
+                {
+                    const char *label = "Pedidos";
+                    int fontSizeBtn = 20;
+                    int textW = MeasureText(label, fontSizeBtn);
+                    float tx = QuadradoPainelLateral1.x + QuadradoPainelLateral1.width/2.0f - textW/2.0f;
+                    float ty = QuadradoPainelLateral1.y + QuadradoPainelLateral1.height/2.0f - fontSizeBtn/2.0f;
+                    DrawText(label, (int)tx, (int)ty, fontSizeBtn, WHITE);
+                }
 
                 DrawRectangleRec(QuadradoPainelLateral2, CheckCollisionPointRec(mousePoint, QuadradoPainelLateral2) ? QuadradohoverColor : QuadradonormalColor);
-                DrawText("Animais", QuadradoPainelLateral2.x + QuadradoPainelLateral2.width*0.17, 20, 20, WHITE);
+                {
+                    const char *label = "Animais";
+                    int fontSizeBtn = 20;
+                    int textW = MeasureText(label, fontSizeBtn);
+                    float tx = QuadradoPainelLateral2.x + QuadradoPainelLateral2.width/2.0f - textW/2.0f;
+                    float ty = QuadradoPainelLateral2.y + QuadradoPainelLateral2.height/2.0f - fontSizeBtn/2.0f;
+                    DrawText(label, (int)tx, (int)ty, fontSizeBtn, WHITE);
+                }
 
                 DrawRectangleRec(QuadradoPainelLateral3, CheckCollisionPointRec(mousePoint, QuadradoPainelLateral3) ? QuadradohoverColor : QuadradonormalColor);
-                DrawText("Melhorias", QuadradoPainelLateral3.x + QuadradoPainelLateral3.width*0.01, 20, 20, WHITE);
+                {
+                    const char *label = "Melhorias";
+                    int fontSizeBtn = 20;
+                    int textW = MeasureText(label, fontSizeBtn);
+                    float tx = QuadradoPainelLateral3.x + QuadradoPainelLateral3.width/2.0f - textW/2.0f;
+                    float ty = QuadradoPainelLateral3.y + QuadradoPainelLateral3.height/2.0f - fontSizeBtn/2.0f;
+                    DrawText(label, (int)tx, (int)ty, fontSizeBtn, WHITE);
+                }
 
                 DrawRectangleRec(QuadradoPainelLateral4, CheckCollisionPointRec(mousePoint, QuadradoPainelLateral4) ? QuadradohoverColor : QuadradonormalColor);
-                DrawText("Menu", QuadradoPainelLateral4.x + QuadradoPainelLateral4.width*0.25, 20, 20, WHITE);
+                {
+                    const char *label = "Menu";
+                    int fontSizeBtn = 20;
+                    int textW = MeasureText(label, fontSizeBtn);
+                    float tx = QuadradoPainelLateral4.x + QuadradoPainelLateral4.width/2.0f - textW/2.0f;
+                    float ty = QuadradoPainelLateral4.y + QuadradoPainelLateral4.height/2.0f - fontSizeBtn/2.0f;
+                    DrawText(label, (int)tx, (int)ty, fontSizeBtn, WHITE);
+                }
 
                 // Lógica dos botões do menu
                 if (CheckCollisionPointRec(mousePoint,QuadradoPainelLateral1) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) 
@@ -532,13 +618,13 @@ int main() {
                     // Fundo da aba animais
                     DrawRectangleRec(areaConteudo, (Color){30, 30, 40, 255});
                     DrawSkinsScreen(areaConteudo, painelLateralLargura, mousePoint, 
-                                   VacasCompradas, GalinhasCompradas, PorcosCompradas, OvelhasCompradas,
+                                   VacasAtuais, GalinhasAtuais, PorcosAtuais, OvelhasAtuais,
                                    jogador.money, vacas, galinha, porcos, ovelhas,
                                    Curral, Galinheiro, Chiqueiro, CampodasOvelhas);
                     
                     ProcessarCompraLoja(areaConteudo, painelLateralLargura, mousePoint,
                                        jogador.money,
-                                       VacasCompradas, GalinhasCompradas, PorcosCompradas, OvelhasCompradas,
+                                       VacasAtuais, GalinhasAtuais, PorcosAtuais, OvelhasAtuais,
                                        vacas, galinha, porcos, ovelhas,
                                        Curral, Galinheiro, Chiqueiro, CampodasOvelhas);
                 }

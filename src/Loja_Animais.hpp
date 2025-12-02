@@ -24,14 +24,14 @@ extern SkinAnimal skinVaca, skinGalinha, skinPorco, skinOvelha;
 
 // Declaração da função
 void DrawSkinsScreen(Rectangle painelLateral, float painelLateralLargura, Vector2 mousePoint, 
-                    float& VacasCompradas, float& GalinhasCompradas, float& PorcosCompradas, float& OvelhasCompradas,
+                    int& VacasAtuais, int& GalinhasAtuais, int& PorcosAtuais, int& OvelhasAtuais,
                     float& jogadorMoney, Animal vacas[], Animal galinha[], Animal porcos[], Animal ovelhas[],
                     Rectangle Curral, Rectangle Galinheiro, Rectangle Chiqueiro, Rectangle CampodasOvelhas);
 
 
 void ProcessarCompraLoja(Rectangle painelLateral, float painelLateralLargura, Vector2 mousePoint,
                         float& jogadorMoney, 
-                        float& VacasCompradas, float& GalinhasCompradas, float& PorcosCompradas, float& OvelhasCompradas,
+                        int& VacasAtuais, int& GalinhasAtuais, int& PorcosAtuais, int& OvelhasAtuais,
                         Animal vacas[], Animal galinhas[], Animal porcos[], Animal ovelhas[],
                         Rectangle Curral, Rectangle Galinheiro, Rectangle Chiqueiro, Rectangle CampodasOvelhas);                    
 #endif

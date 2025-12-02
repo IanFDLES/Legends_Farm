@@ -7,11 +7,28 @@
 #define VEL_PROD (1.0f / 60.0f)
 
 
-extern float GalinhasCompradas;
-extern float VacasCompradas ;
-extern float PorcosCompradas ;
-extern float OvelhasCompradas ;
+#include <stdint.h>
+extern int GalinhasAtuais;
+extern int VacasAtuais;
+extern int PorcosAtuais;
+extern int OvelhasAtuais;
 #define MAX_ANIMALS 10
+// resources on ground (dropped by animals)
+#define MAX_RESOURCES 64
+typedef enum { R_OVO = 0, R_LEITE, R_LA, R_BACON } ResourceType;
+
+typedef struct {
+    Vector2 pos;
+    bool active;
+    ResourceType type;
+    float ttl; // seconds until despawn; 0 -> no ttl
+} Resource;
+
+extern Resource resources[MAX_RESOURCES];
+
+void InicializarRecursos();
+bool SpawnResource(ResourceType tipo, Vector2 pos, int quantidade, float ttl);
+void AtualizarRecursos(Vector2 playerPos, lista& recursosJogador);
  enum TipoAnimal{
     VACA = 1,
     GALINHA,
@@ -33,7 +50,7 @@ typedef struct {
 } Animal;
     void InicializarAnimal(Animal *a, TipoAnimal tipo, Vector2 posInicial);
     void InicializarAnimaisComprados(Animal galinha[], Animal vacas[], Animal porcos[], Animal ovelhas[],
-                                float GalinhasCompradas, float VacasCompradas, float PorcosCompradas, float OvelhasCompradas,
+                                int GalinhasAtuais, int VacasAtuais, int PorcosAtuais, int OvelhasAtuais,
                                 Rectangle Galinheiro, Rectangle Curral, Rectangle Chiqueiro, Rectangle CampodasOvelhas);
     void ComportamentoGalinha(Animal galinhas[], int quantidade, Rectangle galinheiro, Vector2 posicaoJogador, Enemy inimigos[], int maxInimigos, lista& recursosJogador);
     void ComportamentoVaca(Animal vacas[], int quantidade, Rectangle curral, Vector2 posicaoJogador, Enemy inimigos[], int maxInimigos, lista& recursosJogador);

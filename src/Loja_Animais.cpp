@@ -12,7 +12,7 @@ float precoOvelha = 60.0f;
 SkinAnimal skinVaca, skinGalinha, skinPorco, skinOvelha;
 
 void DrawSkinsScreen(Rectangle areaConteudo, float painelLateralLargura, Vector2 mousePoint,
-                    float& VacasCompradas, float& GalinhasCompradas, float& PorcosCompradas, float& OvelhasCompradas,
+                    int& VacasAtuais, int& GalinhasAtuais, int& PorcosAtuais, int& OvelhasAtuais,
                     float& jogadorMoney, Animal vacas[], Animal galinhas[], Animal porcos[], Animal ovelhas[],
                     Rectangle Curral, Rectangle Galinheiro, Rectangle Chiqueiro, Rectangle CampodasOvelhas) {
     
@@ -47,7 +47,7 @@ void DrawSkinsScreen(Rectangle areaConteudo, float painelLateralLargura, Vector2
     DrawText("VACA", cardVaca.x + iconW + 20, cardVaca.y + 15, 22, WHITE);
     DrawText(TextFormat("Preço: $%.0f", precoVaca), cardVaca.x + iconW + 20, cardVaca.y + 45, 18, 
             jogadorMoney >= precoVaca ? GREEN : RED);
-    DrawText(TextFormat("Compradas: %.0f", VacasCompradas), cardVaca.x + iconW + 20, cardVaca.y + 70, 16, LIGHTGRAY);
+    DrawText(TextFormat("Atuais: %d", VacasAtuais), cardVaca.x + iconW + 20, cardVaca.y + 70, 16, LIGHTGRAY);
     
     // Skin Galinha
     Rectangle cardGalinha = {areaConteudo.x + 20, startY + espacamento, cardWidth, cardHeight};
@@ -71,7 +71,7 @@ void DrawSkinsScreen(Rectangle areaConteudo, float painelLateralLargura, Vector2
     DrawText("GALINHA", cardGalinha.x + iconW + 20, cardGalinha.y + 15, 22, WHITE);
     DrawText(TextFormat("Preço: $%.0f", precoGalinha), cardGalinha.x + iconW + 20, cardGalinha.y + 45, 18, 
             jogadorMoney >= precoGalinha ? GREEN : RED);
-    DrawText(TextFormat("Compradas: %.0f", GalinhasCompradas), cardGalinha.x + iconW + 20, cardGalinha.y + 70, 16, LIGHTGRAY);
+    DrawText(TextFormat("Atuais: %d", GalinhasAtuais), cardGalinha.x + iconW + 20, cardGalinha.y + 70, 16, LIGHTGRAY);
     
     // Skin Porco
     Rectangle cardPorco = {areaConteudo.x + 20, startY + espacamento * 2, cardWidth, cardHeight};
@@ -95,7 +95,7 @@ void DrawSkinsScreen(Rectangle areaConteudo, float painelLateralLargura, Vector2
     DrawText("PORCO", cardPorco.x + iconW + 20, cardPorco.y + 15, 22, WHITE);
     DrawText(TextFormat("Preço: $%.0f", precoPorco), cardPorco.x + iconW + 20, cardPorco.y + 45, 18, 
             jogadorMoney >= precoPorco ? GREEN : RED);
-    DrawText(TextFormat("Compradas: %.0f", PorcosCompradas), cardPorco.x + iconW + 20, cardPorco.y + 70, 16, LIGHTGRAY);
+    DrawText(TextFormat("Atuais: %d", PorcosAtuais), cardPorco.x + iconW + 20, cardPorco.y + 70, 16, LIGHTGRAY);
     
     // Skin Ovelha
     Rectangle cardOvelha = {areaConteudo.x + 20, startY + espacamento * 3, cardWidth, cardHeight};
@@ -119,14 +119,14 @@ void DrawSkinsScreen(Rectangle areaConteudo, float painelLateralLargura, Vector2
     DrawText("OVELHA", cardOvelha.x + iconW + 20, cardOvelha.y + 15, 22, WHITE);
     DrawText(TextFormat("Preço: $%.0f", precoOvelha), cardOvelha.x + iconW + 20, cardOvelha.y + 45, 18, 
             jogadorMoney >= precoOvelha ? GREEN : RED);
-    DrawText(TextFormat("Compradas: %.0f", OvelhasCompradas), cardOvelha.x + iconW + 20, cardOvelha.y + 70, 16, LIGHTGRAY);
+    DrawText(TextFormat("Atuais: %d", OvelhasAtuais), cardOvelha.x + iconW + 20, cardOvelha.y + 70, 16, LIGHTGRAY);
 }
 
 
 
 void ProcessarCompraLoja(Rectangle areaConteudo, float painelLateralLargura, Vector2 mousePoint,
                         float& jogadorMoney, 
-                        float& VacasCompradas, float& GalinhasCompradas, float& PorcosCompradas, float& OvelhasCompradas,
+                        int& VacasAtuais, int& GalinhasAtuais, int& PorcosAtuais, int& OvelhasAtuais,
                         Animal vacas[], Animal galinhas[], Animal porcos[], Animal ovelhas[],
                         Rectangle Curral, Rectangle Galinheiro, Rectangle Chiqueiro, Rectangle CampodasOvelhas) {
     
@@ -142,12 +142,13 @@ void ProcessarCompraLoja(Rectangle areaConteudo, float painelLateralLargura, Vec
         Rectangle cardOvelha = {areaConteudo.x + 20, startY + espacamento * 3, cardWidth, cardHeight};
         
         // Comprar Vaca
-        if (CheckCollisionPointRec(mousePoint, cardVaca) && jogadorMoney >= precoVaca && VacasCompradas < MAX_ANIMALS) {
+        if (CheckCollisionPointRec(mousePoint, cardVaca) && jogadorMoney >= precoVaca && VacasAtuais < MAX_ANIMALS) {
             jogadorMoney -= precoVaca;
-            VacasCompradas++;
+            VacasAtuais++;
             for (int i = 0; i < MAX_ANIMALS; i++) {
                 if (!vacas[i].active) {
-                    InicializarAnimal(&vacas[i], TipoAnimal(2), 
+                    // initialize purchased cow with correct type
+                    InicializarAnimal(&vacas[i], VACA, 
                                     (Vector2){Curral.x + GetRandomValue(0, Curral.width), 
                                              Curral.y + GetRandomValue(0, Curral.height)});
                     break;
@@ -156,12 +157,12 @@ void ProcessarCompraLoja(Rectangle areaConteudo, float painelLateralLargura, Vec
         }
         
         // Comprar Galinha
-        if (CheckCollisionPointRec(mousePoint, cardGalinha) && jogadorMoney >= precoGalinha && GalinhasCompradas < MAX_ANIMALS) {
+        if (CheckCollisionPointRec(mousePoint, cardGalinha) && jogadorMoney >= precoGalinha && GalinhasAtuais < MAX_ANIMALS) {
             jogadorMoney -= precoGalinha;
-            GalinhasCompradas++;
+            GalinhasAtuais++;
             for (int i = 0; i < MAX_ANIMALS; i++) {
                 if (!galinhas[i].active) {
-                    InicializarAnimal(&galinhas[i], TipoAnimal(2), 
+                    InicializarAnimal(&galinhas[i], GALINHA, 
                                     (Vector2){Galinheiro.x + GetRandomValue(0, Galinheiro.width), 
                                              Galinheiro.y + GetRandomValue(0, Galinheiro.height)});
                     break;
@@ -170,12 +171,12 @@ void ProcessarCompraLoja(Rectangle areaConteudo, float painelLateralLargura, Vec
         }
         
         // Comprar Porco
-        if (CheckCollisionPointRec(mousePoint, cardPorco) && jogadorMoney >= precoPorco && PorcosCompradas < MAX_ANIMALS) {
+        if (CheckCollisionPointRec(mousePoint, cardPorco) && jogadorMoney >= precoPorco && PorcosAtuais < MAX_ANIMALS) {
             jogadorMoney -= precoPorco;
-            PorcosCompradas++;
+            PorcosAtuais++;
             for (int i = 0; i < MAX_ANIMALS; i++) {
                 if (!porcos[i].active) {
-                    InicializarAnimal(&porcos[i], TipoAnimal(2), 
+                    InicializarAnimal(&porcos[i], PORCO, 
                                     (Vector2){Chiqueiro.x + GetRandomValue(0, Chiqueiro.width), 
                                              Chiqueiro.y + GetRandomValue(0, Chiqueiro.height)});
                     break;
@@ -184,12 +185,12 @@ void ProcessarCompraLoja(Rectangle areaConteudo, float painelLateralLargura, Vec
         }
         
         // Comprar Ovelha
-        if (CheckCollisionPointRec(mousePoint, cardOvelha) && jogadorMoney >= precoOvelha && OvelhasCompradas < MAX_ANIMALS) {
+        if (CheckCollisionPointRec(mousePoint, cardOvelha) && jogadorMoney >= precoOvelha && OvelhasAtuais < MAX_ANIMALS) {
             jogadorMoney -= precoOvelha;
-            OvelhasCompradas++;
+            OvelhasAtuais++;
             for (int i = 0; i < MAX_ANIMALS; i++) {
                 if (!ovelhas[i].active) {
-                    InicializarAnimal(&ovelhas[i], TipoAnimal(2), 
+                    InicializarAnimal(&ovelhas[i], OVELHA, 
                                     (Vector2){CampodasOvelhas.x + GetRandomValue(0, CampodasOvelhas.width), 
                                              CampodasOvelhas.y + GetRandomValue(0, CampodasOvelhas.height)});
                     break;
