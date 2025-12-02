@@ -19,7 +19,7 @@ void InicializarAnimal(Animal *a, TipoAnimal tipo, Vector2 posInicial) {
             a->life = 30;
             a->VelocidadeProducao = 2.0f;
             a->cor = BROWN; 
-            a->tamanho =  15.0f;
+            a->tamanho =  45.0f;
             break;
 
         case GALINHA:
@@ -27,7 +27,7 @@ void InicializarAnimal(Animal *a, TipoAnimal tipo, Vector2 posInicial) {
             a->life = 10;
             a->VelocidadeProducao = 8.0f;
             a->cor = YELLOW; 
-            a->tamanho =  12.0f;
+            a->tamanho =  20.0f;
             break;
 
         case PORCO:
@@ -35,7 +35,7 @@ void InicializarAnimal(Animal *a, TipoAnimal tipo, Vector2 posInicial) {
             a->life = 20;
             a->VelocidadeProducao = 1.5f;
             a->cor = PINK;
-            a->tamanho =  10.0f;
+            a->tamanho =  30.0f;
             break;
 
         case OVELHA:
@@ -43,7 +43,7 @@ void InicializarAnimal(Animal *a, TipoAnimal tipo, Vector2 posInicial) {
             a->life = 18;
             a->VelocidadeProducao = 1.2f;
             a->cor = LIGHTGRAY;
-            a->tamanho =  8.0f; 
+            a->tamanho =  24.0f; 
             break;
 
         default:
@@ -96,7 +96,7 @@ void InicializarAnimal(Animal *a, TipoAnimal tipo, Vector2 posInicial) {
     void ComportamentoGalinha(Animal galinhas[], int quantidade, Rectangle galinheiro, Vector2 posicaoJogador, Enemy inimigos[], int maxInimigos, lista& recursosJogador) {
         for (int i = 0; i < quantidade; i++) {
             if (!galinhas[i].active) continue;
-        
+
             // 1. Movimento aleatório
             if (Vector2Length(galinhas[i].dir) == 0 || GetRandomValue(0, 100) < 2) {
                 float destinoX = GetRandomValue(galinheiro.x, galinheiro.x + galinheiro.width);
@@ -104,19 +104,19 @@ void InicializarAnimal(Animal *a, TipoAnimal tipo, Vector2 posInicial) {
                 Vector2 destino = (Vector2){destinoX, destinoY};
                 galinhas[i].dir = Vector2Normalize(Vector2Subtract(destino, galinhas[i].pos));
             }
-        
+
             // 2. Movimentação
             galinhas[i].pos = Vector2Add(
                 galinhas[i].pos, 
                 Vector2Scale(galinhas[i].dir, galinhas[i].speed * GetFrameTime())
             );
-        
+
             // 3. Limites do galinheiro
             if (galinhas[i].pos.x < galinheiro.x) galinhas[i].pos.x = galinheiro.x;
             if (galinhas[i].pos.x > galinheiro.x + galinheiro.width) galinhas[i].pos.x = galinheiro.x + galinheiro.width;
             if (galinhas[i].pos.y < galinheiro.y) galinhas[i].pos.y = galinheiro.y;
             if (galinhas[i].pos.y > galinheiro.y + galinheiro.height) galinhas[i].pos.y = galinheiro.y + galinheiro.height;
-        
+
             // 4. Colisão com inimigos
             for (int e = 0; e < maxInimigos; e++) {
                 if (!inimigos[e].active) continue;
@@ -128,7 +128,7 @@ void InicializarAnimal(Animal *a, TipoAnimal tipo, Vector2 posInicial) {
                     }
                 }
             }
-        
+
             // 5. Produção de ovo
             galinhas[i].processo += VEL_PROD * galinhas[i].VelocidadeProducao;
             if (Vector2Distance(galinhas[i].pos, posicaoJogador) < 200 && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
@@ -139,11 +139,11 @@ void InicializarAnimal(Animal *a, TipoAnimal tipo, Vector2 posInicial) {
             }
         }
     }
-    
+
     void ComportamentoVaca(Animal vacas[], int quantidade, Rectangle curral, Vector2 posicaoJogador, Enemy inimigos[], int maxInimigos, lista& recursosJogador) {
         for (int i = 0; i < quantidade; i++) {
             if (!vacas[i].active) continue;
-        
+
             // 1. Movimento aleatório
             if (Vector2Length(vacas[i].dir) == 0 || GetRandomValue(0, 100) < 2) {
                 float destinoX = GetRandomValue(curral.x, curral.x + curral.width);
@@ -151,19 +151,19 @@ void InicializarAnimal(Animal *a, TipoAnimal tipo, Vector2 posInicial) {
                 Vector2 destino = (Vector2){destinoX, destinoY};
                 vacas[i].dir = Vector2Normalize(Vector2Subtract(destino, vacas[i].pos));
             }
-        
+
             // 2. Movimentação
             vacas[i].pos = Vector2Add(
                 vacas[i].pos, 
                 Vector2Scale(vacas[i].dir, vacas[i].speed * GetFrameTime())
             );
-        
+
             // 3. Limites do curral
             if (vacas[i].pos.x < curral.x) vacas[i].pos.x = curral.x;
             if (vacas[i].pos.x > curral.x + curral.width) vacas[i].pos.x = curral.x + curral.width;
             if (vacas[i].pos.y < curral.y) vacas[i].pos.y = curral.y;
             if (vacas[i].pos.y > curral.y + curral.height) vacas[i].pos.y = curral.y + curral.height;
-        
+
             // 4. Colisão com inimigos
             for (int e = 0; e < maxInimigos; e++) {
                 if (!inimigos[e].active) continue;
@@ -175,7 +175,7 @@ void InicializarAnimal(Animal *a, TipoAnimal tipo, Vector2 posInicial) {
                     }
                 }
             }
-        
+
             // 5. Produção de leite
             vacas[i].processo += VEL_PROD * vacas[i].VelocidadeProducao;
             if (Vector2Distance(vacas[i].pos, posicaoJogador) < 200 && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
@@ -186,13 +186,13 @@ void InicializarAnimal(Animal *a, TipoAnimal tipo, Vector2 posInicial) {
             }
         }
     }
-    
+
     // Implemente similarmente para ComportamentoPorco e ComportamentoOvelha...
-    
+
     void ComportamentoPorco(Animal porcos[], int quantidade, Rectangle chiqueiro, Vector2 posicaoJogador, Enemy inimigos[], int maxInimigos, lista& recursosJogador) {
         for (int i = 0; i < quantidade; i++) {
             if (!porcos[i].active) continue;
-        
+
             // Movimento aleatório
             if (Vector2Length(porcos[i].dir) == 0 || GetRandomValue(0, 100) < 2) {
                 float destinoX = GetRandomValue(chiqueiro.x, chiqueiro.x + chiqueiro.width);
@@ -200,19 +200,19 @@ void InicializarAnimal(Animal *a, TipoAnimal tipo, Vector2 posInicial) {
                 Vector2 destino = (Vector2){destinoX, destinoY};
                 porcos[i].dir = Vector2Normalize(Vector2Subtract(destino, porcos[i].pos));
             }
-        
+
             // Movimentação
             porcos[i].pos = Vector2Add(
                 porcos[i].pos, 
                 Vector2Scale(porcos[i].dir, porcos[i].speed * GetFrameTime())
             );
-        
+
             // Limites
             if (porcos[i].pos.x < chiqueiro.x) porcos[i].pos.x = chiqueiro.x;
             if (porcos[i].pos.x > chiqueiro.x + chiqueiro.width) porcos[i].pos.x = chiqueiro.x + chiqueiro.width;
             if (porcos[i].pos.y < chiqueiro.y) porcos[i].pos.y = chiqueiro.y;
             if (porcos[i].pos.y > chiqueiro.y + chiqueiro.height) porcos[i].pos.y = chiqueiro.y + chiqueiro.height;
-        
+
             // Colisão com inimigos
             for (int e = 0; e < maxInimigos; e++) {
                 if (!inimigos[e].active) continue;
@@ -223,7 +223,7 @@ void InicializarAnimal(Animal *a, TipoAnimal tipo, Vector2 posInicial) {
                     }
                 }
             }
-        
+
             // Produção de bacon (abate)
             porcos[i].processo += VEL_PROD * porcos[i].VelocidadeProducao;
             if (Vector2Distance(porcos[i].pos, posicaoJogador) < 200 && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
@@ -236,11 +236,11 @@ void InicializarAnimal(Animal *a, TipoAnimal tipo, Vector2 posInicial) {
             }
         }
     }
-    
+
     void ComportamentoOvelha(Animal ovelhas[], int quantidade, Rectangle campoOvelhas, Vector2 posicaoJogador, Enemy inimigos[], int maxInimigos, lista& recursosJogador) {
         for (int i = 0; i < quantidade; i++) {
             if (!ovelhas[i].active) continue;
-        
+
             // Movimento aleatório
             if (Vector2Length(ovelhas[i].dir) == 0 || GetRandomValue(0, 100) < 2) {
                 float destinoX = GetRandomValue(campoOvelhas.x, campoOvelhas.x + campoOvelhas.width);
@@ -248,19 +248,19 @@ void InicializarAnimal(Animal *a, TipoAnimal tipo, Vector2 posInicial) {
                 Vector2 destino = (Vector2){destinoX, destinoY};
                 ovelhas[i].dir = Vector2Normalize(Vector2Subtract(destino, ovelhas[i].pos));
             }
-        
+
             // Movimentação
             ovelhas[i].pos = Vector2Add(
                 ovelhas[i].pos, 
                 Vector2Scale(ovelhas[i].dir, ovelhas[i].speed * GetFrameTime())
             );
-        
+
             // Limites
             if (ovelhas[i].pos.x < campoOvelhas.x) ovelhas[i].pos.x = campoOvelhas.x;
             if (ovelhas[i].pos.x > campoOvelhas.x + campoOvelhas.width) ovelhas[i].pos.x = campoOvelhas.x + campoOvelhas.width;
             if (ovelhas[i].pos.y < campoOvelhas.y) ovelhas[i].pos.y = campoOvelhas.y;
             if (ovelhas[i].pos.y > campoOvelhas.y + campoOvelhas.height) ovelhas[i].pos.y = campoOvelhas.y + campoOvelhas.height;
-        
+
             // Colisão com inimigos
             for (int e = 0; e < maxInimigos; e++) {
                 if (!inimigos[e].active) continue;
@@ -271,7 +271,7 @@ void InicializarAnimal(Animal *a, TipoAnimal tipo, Vector2 posInicial) {
                     }
                 }
             }
-        
+
             // Produção de lã
             ovelhas[i].processo += VEL_PROD * ovelhas[i].VelocidadeProducao;
             if (Vector2Distance(ovelhas[i].pos, posicaoJogador) < 200 && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
@@ -282,7 +282,7 @@ void InicializarAnimal(Animal *a, TipoAnimal tipo, Vector2 posInicial) {
             }
         }
     }
-    
+
     void AtualizarTodosAnimais(Animal galinhas[], Animal vacas[], Animal porcos[], Animal ovelhas[],
                               int qtdGalinhas, int qtdVacas, int qtdPorcos, int qtdOvelhas,
                               Rectangle galinheiro, Rectangle curral, Rectangle chiqueiro, Rectangle campoOvelhas,

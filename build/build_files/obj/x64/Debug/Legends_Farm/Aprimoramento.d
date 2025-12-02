@@ -1,5 +1,6 @@
-obj/x64/Debug/Legends_Farm/main.o: ../../src/main.cpp \
- /usr/include/stdc-predef.h ../external/raylib-master/src/raylib.h \
+obj/x64/Debug/Legends_Farm/Aprimoramento.o: ../../src/Aprimoramento.cpp \
+ /usr/include/stdc-predef.h ../../src/Aprimoramento.hpp \
+ ../external/raylib-master/src/raylib.h \
  /usr/lib/gcc/x86_64-redhat-linux/15/include/stdarg.h \
  ../external/raylib-master/src/raymath.h /usr/include/c++/15/math.h \
  /usr/include/c++/15/cmath /usr/include/c++/15/bits/requires_hosted.h \
@@ -113,9 +114,9 @@ obj/x64/Debug/Legends_Farm/main.o: ../../src/main.cpp \
  /usr/include/c++/15/bits/memory_resource.h /usr/include/c++/15/cstddef \
  /usr/include/c++/15/bits/uses_allocator.h \
  /usr/include/c++/15/bits/uses_allocator_args.h /usr/include/c++/15/tuple \
- ../../src/Inimigos.hpp ../../src/Fila.hpp ../../src/Pedidos.hpp \
- ../../src/Loja_Animais.hpp ../../src/Aprimoramento.hpp
+ ../../src/Inimigos.hpp
 /usr/include/stdc-predef.h:
+../../src/Aprimoramento.hpp:
 ../external/raylib-master/src/raylib.h:
 /usr/lib/gcc/x86_64-redhat-linux/15/include/stdarg.h:
 ../external/raylib-master/src/raymath.h:
@@ -287,7 +288,3 @@ obj/x64/Debug/Legends_Farm/main.o: ../../src/main.cpp \
 /usr/include/c++/15/bits/uses_allocator_args.h:
 /usr/include/c++/15/tuple:
 ../../src/Inimigos.hpp:
-../../src/Fila.hpp:
-../../src/Pedidos.hpp:
-../../src/Loja_Animais.hpp:
-../../src/Aprimoramento.hpp:

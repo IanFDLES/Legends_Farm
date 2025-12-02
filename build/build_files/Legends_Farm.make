@@ -185,6 +185,7 @@ GENERATED :=
 OBJECTS :=
 
 GENERATED += $(OBJDIR)/Animais.o
+GENERATED += $(OBJDIR)/Aprimoramento.o
 GENERATED += $(OBJDIR)/Fila.o
 GENERATED += $(OBJDIR)/Inimigos.o
 GENERATED += $(OBJDIR)/Lista.o
@@ -192,6 +193,7 @@ GENERATED += $(OBJDIR)/Loja_Animais.o
 GENERATED += $(OBJDIR)/Pedidos.o
 GENERATED += $(OBJDIR)/main.o
 OBJECTS += $(OBJDIR)/Animais.o
+OBJECTS += $(OBJDIR)/Aprimoramento.o
 OBJECTS += $(OBJDIR)/Fila.o
 OBJECTS += $(OBJDIR)/Inimigos.o
 OBJECTS += $(OBJDIR)/Lista.o
@@ -262,6 +264,9 @@ endif
 # #############################################
 
 $(OBJDIR)/Animais.o: ../../src/Animais.cpp
+	@echo "$(notdir $<)"
+	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
+$(OBJDIR)/Aprimoramento.o: ../../src/Aprimoramento.cpp
 	@echo "$(notdir $<)"
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/Fila.o: ../../src/Fila.cpp
