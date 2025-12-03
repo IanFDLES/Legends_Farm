@@ -13,12 +13,12 @@
 #define MAX_ENEMIES 100
 #define MAX_BULLETS 50
 #define INTERVALO_PEDIDO 10.0f
-#define velTiro 10.0f
-#define freqTiro 1.2f
+#define velTiro 12.0f
+#define freqTiro 1.4f
 
 int framesCounter = 0;
 
-int pedidosConcluidos = 18;
+int pedidosConcluidos = 15;
 
 float timerGerarPedidos = 0.0f;
 // Varáveis de inimigos,tiros
@@ -52,8 +52,10 @@ int main() {
     Texture2D porcosprite = LoadTexture("sprites/porco.png");
     Texture2D vacasprite = LoadTexture("sprites/vaca.png");
     Texture2D mapaTexture = LoadTexture("sprites/mapa.png");
-    // protagonist/player sprite
+    Texture2D lobosprite = LoadTexture("sprites/lobo.png");
+    Texture2D lobobosssprite = LoadTexture("sprites/loboboss.png");
     Texture2D jogadorSprite = LoadTexture("sprites/protagonista.png");
+    Texture2D cercaSprite = LoadTexture("sprites/cerca.png");
     GameScreen currentScreen = LOGO;
     Enemy enemies[MAX_ENEMIES];
     Bullet bullets[MAX_BULLETS];
@@ -88,7 +90,7 @@ int main() {
     bool bossSpawned =false;
 
     SetTargetFPS(60);
-    jogador  = {1000,1000000};
+    jogador = {20,1000000};
     criarL(jogador.recursos);
     InicializarRecursos();
     fila filaDePedidos;
@@ -169,6 +171,21 @@ int main() {
 
             case TITLE: {
                 if (CheckCollisionPointRec(mousePoint, btnJogar) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+                    jogador = {20,1000000};
+                    OvelhasAtuais = 0;
+                    GalinhasAtuais = 0;
+                    VacasAtuais = 0;   
+                    PorcosAtuais = 0;
+                    jogador.recursos.headerp = nullptr;
+                    criarL(jogador.recursos);
+                    filaDePedidos.header = nullptr;
+                    criarF(filaDePedidos);
+                    //pedidosConcluidos = 0;
+                    boss.active = false;
+                    bossSpawned = false;
+                    InicializarInimigos(enemies);
+                    InicializarBalas(bullets);
+                    InicializarBoss(boss);
                     currentScreen = GAMEPLAY;
                 }
 
@@ -206,6 +223,9 @@ int main() {
             } break;
 
             case GAMEPLAY: {
+                if (jogador.life <= 0) {
+                    currentScreen = TITLE;
+                }
                 //movimentação do jogador
                 Vector2 dir = {0, 0};
                 if (IsKeyDown(KEY_RIGHT) || IsKeyDown(KEY_D)) dir.x += 1;
@@ -272,12 +292,12 @@ int main() {
                 // 🔥 INIMIGOS E TIROS
                 //Set do inimigo
                 SpawnarOndaInimigos(enemies, pos, enemiesPerWave, spawnTimer, timeBetweenWaves);
-                AtualizarInimigos(enemies, pos);
+                AtualizarInimigos(enemies, pos, jogador.life);
                 
                 // --- LÓGICA DO BOSS ---
                 // Spawnar quando atingir 20 pedidos
                 SpawnarBoss(boss, mapaLargura, mapaAltura, bossSpawned, pedidosConcluidos);
-                AtualizarBoss(boss, pos, bullets);
+                AtualizarBoss(boss, pos, bullets, jogador.life);
                 // ----------------------
 
                 AtualizarAprimoramentos(GalinhasAtuais, VacasAtuais, PorcosAtuais, OvelhasAtuais,
@@ -311,7 +331,7 @@ int main() {
 
                         // Colisão com inimigos normais
                         for (int i = 0; i < MAX_ENEMIES; i++) {
-                            if (enemies[i].active && Vector2Distance(bullets[b].pos, enemies[i].pos) < 15) {
+                            if (enemies[i].active && Vector2Distance(bullets[b].pos, enemies[i].pos) < 50) {
                                 bullets[b].active = false;
                                 enemies[i].active = false;
                                 break;
@@ -320,7 +340,7 @@ int main() {
                         
                         // --- COLISÃO COM PORCOS (dropar bacon ao serem atingidos) ---
                         for (int p = 0; p < MAX_ANIMALS; p++) {
-                            if (porcos[p].active && Vector2Distance(bullets[b].pos, porcos[p].pos) < 20) {
+                            if (porcos[p].active && Vector2Distance(bullets[b].pos, porcos[p].pos) < 30) {
                                 bullets[b].active = false;
                                 // Only spawn bacon if this pig is allowed to produce on hit
                                 if (porcos[p].podeProduzir) {
@@ -340,6 +360,7 @@ int main() {
                             boss.life -= 1; 
                             if (boss.life <= 0) {
                                 boss.active = false;
+                                currentScreen = CREDITS;
                                 // Boss derrotado
                             }
                         }
@@ -396,14 +417,15 @@ int main() {
                                   (Rectangle){0, 0, (float)mapaTexture.width, (float)mapaTexture.height},
                                   destRect,
                                   (Vector2){0, 0}, 0.0f, WHITE);
-                    DrawRectangleRec(Galinheiro, ORANGE);                   
-                    DrawRectangleRec(Curral, BLUE);
-                    DrawRectangleRec(Chiqueiro, BROWN);
-                    DrawRectangleRec(CampodasOvelhas, GREEN);
+                    //DrawRectangleRec(Galinheiro, ORANGE);                   
+                    //DrawRectangleRec(Curral, BLUE);
+                    //DrawRectangleRec(Chiqueiro, BROWN);
+                    //DrawRectangleRec(CampodasOvelhas, GREEN);
+
                     // draw player as sprite (protagonista.png)
                     if (jogadorSprite.id != 0) {
                         Rectangle srcP = {0, 0, (float)jogadorSprite.width, (float)jogadorSprite.height};
-                        float pscale = 0.12f;
+                        float pscale = 0.25f;
                         float pw = jogadorSprite.width * pscale;
                         float ph = jogadorSprite.height * pscale;
                         Rectangle destP = { pos.x - pw/2.0f, pos.y - ph/2.0f, pw, ph };
@@ -425,12 +447,34 @@ int main() {
                                   (Vector2){0, 0}, 0.0f, WHITE);
 
                     for (int i = 0; i < MAX_ENEMIES; i++) {
-                        if (enemies[i].active) DrawCircleV(enemies[i].pos, 20, DARKPURPLE);
+                        if (enemies[i].active) {
+                            if (lobosprite.id != 0) {
+                                Rectangle src = {0, 0, (float)lobosprite.width, (float)lobosprite.height};
+                                float scale = 0.4f; // ajusta o tamanho do lobo
+                                float w = lobosprite.width * scale;
+                                float h = lobosprite.height * scale;
+                                Rectangle dest = { enemies[i].pos.x - w/2.0f, enemies[i].pos.y - h/2.0f, w, h };
+                                Vector2 origin = { w/32.0f, h/32.0f };
+                                DrawTexturePro(lobosprite, src, dest, origin, 0.0f, WHITE);
+                            } else {
+                                DrawCircleV(enemies[i].pos, 20, DARKPURPLE);
+                            }
+                        }
                     }
                     
                     // --- DESENHO DO BOSS ---
                     if (boss.active) {
-                        DrawCircleV(boss.pos, boss.radius, MAROON);
+                        if (lobobosssprite.id != 0) {
+                            Rectangle src = {0, 0, (float)lobobosssprite.width, (float)lobobosssprite.height};
+                            float scale = 0.35f; // tamanho do boss
+                            float w = lobobosssprite.width * scale;
+                            float h = lobobosssprite.height * scale;
+                            Rectangle dest = { boss.pos.x - w/2.0f, boss.pos.y - h/2.0f, w, h };
+                            Vector2 origin = { w/32.0f, h/32.0f };
+                            DrawTexturePro(lobobosssprite, src, dest, origin, 0.0f, WHITE);
+                        } else {
+                            DrawCircleV(boss.pos, boss.radius, MAROON);
+                        }
                         DrawText(TextFormat("%d", boss.life), boss.pos.x - 10, boss.pos.y - 10, 20, WHITE);
                     }
                     // -----------------------
@@ -657,16 +701,20 @@ if(Aprimoramento){
 
                 // ------------------- HUD RECURSOS (NOVA TABELA) -------------------
                 // Fundo semi-transparente
-                DrawRectangle(10, AlturaTela - 230, 200, 220, (Color){0, 0, 0, 150});
+                DrawRectangle(10, AlturaTela - 300, 200, 260, (Color){0, 0, 0, 150});
                 
                 RequisitosPedido contagem = ContarRequisitos(jogador.recursos);
                 float hudX = 20;
-                float hudY = AlturaTela - 210;
+                float hudY = AlturaTela - 280;
                 float espacamento = 40;
                 float iconW = 30;
 
                 // Dinheiro
                 DrawText(TextFormat("R$: %.0f", jogador.money), hudX, hudY, 25, GREEN);
+                hudY += espacamento;
+
+                // Vida
+                DrawText(TextFormat("Vida: %d", jogador.life), hudX, hudY, 25, RED);
                 hudY += espacamento;
 
                 // Ovos
@@ -691,10 +739,10 @@ if(Aprimoramento){
 
                 //cursor    
                 Vector2 mouse = GetMousePosition();
-                int crossSize = 20;
-                DrawLine(mouse.x - crossSize, mouse.y, mouse.x + crossSize, mouse.y, DARKGREEN);
-                DrawLine(mouse.x, mouse.y - crossSize, mouse.x, mouse.y + crossSize, DARKGREEN);
-                DrawCircleLines(mouse.x, mouse.y, 15, DARKGREEN);
+                int crossSize = 30;
+                DrawLine(mouse.x - crossSize, mouse.y, mouse.x + crossSize, mouse.y, PINK);
+                DrawLine(mouse.x, mouse.y + crossSize, mouse.x, mouse.y - crossSize, PINK);
+                DrawCircleLines(mouse.x, mouse.y, 22.5, PINK);
             } break;
             case CREDITS: {
                 ClearBackground(YELLOW);
@@ -725,6 +773,9 @@ if(Aprimoramento){
     destruirL(jogador.recursos);
     destruirF(filaDePedidos);
     UnloadTexture(logo);
+    UnloadTexture(lobosprite);
+    UnloadTexture(lobobosssprite);
+        UnloadTexture(cercaSprite);
     CloseWindow();
     return 0;
 }

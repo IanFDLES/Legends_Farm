@@ -36,35 +36,15 @@ void SpawnarOndaInimigos(Enemy inimigos[], Vector2 posicaoJogador, int& inimigos
     }
 }
 
-void AtualizarInimigos(Enemy inimigos[], Vector2 posicaoJogador) {
+void AtualizarInimigos(Enemy inimigos[], Vector2 posicaoJogador, int &vida) {
     for (int i = 0; i < MAX_ENEMIES; i++) {
         if (inimigos[i].active) {
             Vector2 dirE = Vector2Normalize(Vector2Subtract(posicaoJogador, inimigos[i].pos));
             inimigos[i].pos = Vector2Add(inimigos[i].pos, Vector2Scale(dirE, inimigos[i].speed));
             
-            if (Vector2Distance(posicaoJogador, inimigos[i].pos) < 20) {
+            if (Vector2Distance(posicaoJogador, inimigos[i].pos) < 60) {
                 inimigos[i].active = false;
-            }
-        }
-    }
-}
-
-void AtualizarBalas(Bullet balas[], Enemy inimigos[], Vector2 posicaoJogador) {
-    for (int b = 0; b < MAX_BULLETS; b++) {
-        if (balas[b].active) {
-            balas[b].pos = Vector2Add(balas[b].pos, Vector2Scale(balas[b].dir, balas[b].speed));
-            
-            // Colisão com inimigos
-            for (int i = 0; i < MAX_ENEMIES; i++) {
-                if (inimigos[i].active && Vector2Distance(balas[b].pos, inimigos[i].pos) < 15) {
-                    balas[b].active = false;
-                    inimigos[i].active = false;
-                    break;
-                }
-            }
-            
-            if (Vector2Distance(posicaoJogador, balas[b].pos) > 800) {
-                balas[b].active = false;
+                vida--;
             }
         }
     }
@@ -86,22 +66,14 @@ void SpawnarBoss(Boss& boss, int mapa_largura, int mapa_altura, bool& bossSpawne
     }
 }
 
-void AtualizarBoss(Boss& boss, Vector2 posicaoJogador, Bullet balas[]) {
+void AtualizarBoss(Boss& boss, Vector2 posicaoJogador, Bullet balas[], int& vida) {
     if (boss.active) {
         // Movimentação do Boss (persegue o jogador)
         Vector2 dirBoss = Vector2Normalize(Vector2Subtract(posicaoJogador, boss.pos));
         boss.pos = Vector2Add(boss.pos, Vector2Scale(dirBoss, boss.speed));
-        
-        // Colisão com balas
-        for (int b = 0; b < MAX_BULLETS; b++) {
-            if (balas[b].active && Vector2Distance(balas[b].pos, boss.pos) < boss.radius) {
-                balas[b].active = false;
-                boss.life -= 1;
-                if (boss.life <= 0) {
-                    boss.active = false;
-                }
+        if (Vector2Distance(posicaoJogador, boss.pos) < 80) {
+                vida--;
             }
-        }
     }
 }
 

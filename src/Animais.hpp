@@ -62,4 +62,7 @@ typedef struct {
                           int qtdGalinhas, int qtdVacas, int qtdPorcos, int qtdOvelhas,
                           Rectangle galinheiro, Rectangle curral, Rectangle chiqueiro, Rectangle campoOvelhas,
                           Vector2 posicaoJogador, Enemy inimigos[], int maxInimigos, lista& recursosJogador);
+
+// Função para desenhar cerca ao redor de um cercado (área)
+    void DesenharCercaCercado(Rectangle area, Texture2D cercaTexture, float espessuraCerca);
 #endif

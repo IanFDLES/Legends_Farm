@@ -44,7 +44,7 @@ void AtualizarRecursos(Vector2 playerPos, lista& recursosJogador) {
             if (resources[i].ttl <= 0.0f) { resources[i].active = false; continue; }
         }
 
-        if (Vector2Distance(playerPos, resources[i].pos) < 24.0f) {
+        if (Vector2Distance(playerPos, resources[i].pos) < 50.0f) {
             switch (resources[i].type) {
                 case R_OVO: inserirL(recursosJogador, "ovo"); break;
                 case R_LEITE: inserirL(recursosJogador, "leite"); break;
@@ -106,7 +106,7 @@ void InicializarAnimal(Animal *a, TipoAnimal tipo, Vector2 posInicial) {
     }
 }
 
-    void InicializarAnimaisComprados(Animal galinha[], Animal vacas[], Animal porcos[], Animal ovelhas[],
+void InicializarAnimaisComprados(Animal galinha[], Animal vacas[], Animal porcos[], Animal ovelhas[],
                                 int GalinhasAtuais, int VacasAtuais, int PorcosAtuais, int OvelhasAtuais,
                                 Rectangle Galinheiro, Rectangle Curral, Rectangle Chiqueiro, Rectangle CampodasOvelhas) {
     
@@ -147,7 +147,7 @@ void InicializarAnimal(Animal *a, TipoAnimal tipo, Vector2 posInicial) {
     }
 
 
-    void ComportamentoGalinha(Animal galinhas[], int quantidade, Rectangle galinheiro, Vector2 posicaoJogador, Enemy inimigos[], int maxInimigos, lista& recursosJogador) {
+void ComportamentoGalinha(Animal galinhas[], int quantidade, Rectangle galinheiro, Vector2 posicaoJogador, Enemy inimigos[], int maxInimigos, lista& recursosJogador) {
         // iterate over whole array and check active flag -> avoids "hole" bugs
         // where animals can be at indices beyond `quantidade` and get left unprocessed
         for (int i = 0; i < MAX_ANIMALS; i++) {
@@ -195,7 +195,7 @@ void InicializarAnimal(Animal *a, TipoAnimal tipo, Vector2 posInicial) {
         }
     }
 
-    void ComportamentoVaca(Animal vacas[], int quantidade, Rectangle curral, Vector2 posicaoJogador, Enemy inimigos[], int maxInimigos, lista& recursosJogador) {
+void ComportamentoVaca(Animal vacas[], int quantidade, Rectangle curral, Vector2 posicaoJogador, Enemy inimigos[], int maxInimigos, lista& recursosJogador) {
         // process full array, not only the compacted count
         for (int i = 0; i < MAX_ANIMALS; i++) {
             if (!vacas[i].active) continue;
@@ -244,7 +244,7 @@ void InicializarAnimal(Animal *a, TipoAnimal tipo, Vector2 posInicial) {
 
     // Implemente similarmente para ComportamentoPorco e ComportamentoOvelha...
 
-    void ComportamentoPorco(Animal porcos[], int quantidade, Rectangle chiqueiro, Vector2 posicaoJogador, Enemy inimigos[], int maxInimigos, lista& recursosJogador) {
+void ComportamentoPorco(Animal porcos[], int quantidade, Rectangle chiqueiro, Vector2 posicaoJogador, Enemy inimigos[], int maxInimigos, lista& recursosJogador) {
         // process full array, not only the compacted count
         for (int i = 0; i < MAX_ANIMALS; i++) {
             if (!porcos[i].active) continue;
@@ -286,7 +286,7 @@ void InicializarAnimal(Animal *a, TipoAnimal tipo, Vector2 posInicial) {
         }
     }
 
-    void ComportamentoOvelha(Animal ovelhas[], int quantidade, Rectangle campoOvelhas, Vector2 posicaoJogador, Enemy inimigos[], int maxInimigos, lista& recursosJogador) {
+void ComportamentoOvelha(Animal ovelhas[], int quantidade, Rectangle campoOvelhas, Vector2 posicaoJogador, Enemy inimigos[], int maxInimigos, lista& recursosJogador) {
         // process full array, not only the compacted count
         for (int i = 0; i < MAX_ANIMALS; i++) {
             if (!ovelhas[i].active) continue;
@@ -332,7 +332,7 @@ void InicializarAnimal(Animal *a, TipoAnimal tipo, Vector2 posInicial) {
         }
     }
 
-    void AtualizarTodosAnimais(Animal galinhas[], Animal vacas[], Animal porcos[], Animal ovelhas[],
+void AtualizarTodosAnimais(Animal galinhas[], Animal vacas[], Animal porcos[], Animal ovelhas[],
                               int qtdGalinhas, int qtdVacas, int qtdPorcos, int qtdOvelhas,
                               Rectangle galinheiro, Rectangle curral, Rectangle chiqueiro, Rectangle campoOvelhas,
                               Vector2 posicaoJogador, Enemy inimigos[], int maxInimigos, lista& recursosJogador) {
@@ -342,3 +342,4 @@ void InicializarAnimal(Animal *a, TipoAnimal tipo, Vector2 posInicial) {
         ComportamentoPorco(porcos, qtdPorcos, chiqueiro, posicaoJogador, inimigos, maxInimigos, recursosJogador);
         ComportamentoOvelha(ovelhas, qtdOvelhas, campoOvelhas, posicaoJogador, inimigos, maxInimigos, recursosJogador);
     }
+

@@ -32,10 +32,10 @@ typedef struct Boss {
 void InicializarInimigos(Enemy inimigos[]);
 void InicializarBalas(Bullet balas[]);
 void SpawnarOndaInimigos(Enemy inimigos[], Vector2 posicaoJogador, int& inimigosPorOnda, float& spawnTimer, float tempoEntreOndas);
-void AtualizarInimigos(Enemy inimigos[], Vector2 posicaoJogador);
+void AtualizarInimigos(Enemy inimigos[], Vector2 posicaoJogador, int &vida);
 void AtualizarBalas(Bullet balas[], Enemy inimigos[], Vector2 posicaoJogador);
 void InicializarBoss(Boss& boss);
 void SpawnarBoss(Boss& boss, int mapa_largura, int mapa_altura, bool& bossSpawned, int pedidosConcluidos);
-void AtualizarBoss(Boss& boss, Vector2 posicaoJogador, Bullet balas[]);
+void AtualizarBoss(Boss& boss, Vector2 posicaoJogador, Bullet balas[], int& vida);
 bool BossFoiDerrotado(Boss& boss);
 #endif
