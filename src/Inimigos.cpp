@@ -4,6 +4,7 @@
 void InicializarInimigos(Enemy inimigos[]) {
     for (int i = 0; i < MAX_ENEMIES; i++) {
         inimigos[i].active = false;
+        inimigos[i].damage = 0;
     }
 }
 
@@ -21,7 +22,8 @@ void SpawnarOndaInimigos(Enemy inimigos[], Vector2 posicaoJogador, int& inimigos
             for (int j = 0; j < MAX_ENEMIES; j++) {
                 if (!inimigos[j].active) {
                     inimigos[j].active = true;
-                    inimigos[j].speed = 2.0f;
+                    inimigos[j].speed = 4.8f;
+                    inimigos[j].damage = 10;
                     float angle = GetRandomValue(0, 360) * DEG2RAD;
                     float dist = 500.0f;
                     inimigos[j].pos = (Vector2){ 
@@ -32,7 +34,7 @@ void SpawnarOndaInimigos(Enemy inimigos[], Vector2 posicaoJogador, int& inimigos
                 }
             }
         }
-        inimigosPorOnda++;
+        if (inimigosPorOnda < 15) inimigosPorOnda++;
     }
 }
 
@@ -55,7 +57,7 @@ void InicializarBoss(Boss& boss) {
     boss.life = 50;
     boss.maxLife = 50;
     boss.radius = 40.0f;
-    boss.speed = 3.5f;
+    boss.speed = 6.0f;
 }
 
 void SpawnarBoss(Boss& boss, int mapa_largura, int mapa_altura, bool& bossSpawned, int pedidosConcluidos) {

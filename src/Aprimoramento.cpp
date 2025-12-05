@@ -16,9 +16,9 @@ void InicializarAprimoramentos(Texture2D galinhaTex, Texture2D vacaTex, Texture2
     galinheiro.textura = galinhaTex;
     galinheiro.tempoUltimaProducao = 0;
     
-    galinheiro.niveis[0] = {1, 1000.0f, "+1 galinha/30s", false};
-    galinheiro.niveis[1] = {2, 2000.0f, "+2 galinhas/30s", false};
-    galinheiro.niveis[2] = {3, 3000.0f, "+3 galinhas/30s", false};
+    galinheiro.niveis[0] = {1, 100.0f, "+1 galinha/15s", false};
+    galinheiro.niveis[1] = {2, 200.0f, "+2 galinhas/15s", false};
+    galinheiro.niveis[2] = {3, 300.0f, "+3 galinhas/15s", false};
     
     // Inicializa Curral
     curral.nome = "CURRAL";
@@ -27,9 +27,9 @@ void InicializarAprimoramentos(Texture2D galinhaTex, Texture2D vacaTex, Texture2
     curral.textura = vacaTex;
     curral.tempoUltimaProducao = 0;
     
-    curral.niveis[0] = {1, 1500.0f, "+1 vaca/30s", false};
-    curral.niveis[1] = {2, 3000.0f, "+2 vacas/30s", false};
-    curral.niveis[2] = {3, 4500.0f, "+3 vacas/30s", false};
+    curral.niveis[0] = {1, 150.0f, "+1 vaca/15s", false};
+    curral.niveis[1] = {2, 300.0f, "+2 vacas/15s", false};
+    curral.niveis[2] = {3, 450.0f, "+3 vacas/15s", false};
     
     // Inicializa Chiqueiro
     chiqueiro.nome = "CHIQUEIRO";
@@ -38,9 +38,9 @@ void InicializarAprimoramentos(Texture2D galinhaTex, Texture2D vacaTex, Texture2
     chiqueiro.textura = porcoTex;
     chiqueiro.tempoUltimaProducao = 0;
     
-    chiqueiro.niveis[0] = {1, 1200.0f, "+1 porco/30s", false};
-    chiqueiro.niveis[1] = {2, 2400.0f, "+2 porcos/30s", false};
-    chiqueiro.niveis[2] = {3, 3600.0f, "+3 porcos/30s", false};
+    chiqueiro.niveis[0] = {1, 120.0f, "+1 porco/15s", false};
+    chiqueiro.niveis[1] = {2, 240.0f, "+2 porcos/15s", false};
+    chiqueiro.niveis[2] = {3, 360.0f, "+3 porcos/15s", false};
     
     // Inicializa Abrigo
     abrigo.nome = "ABRIGO";
@@ -49,9 +49,9 @@ void InicializarAprimoramentos(Texture2D galinhaTex, Texture2D vacaTex, Texture2
     abrigo.textura = ovelhaTex;
     abrigo.tempoUltimaProducao = 0;
     
-    abrigo.niveis[0] = {1, 1300.0f, "+1 ovelha/30s", false};
-    abrigo.niveis[1] = {2, 2600.0f, "+2 ovelhas/30s", false};
-    abrigo.niveis[2] = {3, 3900.0f, "+3 ovelhas/30s", false};
+    abrigo.niveis[0] = {1, 130.0f, "+1 ovelha/15s", false};
+    abrigo.niveis[1] = {2, 260.0f, "+2 ovelhas/15s", false};
+    abrigo.niveis[2] = {3, 390.0f, "+3 ovelhas/15s", false};
 }
 
 void DrawAprimoramentosScreen(Rectangle areaConteudo, float painelLateralLargura, Vector2 mousePoint,
@@ -196,7 +196,7 @@ void AtualizarAprimoramentos(int& GalinhasAtuais, int& VacasAtuais,
     for (int c = 0; c < 4; c++) {
         ConstrucaoAprimoravel* construcao = construcoes[c];
         
-        if (construcao->nivelAtual > 0 && tempoAtual - construcao->tempoUltimaProducao >= 30.0f) {
+        if (construcao->nivelAtual > 0 && tempoAtual - construcao->tempoUltimaProducao >= 15.0f) {
             int animaisParaAdicionar = construcao->nivelAtual; // Nível 1: +1, Nível 2: +2, Nível 3: +3
             
             if (*animaisComprados[c] + animaisParaAdicionar <= MAX_ANIMALS) {

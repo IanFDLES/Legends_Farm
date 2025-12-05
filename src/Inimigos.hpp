@@ -3,7 +3,7 @@
 
 #include "raylib.h"
 
-#define MAX_ENEMIES 100
+#define MAX_ENEMIES 10000
 #define MAX_BULLETS 50
 
 typedef struct Enemy {

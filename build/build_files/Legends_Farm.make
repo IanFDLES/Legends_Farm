@@ -49,7 +49,7 @@ ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m64 -Wshadow -g -std=c17
 ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -m64 -Wshadow -g -std=c++17
 LIBS += ../../bin/Debug/raylib.lib -lwinmm -lgdi32 -lopengl32
 LDDEPS += ../../bin/Debug/raylib.lib
-ALL_LDFLAGS += $(LDFLAGS) -L../../bin/Debug -L/usr/lib64 -m64
+ALL_LDFLAGS += $(LDFLAGS) -L../../bin/Debug -L/usr/lib64 -m64 -static -static-libgcc -static-libstdc++
 
 else ifeq ($(config),debug_x86)
 TARGETDIR = ../../bin/Debug

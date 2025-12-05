@@ -176,7 +176,7 @@ void ComportamentoGalinha(Animal galinhas[], int quantidade, Rectangle galinheir
             // 4. Colisão com inimigos
             for (int e = 0; e < maxInimigos; e++) {
                 if (!inimigos[e].active) continue;
-                if (Vector2Distance(galinhas[i].pos, inimigos[e].pos) < 20) {
+                if (Vector2Distance(galinhas[i].pos, inimigos[e].pos) < 60) {
                     galinhas[i].life -= inimigos[e].damage * GetFrameTime();
                     if (galinhas[i].life <= 0) {
                         if (GalinhasAtuais > 0) GalinhasAtuais--;
@@ -223,7 +223,7 @@ void ComportamentoVaca(Animal vacas[], int quantidade, Rectangle curral, Vector2
             // 4. Colisão com inimigos
             for (int e = 0; e < maxInimigos; e++) {
                 if (!inimigos[e].active) continue;
-                if (Vector2Distance(vacas[i].pos, inimigos[e].pos) < 20) {
+                if (Vector2Distance(vacas[i].pos, inimigos[e].pos) < 60) {
                     vacas[i].life -= inimigos[e].damage * GetFrameTime();
                     if (vacas[i].life <= 0) {
                         if (VacasAtuais > 0) VacasAtuais--;
@@ -272,7 +272,7 @@ void ComportamentoPorco(Animal porcos[], int quantidade, Rectangle chiqueiro, Ve
             // Colisão com inimigos
             for (int e = 0; e < maxInimigos; e++) {
                 if (!inimigos[e].active) continue;
-                if (Vector2Distance(porcos[i].pos, inimigos[e].pos) < 20) {
+                if (Vector2Distance(porcos[i].pos, inimigos[e].pos) < 60) {
                     porcos[i].life -= inimigos[e].damage * GetFrameTime();
                         if (porcos[i].life <= 0) {
                             if (PorcosAtuais > 0) PorcosAtuais--;
@@ -314,7 +314,7 @@ void ComportamentoOvelha(Animal ovelhas[], int quantidade, Rectangle campoOvelha
             // Colisão com inimigos
             for (int e = 0; e < maxInimigos; e++) {
                 if (!inimigos[e].active) continue;
-                if (Vector2Distance(ovelhas[i].pos, inimigos[e].pos) < 20) {
+                if (Vector2Distance(ovelhas[i].pos, inimigos[e].pos) < 60) {
                     ovelhas[i].life -= inimigos[e].damage * GetFrameTime();
                     if (ovelhas[i].life <= 0) {
                         if (OvelhasAtuais > 0) OvelhasAtuais--;

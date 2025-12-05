@@ -10,15 +10,15 @@
 #include "Aprimoramento.hpp"
 #include <string>
 #define vel 10.0f
-#define MAX_ENEMIES 100
+#define MAX_ENEMIES 10000
 #define MAX_BULLETS 50
-#define INTERVALO_PEDIDO 10.0f
+#define INTERVALO_PEDIDO 8.0f
 #define velTiro 12.0f
-#define freqTiro 1.4f
+#define freqTiro 1.5f
 
 int framesCounter = 0;
 
-int pedidosConcluidos = 15;
+int pedidosConcluidos = 0;
 
 float timerGerarPedidos = 0.0f;
 // Varáveis de inimigos,tiros
@@ -90,7 +90,7 @@ int main() {
     bool bossSpawned =false;
 
     SetTargetFPS(60);
-    jogador = {20,1000000};
+    jogador = {20,1000};
     criarL(jogador.recursos);
     InicializarRecursos();
     fila filaDePedidos;
@@ -171,7 +171,7 @@ int main() {
 
             case TITLE: {
                 if (CheckCollisionPointRec(mousePoint, btnJogar) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
-                    jogador = {20,1000000};
+                    jogador = {20,1000};
                     OvelhasAtuais = 0;
                     GalinhasAtuais = 0;
                     VacasAtuais = 0;   
@@ -180,12 +180,14 @@ int main() {
                     criarL(jogador.recursos);
                     filaDePedidos.header = nullptr;
                     criarF(filaDePedidos);
-                    //pedidosConcluidos = 0;
+                    pedidosConcluidos = 0;
                     boss.active = false;
                     bossSpawned = false;
                     InicializarInimigos(enemies);
                     InicializarBalas(bullets);
                     InicializarBoss(boss);
+                    enemiesPerWave = 3;
+                    spawnTimer = 0;
                     currentScreen = GAMEPLAY;
                 }
 
@@ -228,10 +230,10 @@ int main() {
                 }
                 //movimentação do jogador
                 Vector2 dir = {0, 0};
-                if (IsKeyDown(KEY_RIGHT) || IsKeyDown(KEY_D)) dir.x += 1;
-                if (IsKeyDown(KEY_LEFT) || IsKeyDown(KEY_A))  dir.x -= 1;
-                if (IsKeyDown(KEY_UP) || IsKeyDown(KEY_W))    dir.y -= 1;
-                if (IsKeyDown(KEY_DOWN) || IsKeyDown(KEY_S))  dir.y += 1;
+                if (IsKeyDown(KEY_RIGHT) || IsKeyDown(KEY_D)) dir.x += 1.2;
+                if (IsKeyDown(KEY_LEFT) || IsKeyDown(KEY_A))  dir.x -= 1.2;
+                if (IsKeyDown(KEY_UP) || IsKeyDown(KEY_W))    dir.y -= 1.2;
+                if (IsKeyDown(KEY_DOWN) || IsKeyDown(KEY_S))  dir.y += 1.2;
                 if (dir.x != 0 || dir.y != 0) {
                     dir = Vector2Normalize(dir);
                     pos = Vector2Add(pos, Vector2Scale(dir, vel));
@@ -255,19 +257,19 @@ int main() {
                         if (PodeEntregar(inventarioJogador, requisitosPedido)) {
                             for (int i = 0; i < requisitosPedido.ovos; i++) {
                                 retirarL(jogador.recursos, "ovo");
-                                jogador.money += 10.0f;
+                                jogador.money += 5.0f;
                             }
                             for (int i = 0; i < requisitosPedido.leite; i++) {
                                 retirarL(jogador.recursos, "leite");
-                                jogador.money += 20.0f;
+                                jogador.money += 10.0f;
                             }
                             for (int i = 0; i < requisitosPedido.bacons; i++) {
                                 retirarL(jogador.recursos, "bacon");
-                                jogador.money += 40.0f;
+                                jogador.money += 15.0f;
                             }
                             for (int i = 0; i < requisitosPedido.la; i++) {
                                 retirarL(jogador.recursos, "la");
-                                jogador.money += 30.0f;
+                                jogador.money += 15.0f;
                             }
                             lista pedidoEntregue; 
                             retirarF(filaDePedidos, pedidoEntregue);
@@ -276,6 +278,9 @@ int main() {
                             // --- ALTERAÇÃO 2: Incrementa o contador ---
                             pedidosConcluidos++;
                             // ------------------------------------------
+                            if (jogador.life < 20 && pedidosConcluidos % 2 == 0) {
+                            jogador.life++;
+                            }
                         }
                     }
                 }
@@ -334,6 +339,7 @@ int main() {
                             if (enemies[i].active && Vector2Distance(bullets[b].pos, enemies[i].pos) < 50) {
                                 bullets[b].active = false;
                                 enemies[i].active = false;
+                                jogador.money += 10.0f;
                                 break;
                             }
                         }
@@ -740,9 +746,9 @@ if(Aprimoramento){
                 //cursor    
                 Vector2 mouse = GetMousePosition();
                 int crossSize = 30;
-                DrawLine(mouse.x - crossSize, mouse.y, mouse.x + crossSize, mouse.y, PINK);
-                DrawLine(mouse.x, mouse.y + crossSize, mouse.x, mouse.y - crossSize, PINK);
-                DrawCircleLines(mouse.x, mouse.y, 22.5, PINK);
+                DrawLine(mouse.x - crossSize, mouse.y, mouse.x + crossSize, mouse.y, RED);
+                DrawLine(mouse.x, mouse.y + crossSize, mouse.x, mouse.y - crossSize, RED);
+                DrawCircleLines(mouse.x, mouse.y, 22.5, RED);
             } break;
             case CREDITS: {
                 ClearBackground(YELLOW);

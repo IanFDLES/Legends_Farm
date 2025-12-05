@@ -4,7 +4,7 @@
 #include "Lista.hpp"
 #include "raymath.h"
 #include "Inimigos.hpp" 
-#define VEL_PROD (1.0f / 60.0f)
+#define VEL_PROD (1.0f / 120.0f)
 
 
 #include <stdint.h>
@@ -62,7 +62,5 @@ typedef struct {
                           int qtdGalinhas, int qtdVacas, int qtdPorcos, int qtdOvelhas,
                           Rectangle galinheiro, Rectangle curral, Rectangle chiqueiro, Rectangle campoOvelhas,
                           Vector2 posicaoJogador, Enemy inimigos[], int maxInimigos, lista& recursosJogador);
-
-// Função para desenhar cerca ao redor de um cercado (área)
-    void DesenharCercaCercado(Rectangle area, Texture2D cercaTexture, float espessuraCerca);
+                          
 #endif

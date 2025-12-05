@@ -3,10 +3,10 @@
 #include "stdio.h"
 
 
-float precoVaca = 200.0f;
-float precoGalinha = 10.0f;
-float precoPorco = 80.0f;
-float precoOvelha = 60.0f;
+float precoVaca = 125.0f;
+float precoGalinha = 50.0f;
+float precoPorco = 100.0f;
+float precoOvelha = 75.0f;
 
 // Definições das variáveis de skins
 SkinAnimal skinVaca, skinGalinha, skinPorco, skinOvelha;
